@@ -1,5 +1,7 @@
 package com.rainng.jerry.mouse;
 
+import com.rainng.jerry.mouse.middleware.BaseMiddleware;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

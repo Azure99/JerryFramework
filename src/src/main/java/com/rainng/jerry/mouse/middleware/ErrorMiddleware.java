@@ -1,6 +1,5 @@
 package com.rainng.jerry.mouse.middleware;
 
-import com.rainng.jerry.mouse.BaseMiddleware;
 import com.rainng.jerry.mouse.exception.HttpException;
 import com.rainng.jerry.mouse.exception.NotFoundException;
 import com.rainng.jerry.mouse.http.HttpContext;

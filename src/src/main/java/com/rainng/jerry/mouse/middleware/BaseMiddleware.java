@@ -1,4 +1,4 @@
-package com.rainng.jerry.mouse;
+package com.rainng.jerry.mouse.middleware;
 
 import com.rainng.jerry.mouse.http.HttpContext;
 

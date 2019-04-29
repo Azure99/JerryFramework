@@ -1,6 +1,5 @@
 package com.rainng.jerry.mouse.middleware;
 
-import com.rainng.jerry.mouse.BaseMiddleware;
 import com.rainng.jerry.mouse.http.HttpContext;
 
 public class SessionMiddleware extends BaseMiddleware {
