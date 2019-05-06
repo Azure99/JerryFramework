@@ -16,7 +16,6 @@ public class Hello {
         HttpServer server = new HttpServer(9615);
 
         server.addMiddleware(new ErrorMiddleware());
-        server.addMiddleware(new SessionMiddleware());
         server.addMiddleware(new StaticWebMiddleware());
         server.addMiddleware(new WebApiMiddleware(new Class[]{ApiController.class}));
 
@@ -25,8 +24,29 @@ public class Hello {
 }
 
 class ApiController extends BaseController {
-    @Route("hello")
-    public IResult test() {
-        return value("Hello jerry framework");
+    public IResult value() {
+        return value("Hello JerryFramework");
+    }
+
+    @Route("/r1")
+    public IResult route1() {
+        return value("Route example 1");
+    }
+
+    @Route("r2")
+    public IResult route2() {
+        return value("Route example 2");
+    }
+
+    public IResult add(Integer a, Integer b) {
+        return value(a + b);
+    }
+
+    public IResult redirect() {
+        return redirect("http://www.rainng.com");
+    }
+
+    public IResult html() {
+        return html("<h1>hello</h1>");
     }
 }
