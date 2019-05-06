@@ -5,6 +5,6 @@
 
 可用于快速构建
 > * 静态Web服务
-> * 反向代理服务
-> * RESTful API
+> * ~~反向代理服务~~
+> * ~~RESTful~~ Web API
 > * And more!
