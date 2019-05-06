@@ -16,7 +16,7 @@ public class RedirectResult extends BaseResult {
         super.executeResult(context);
 
         HttpResponse response = context.getHttpContext().getResponse();
-        response.setStatusCode(HttpStatusCode.HTTP_MOVED_TEMPORARILY);
+        response.setStatusCode(HttpStatusCode.HTTP_FOUND);
         response.getHeaders().set(HttpHeaderKey.LOCATION, url);
     }
 }
