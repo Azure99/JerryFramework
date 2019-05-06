@@ -2,6 +2,7 @@ package com.rainng.jerry.webapi;
 
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.webapi.annotation.Route;
+import com.rainng.jerry.webapi.result.HtmlResult;
 import com.rainng.jerry.webapi.result.IResult;
 import com.rainng.jerry.webapi.result.RedirectResult;
 import com.rainng.jerry.webapi.result.ValueResult;
@@ -27,5 +28,9 @@ public class BaseController {
 
     protected IResult redirect(String url) {
         return new RedirectResult(url);
+    }
+
+    protected IResult html(String html) {
+        return new HtmlResult(html);
     }
 }
