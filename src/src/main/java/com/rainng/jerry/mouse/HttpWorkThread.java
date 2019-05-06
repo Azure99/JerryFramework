@@ -45,8 +45,6 @@ public class HttpWorkThread extends Thread {
         tryClose(httpContext.getResponse().getBody());
         tryClose(inputStream);
         tryClose(outputStream);
-
-        System.out.println("ok");
     }
 
     private void afterExecute(HttpContext context) {

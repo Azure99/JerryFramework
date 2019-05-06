@@ -5,6 +5,9 @@ import com.rainng.jerry.mouse.middleware.BaseMiddleware;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class HttpServer {
     private ServerSocket serverSocket;
@@ -30,11 +33,12 @@ public class HttpServer {
     }
 
     private void startAccept() {
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
         while (running) {
             try {
                 Socket socket = serverSocket.accept();
-                new HttpWorkThread(socket, this).start();
-
+                executorService.submit(new HttpWorkThread(socket, this));
             }catch (Exception ex) {
                 ex.printStackTrace();
             }
