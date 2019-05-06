@@ -116,7 +116,7 @@ public class WebApiMiddleware extends BaseMiddleware {
             String controllerPath = controller.getSimpleName().toLowerCase();
 
             int lastPos = controllerPath.lastIndexOf(CONTROLLER_SUFFIX);
-            if (lastPos + CONTROLLER_SUFFIX.length() == controllerPath.length()) {
+            if (lastPos != -1 && lastPos + CONTROLLER_SUFFIX.length() == controllerPath.length()) {
                 controllerPath = controllerPath.substring(0, lastPos);
             }
 
