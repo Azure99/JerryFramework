@@ -211,6 +211,10 @@ public class WebApiMiddleware extends BaseMiddleware {
     }
 
     private Object getParameterValue(Parameter parameter, String strValue) throws UnsupportedTypeException {
+        if(strValue == null) {
+            return null;
+        }
+
         Object value = strValue;
 
         Class<?> type = parameter.getType();
@@ -232,8 +236,8 @@ public class WebApiMiddleware extends BaseMiddleware {
             return Boolean.valueOf(strValue);
         } else if (type.equals(Short.class)) {
             return Short.valueOf(strValue);
+        } else {
+            return null;
         }
-
-        throw new UnsupportedTypeException(type.getName());
     }
 }

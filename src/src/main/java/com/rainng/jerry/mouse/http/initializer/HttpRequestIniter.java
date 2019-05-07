@@ -152,10 +152,14 @@ public class HttpRequestIniter {
         String[] args = queryString.split("&");
         for (String arg : args) {
             String[] kv = arg.split("=");
+
             if (kv.length == 2) {
                 kv[0] = UrlEncoding.Decode(kv[0]);
                 kv[1] = UrlEncoding.Decode(kv[1]);
                 queryMap.set(kv[0], kv[1]);
+            }else if (kv.length == 1 && arg.indexOf("=") != -1) {
+                kv[0] = UrlEncoding.Decode(kv[0]);
+                queryMap.set(kv[0], null);
             }
         }
 
