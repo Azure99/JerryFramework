@@ -58,10 +58,10 @@ public class WebApiMiddleware extends BaseMiddleware {
 
         RequestMethod requestMethod = getSupportedRequestMethod(method);
 
-        RequestKey mapping = new RequestKey(routePath, requestMethod, parameterNames);
+        RequestKey requestKey = new RequestKey(routePath, requestMethod, parameterNames);
         TargetMethod targetMethod = new TargetMethod(controller, method);
 
-        requestMap.put(mapping, targetMethod);
+        requestMap.put(requestKey, targetMethod);
     }
 
     private RequestMethod getSupportedRequestMethod(Method method) {
@@ -148,14 +148,14 @@ public class WebApiMiddleware extends BaseMiddleware {
         HttpRequest request = context.getRequest();
         HttpResponse response = context.getResponse();
 
-        RequestKey mapping = getPathMapping(request);
-        if (!requestMap.containsKey(mapping)) {
+        RequestKey requestKey = getRequestKey(request);
+        if (!requestMap.containsKey(requestKey)) {
             response.setStatusCode(HttpStatusCode.HTTP_NOT_FOUND);
             next(context);
             return;
         }
 
-        TargetMethod targetMethod = requestMap.get(mapping);
+        TargetMethod targetMethod = requestMap.get(requestKey);
         Object[] argValues = getArgValues(request, targetMethod);
 
         Constructor<?> controllerConstructor = targetMethod.getController().getDeclaredConstructor();
@@ -170,7 +170,7 @@ public class WebApiMiddleware extends BaseMiddleware {
     }
 
 
-    private RequestKey getPathMapping(HttpRequest request) {
+    private RequestKey getRequestKey(HttpRequest request) {
         List<String> argList = new ArrayList<>();
         for (String arg : request.getQueryArgs().keySet()) {
             argList.add(arg);

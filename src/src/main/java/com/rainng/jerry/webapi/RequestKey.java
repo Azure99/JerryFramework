@@ -51,7 +51,7 @@ public class RequestKey {
             return false;
         }
 
-        if(requestMethod != other.requestMethod && other.requestMethod != RequestMethod.ANY) {
+        if (requestMethod != other.requestMethod && other.requestMethod != RequestMethod.ANY) {
             return false;
         }
 
@@ -68,6 +68,13 @@ public class RequestKey {
 
     @Override
     public int hashCode() {
-        return path.hashCode();
+        int hashCode = 0;
+
+        hashCode += path.hashCode();
+        for (String parameter : parameters) {
+            hashCode += parameter.hashCode();
+        }
+
+        return hashCode;
     }
 }
