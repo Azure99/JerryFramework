@@ -2,10 +2,7 @@ package com.rainng.jerry.webapi;
 
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.webapi.annotation.Route;
-import com.rainng.jerry.webapi.result.HtmlResult;
-import com.rainng.jerry.webapi.result.IResult;
-import com.rainng.jerry.webapi.result.RedirectResult;
-import com.rainng.jerry.webapi.result.ValueResult;
+import com.rainng.jerry.webapi.result.*;
 
 @Route("/")
 public class BaseController {
@@ -32,5 +29,9 @@ public class BaseController {
 
     protected IResult html(String html) {
         return new HtmlResult(html);
+    }
+
+    protected IResult json(Object object) {
+        return new JsonResult(object);
     }
 }

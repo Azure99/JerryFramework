@@ -38,7 +38,7 @@ class ApiController extends BaseController {
         return value("Route example 2");
     }
 
-    public IResult add(Integer a, Integer b) {
+    public IResult add(Double a, Integer b) {
         return value(a + b);
     }
 
@@ -48,5 +48,26 @@ class ApiController extends BaseController {
 
     public IResult html() {
         return html("<h1>hello</h1>");
+    }
+
+    public IResult json() {
+        return json(new Student("张三", 123));
+    }
+}
+class Student {
+    private String name;
+    private int id;
+
+    public Student (String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
     }
 }
