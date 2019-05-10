@@ -12,23 +12,13 @@ import java.io.IOException;
 
 public class Hello {
     public static void main(String[] args) throws IOException {
-        long s = System.currentTimeMillis();
-
         HttpServer server = new HttpServer(9615);
 
         server.addMiddleware(new ErrorMiddleware());
         server.addMiddleware(new StaticWebMiddleware());
-        server.addMiddleware(new WebApiMiddleware(new Class[]{ApiController.class, Test01.class}));
+        server.addMiddleware(new WebApiMiddleware(new Class[]{ApiController.class}));
 
-        System.out.println(System.currentTimeMillis() - s);
         server.start();
-    }
-}
-
-class Test01 extends Controller {
-    @Route("/Test01")
-    public IResult hello(Double a, Integer b) {
-        return value(a + b);
     }
 }
 
@@ -67,11 +57,12 @@ class ApiController extends Controller {
         return value(a == null);
     }
 }
+
 class Student {
     private String name;
     private int id;
 
-    public Student (String name, int id) {
+    public Student(String name, int id) {
         this.name = name;
         this.id = id;
     }
