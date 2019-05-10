@@ -2,7 +2,6 @@ package com.rainng.jerry.mouse.http;
 
 import com.rainng.jerry.mouse.http.constant.HttpHeaderKey;
 import com.rainng.jerry.mouse.http.constant.RequestMethod;
-import com.rainng.jerry.mouse.http.map.HttpCookieMap;
 import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
 import com.rainng.jerry.mouse.http.map.HttpQueryMap;
 
@@ -93,15 +92,6 @@ public class HttpRequest {
 
     public void setHost(String host) {
         headers.set(HttpHeaderKey.HOST, host);
-    }
-
-    public HttpCookieMap getCookies() {
-        String cookieStr = headers.get(HttpHeaderKey.COOKIE, "");
-        return HttpCookieMap.parse(cookieStr);
-    }
-
-    public void setCookies(HttpCookieMap cookies) {
-        headers.set(HttpHeaderKey.COOKIE, cookies.toString());
     }
 
     public String getContentType() {

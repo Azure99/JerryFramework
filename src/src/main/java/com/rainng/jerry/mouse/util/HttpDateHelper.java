@@ -7,10 +7,13 @@ import java.util.TimeZone;
 
 public class HttpDateHelper {
 
-    public static String getNowDate() {
+    public static String getNowDateString() {
+        return getDateString(new Date());
+    }
+
+    public static String getDateString(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
-        Date now = new Date();
-        return format.format(now);
+        return format.format(date);
     }
 }

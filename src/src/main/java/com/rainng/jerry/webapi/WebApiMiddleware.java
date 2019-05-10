@@ -211,7 +211,7 @@ public class WebApiMiddleware extends BaseMiddleware {
     }
 
     private Object getParameterValue(Parameter parameter, String strValue) throws UnsupportedTypeException {
-        if(strValue == null) {
+        if (strValue == null) {
             return null;
         }
 

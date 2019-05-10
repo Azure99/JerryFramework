@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class HttpServer {
     private ServerSocket serverSocket;
@@ -39,7 +38,7 @@ public class HttpServer {
             try {
                 Socket socket = serverSocket.accept();
                 executorService.submit(new HttpWorkThread(socket, this));
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }

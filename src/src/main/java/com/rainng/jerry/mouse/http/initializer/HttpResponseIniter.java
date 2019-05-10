@@ -1,17 +1,18 @@
 package com.rainng.jerry.mouse.http.initializer;
 
 import com.rainng.jerry.mouse.http.HttpContext;
-import com.rainng.jerry.mouse.http.HttpRequest;
-import com.rainng.jerry.mouse.http.HttpResponse;
+import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import com.rainng.jerry.mouse.http.constant.HttpHeaderKey;
+import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
+import com.rainng.jerry.mouse.util.HttpDateHelper;
 
 public class HttpResponseIniter {
     public static void init(HttpContext context) {
-        HttpRequest request = context.getRequest();
-        HttpResponse response = context.getResponse();
+        HttpHeaderMap headers = context.getResponse().getHeaders();
 
-        if (request.getHeaders().containsKey(HttpHeaderKey.COOKIE)) {
-            response.setCookies(request.getCookies());
-        }
+        headers.set(HttpHeaderKey.CONTENT_LENGTH, "0");
+        headers.set(HttpHeaderKey.CONTENT_TYPE, HttpContentType.TEXT_PLAIN);
+        headers.set(HttpHeaderKey.DATE, HttpDateHelper.getNowDateString());
+        headers.set(HttpHeaderKey.SERVER, "Rainng-Jerrymouse/0.1");
     }
 }

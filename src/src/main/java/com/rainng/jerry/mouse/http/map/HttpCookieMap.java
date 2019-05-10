@@ -1,35 +1,26 @@
 package com.rainng.jerry.mouse.http.map;
 
-public class HttpCookieMap extends BaseHttpMap {
+import com.rainng.jerry.mouse.http.Cookie;
 
-    @Override
-    public String toString() {
+public class HttpCookieMap extends BaseHttpMap<Cookie> {
+
+    public String toSetCookieHeaderString() {
         StringBuilder builder = new StringBuilder();
 
-        for (String key : keySet()) {
-            builder.append(key);
-            builder.append("=");
-            builder.append(get(key));
-            builder.append("; ");
+        for (Cookie cookie : values()) {
+            if (cookie.isFromRequest() && !cookie.isChanged()) {
+                continue;
+            }
+
+            builder.append("Set-Cookie: ");
+            builder.append(cookie.toString());
+            builder.append("\r\n");
         }
 
-        int length = builder.length();
-        if (length > 2) {
-            builder.delete(length - 2, length);
+        if (builder.length() <= 2) {
+            return "";
+        } else {
+            return builder.toString().substring(0, builder.length() - 2);
         }
-
-        return builder.toString();
-    }
-
-    public static HttpCookieMap parse(String cookiesStr) {
-        HttpCookieMap cookieMap = new HttpCookieMap();
-
-        String[] cookies = cookiesStr.split(";\\s");
-        for (String cookie : cookies) {
-            String[] kv = cookie.split("=");
-            cookieMap.put(kv[0], kv[1]);
-        }
-
-        return cookieMap;
     }
 }

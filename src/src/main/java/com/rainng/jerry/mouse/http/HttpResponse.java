@@ -1,11 +1,8 @@
 package com.rainng.jerry.mouse.http;
 
-import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import com.rainng.jerry.mouse.http.constant.HttpHeaderKey;
 import com.rainng.jerry.mouse.http.constant.HttpStatusCode;
-import com.rainng.jerry.mouse.http.map.HttpCookieMap;
 import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
-import com.rainng.jerry.mouse.util.HttpDateHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -20,13 +17,6 @@ public class HttpResponse {
         statusCode = HttpStatusCode.HTTP_OK;
         headers = new HttpHeaderMap();
         body = new ByteArrayOutputStream();
-
-        headers.set(HttpHeaderKey.CONTENT_LENGTH, "0");
-        headers.set(HttpHeaderKey.CONTENT_TYPE, HttpContentType.TEXT_PLAIN);
-        headers.set(HttpHeaderKey.COOKIE, "");
-
-        headers.set(HttpHeaderKey.DATE, HttpDateHelper.getNowDate());
-        headers.set(HttpHeaderKey.SERVER, "Rainng-Jerrymouse/0.1");
     }
 
     public HttpContext getHttpContext() {
@@ -76,14 +66,5 @@ public class HttpResponse {
 
     public void setContentType(String contentType) {
         headers.set(HttpHeaderKey.CONTENT_TYPE, contentType);
-    }
-
-    public HttpCookieMap getCookies() {
-        String cookieStr = headers.get(HttpHeaderKey.COOKIE, "");
-        return HttpCookieMap.parse(cookieStr);
-    }
-
-    public void setCookies(HttpCookieMap cookies) {
-        headers.set(HttpHeaderKey.COOKIE, cookies.toString());
     }
 }

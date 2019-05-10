@@ -1,6 +1,6 @@
 package com.rainng.jerry.mouse.http.map;
 
-public class HttpHeaderMap extends BaseHttpMap {
+public class HttpHeaderMap extends BaseHttpMap<String> {
 
     @Override
     public String toString() {

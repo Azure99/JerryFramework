@@ -1,6 +1,9 @@
 package com.rainng.jerry.webapi;
 
 import com.rainng.jerry.mouse.http.HttpContext;
+import com.rainng.jerry.mouse.http.HttpRequest;
+import com.rainng.jerry.mouse.http.HttpResponse;
+import com.rainng.jerry.mouse.http.map.HttpCookieMap;
 import com.rainng.jerry.webapi.annotation.Route;
 import com.rainng.jerry.webapi.result.*;
 
@@ -17,6 +20,18 @@ public class Controller {
 
     public void setHttpContext(HttpContext httpContext) {
         this.httpContext = httpContext;
+    }
+
+    protected HttpRequest getRequest() {
+        return httpContext.getRequest();
+    }
+
+    protected HttpResponse getResponse() {
+        return httpContext.getResponse();
+    }
+
+    protected HttpCookieMap getCookies() {
+        return getHttpContext().getCookies();
     }
 
     protected IResult value(Object obj) {

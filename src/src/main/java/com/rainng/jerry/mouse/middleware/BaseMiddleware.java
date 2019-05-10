@@ -3,7 +3,7 @@ package com.rainng.jerry.mouse.middleware;
 import com.rainng.jerry.mouse.http.HttpContext;
 
 public class BaseMiddleware {
-    private BaseMiddleware nextMiddleware ;
+    private BaseMiddleware nextMiddleware;
 
     public BaseMiddleware getNextMiddleware() {
         return nextMiddleware;
@@ -18,7 +18,7 @@ public class BaseMiddleware {
     }
 
     public void next(HttpContext context) throws Exception {
-        if(nextMiddleware != null) {
+        if (nextMiddleware != null) {
             nextMiddleware.onExecute(context);
         }
     }

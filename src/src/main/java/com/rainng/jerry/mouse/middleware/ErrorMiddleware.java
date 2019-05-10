@@ -16,8 +16,7 @@ public class ErrorMiddleware extends BaseMiddleware {
         try {
             next(context);
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             onException(context, ex);
         }
@@ -33,9 +32,9 @@ public class ErrorMiddleware extends BaseMiddleware {
         }
         response.setBody(new ByteArrayOutputStream());
 
-        if(ex instanceof HttpException) {
+        if (ex instanceof HttpException) {
             httpException(response, ex);
-        }else {
+        } else {
             exception(response, ex);
         }
     }
@@ -44,7 +43,7 @@ public class ErrorMiddleware extends BaseMiddleware {
         PrintWriter writer = new PrintWriter(response.getBody());
         int statusCode = HttpStatusCode.HTTP_INTERNAL_SERVER_ERROR;
 
-        if(exception instanceof NotFoundException) {
+        if (exception instanceof NotFoundException) {
             statusCode = HttpStatusCode.HTTP_NOT_FOUND;
             writer.write("404 NotFound");
         }
