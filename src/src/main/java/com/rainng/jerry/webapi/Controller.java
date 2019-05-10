@@ -1,5 +1,6 @@
 package com.rainng.jerry.webapi;
 
+import com.rainng.jerry.mouse.http.Cookie;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.HttpResponse;
@@ -32,6 +33,38 @@ public class Controller {
 
     protected HttpCookieMap getCookies() {
         return getHttpContext().getCookies();
+    }
+
+    protected Cookie getCookie(String name) {
+        return getCookies().get(name);
+    }
+
+    protected String getCookieValue(String name) {
+        HttpCookieMap cookies = getCookies();
+        if (!cookies.containsKey(name)) {
+            return null;
+        }
+
+        Cookie cookie = getCookies().get(name);
+        return cookie.getValue();
+    }
+
+    protected void setCookie(String name, Cookie cookie) {
+        getCookies().set(name, cookie);
+    }
+
+    protected void setCookieValue(String name, String value) {
+        getCookies().set(name, new Cookie(name, value));
+    }
+
+    protected boolean containsCookie(String name) {
+        return getCookies().containsKey(name);
+    }
+
+    protected void removeCookie(String name) {
+        Cookie cookie = new Cookie(name, "");
+        cookie.setMaxAge(0);
+        getCookies().set(name, cookie);
     }
 
     protected IResult value(Object obj) {
