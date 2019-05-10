@@ -20,19 +20,19 @@ import java.util.*;
 
 public class WebApiMiddleware extends BaseMiddleware {
     private static final String CONTROLLER_SUFFIX = "controller";
-    private Map<RequestKey, TargetMethod> requestMap = new HashMap<>();
+    private Map<RequestKey, RequestTarget> requestMap = new HashMap<>();
 
-    public WebApiMiddleware(Class<? extends BaseController>[] controllers) {
+    public WebApiMiddleware(Class<? extends Controller>[] controllers) {
         initPathMap(controllers);
     }
 
-    private void initPathMap(Class<? extends BaseController>[] controllers) {
+    private void initPathMap(Class<? extends Controller>[] controllers) {
         for (Class controller : controllers) {
             addController(controller);
         }
     }
 
-    private void addController(Class<? extends BaseController> controller) {
+    private void addController(Class<? extends Controller> controller) {
         String routePath = getControllerChainRoutePath(controller);
 
         Method[] methods = controller.getMethods();
@@ -43,7 +43,7 @@ public class WebApiMiddleware extends BaseMiddleware {
         }
     }
 
-    private void addMethod(Class<? extends BaseController> controller, String controllerRoutePath, Method method) {
+    private void addMethod(Class<? extends Controller> controller, String controllerRoutePath, Method method) {
         String routePath = getRoutePath(method);
         if (!routePath.startsWith("/")) {
             routePath = controllerRoutePath + routePath;
@@ -59,9 +59,9 @@ public class WebApiMiddleware extends BaseMiddleware {
         RequestMethod requestMethod = getSupportedRequestMethod(method);
 
         RequestKey requestKey = new RequestKey(routePath, requestMethod, parameterNames);
-        TargetMethod targetMethod = new TargetMethod(controller, method);
+        RequestTarget requestTarget = new RequestTarget(controller, method);
 
-        requestMap.put(requestKey, targetMethod);
+        requestMap.put(requestKey, requestTarget);
     }
 
     private RequestMethod getSupportedRequestMethod(Method method) {
@@ -83,13 +83,13 @@ public class WebApiMiddleware extends BaseMiddleware {
      * @param controller 控制器
      * @return 此控制器及其所有基控制器的路由路径
      */
-    private String getControllerChainRoutePath(Class<? extends BaseController> controller) {
+    private String getControllerChainRoutePath(Class<? extends Controller> controller) {
         String routePath = "";
 
         Class nowController = controller;
         while (!routePath.startsWith("/") &&
                 nowController != null &&
-                BaseController.class.isAssignableFrom(nowController)) {
+                Controller.class.isAssignableFrom(nowController)) {
 
             String nowPath = getRoutePath(nowController);
             if (!nowPath.endsWith("/")) {
@@ -109,7 +109,7 @@ public class WebApiMiddleware extends BaseMiddleware {
      * @param controller 控制器
      * @return 路由路径
      */
-    private String getRoutePath(Class<? extends BaseController> controller) {
+    private String getRoutePath(Class<? extends Controller> controller) {
         Route controllerRoute = controller.getAnnotation(Route.class);
 
         if (controllerRoute == null || controllerRoute.value().equals("")) {
@@ -155,15 +155,15 @@ public class WebApiMiddleware extends BaseMiddleware {
             return;
         }
 
-        TargetMethod targetMethod = requestMap.get(requestKey);
-        Object[] argValues = getArgValues(request, targetMethod);
+        RequestTarget requestTarget = requestMap.get(requestKey);
+        Object[] argValues = getArgValues(request, requestTarget);
 
-        Constructor<?> controllerConstructor = targetMethod.getController().getDeclaredConstructor();
+        Constructor<?> controllerConstructor = requestTarget.getController().getDeclaredConstructor();
         controllerConstructor.setAccessible(true);
-        BaseController controller = (BaseController) controllerConstructor.newInstance();
+        Controller controller = (Controller) controllerConstructor.newInstance();
         controller.setHttpContext(context);
 
-        Method method = targetMethod.getMethod();
+        Method method = requestTarget.getMethod();
         method.setAccessible(true);
         IResult result = (IResult) method.invoke(controller, argValues);
         result.executeResult(new ActionContext(context));
@@ -186,8 +186,8 @@ public class WebApiMiddleware extends BaseMiddleware {
         return new RequestKey(request.getResourcePath(), request.getMethod(), args);
     }
 
-    private Object[] getArgValues(HttpRequest request, TargetMethod targetMethod) throws UnsupportedTypeException {
-        Method method = targetMethod.getMethod();
+    private Object[] getArgValues(HttpRequest request, RequestTarget requestTarget) throws UnsupportedTypeException {
+        Method method = requestTarget.getMethod();
         Parameter[] parameters = method.getParameters();
         int argsLen = method.getParameters().length;
         Object[] argValues = new Object[argsLen];

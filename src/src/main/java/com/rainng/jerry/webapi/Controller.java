@@ -5,10 +5,10 @@ import com.rainng.jerry.webapi.annotation.Route;
 import com.rainng.jerry.webapi.result.*;
 
 @Route("/")
-public class BaseController {
+public class Controller {
     private HttpContext httpContext;
 
-    public BaseController() {
+    public Controller() {
     }
 
     public HttpContext getHttpContext() {

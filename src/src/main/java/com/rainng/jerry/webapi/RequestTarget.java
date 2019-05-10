@@ -2,16 +2,16 @@ package com.rainng.jerry.webapi;
 
 import java.lang.reflect.Method;
 
-public class TargetMethod {
-    private Class<? extends BaseController> controller;
+public class RequestTarget {
+    private Class<? extends Controller> controller;
     private Method method;
 
-    public TargetMethod(Class<? extends BaseController> controller, Method method) {
+    public RequestTarget(Class<? extends Controller> controller, Method method) {
         this.controller = controller;
         this.method = method;
     }
 
-    public Class<? extends BaseController> getController() {
+    public Class<? extends Controller> getController() {
         return controller;
     }
 
