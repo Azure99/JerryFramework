@@ -90,19 +90,19 @@ public class Controller {
         }
     }
 
-    protected IResult value(Object obj) {
+    protected ValueResult value(Object obj) {
         return new ValueResult(obj);
     }
 
-    protected IResult redirect(String url) {
+    protected RedirectResult redirect(String url) {
         return new RedirectResult(url);
     }
 
-    protected IResult html(String html) {
+    protected HtmlResult html(String html) {
         return new HtmlResult(html);
     }
 
-    protected IResult json(Object object) {
+    protected JsonResult json(Object object) {
         return new JsonResult(object);
     }
 }
