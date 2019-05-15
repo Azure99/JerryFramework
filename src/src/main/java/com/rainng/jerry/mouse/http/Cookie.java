@@ -16,7 +16,7 @@ public class Cookie {
     //Cookie作用域名
     private String domain;
     //Cookie作用路径
-    private String path;
+    private String path = "/";
     //是否安全
     private boolean secure;
 

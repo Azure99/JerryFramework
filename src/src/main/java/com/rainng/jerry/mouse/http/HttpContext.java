@@ -1,12 +1,13 @@
 package com.rainng.jerry.mouse.http;
 
 import com.rainng.jerry.mouse.http.map.HttpCookieMap;
+import com.rainng.jerry.mouse.http.map.HttpSessionMap;
 
 public class HttpContext {
     private HttpRequest request;
     private HttpResponse response;
     private HttpCookieMap cookies;
-    private Session session;
+    private HttpSessionMap session;
 
     public HttpContext() {
         request = new HttpRequest();
@@ -29,11 +30,11 @@ public class HttpContext {
         return cookies;
     }
 
-    public Session getSession() {
+    public HttpSessionMap getSession() {
         return session;
     }
 
-    public void setSession(Session session) {
+    public void setSession(HttpSessionMap session) {
         this.session = session;
     }
 }

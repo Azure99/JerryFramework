@@ -5,6 +5,7 @@ import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.HttpResponse;
 import com.rainng.jerry.mouse.http.map.HttpCookieMap;
+import com.rainng.jerry.mouse.http.map.HttpSessionMap;
 import com.rainng.jerry.webapi.annotation.Route;
 import com.rainng.jerry.webapi.result.*;
 
@@ -65,6 +66,28 @@ public class Controller {
         Cookie cookie = new Cookie(name, "");
         cookie.setMaxAge(0);
         getCookies().set(name, cookie);
+    }
+
+    protected HttpSessionMap getSessions() {
+        return getHttpContext().getSession();
+    }
+
+    protected Object getSession(String name) {
+        return getSessions().get(name);
+    }
+
+    protected void setSession(String name, Object value) {
+        getSessions().set(name, value);
+    }
+
+    protected boolean containsSession(String name) {
+        return getSessions().containsKey(name);
+    }
+
+    protected void removeSession(String name) {
+        if (containsSession(name)) {
+            getSessions().remove(name);
+        }
     }
 
     protected IResult value(Object obj) {

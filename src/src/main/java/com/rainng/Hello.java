@@ -2,6 +2,7 @@ package com.rainng;
 
 import com.rainng.jerry.mouse.HttpServer;
 import com.rainng.jerry.mouse.middleware.ErrorMiddleware;
+import com.rainng.jerry.mouse.middleware.SessionMiddleware;
 import com.rainng.jerry.mouse.middleware.StaticWebMiddleware;
 import com.rainng.jerry.webapi.Controller;
 import com.rainng.jerry.webapi.WebApiMiddleware;
@@ -9,12 +10,14 @@ import com.rainng.jerry.webapi.annotation.Route;
 import com.rainng.jerry.webapi.result.IResult;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class Hello {
     public static void main(String[] args) throws IOException {
         HttpServer server = new HttpServer(9615);
 
         server.addMiddleware(new ErrorMiddleware());
+        server.addMiddleware(new SessionMiddleware());
         server.addMiddleware(new StaticWebMiddleware());
         server.addMiddleware(new WebApiMiddleware(new Class[]{ApiController.class}));
 
@@ -53,8 +56,13 @@ class ApiController extends Controller {
         return json(new Student("张三", 123));
     }
 
-    public IResult test(String a) {
-        return value(a == null);
+    public IResult session() {
+        if (!containsSession("hello")) {
+            System.out.println("Create session");
+            setSession("hello", new Date().toString());
+        }
+
+        return value(getSession("hello"));
     }
 }
 
