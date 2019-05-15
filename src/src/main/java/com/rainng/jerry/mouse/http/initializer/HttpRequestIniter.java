@@ -142,7 +142,7 @@ public class HttpRequestIniter {
         if (pos == -1) {
             return "";
         } else {
-            return path.substring(pos + 1, path.length());
+            return path.substring(pos + 1);
         }
     }
 
