@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class RouteParser {
     private static RouteParser instance;
+
     public static RouteParser getInstance() {
         return instance;
     }
@@ -33,6 +34,7 @@ public class RouteParser {
 
     /**
      * 获取受支持的Http request method
+     *
      * @param method 调用的method
      * @return 受支持的Http request method (GET / POST)
      */
@@ -117,6 +119,7 @@ public class RouteParser {
 
     /**
      * 从Request中解析Request Key
+     *
      * @param request Http request
      * @return Request Key
      */
@@ -138,7 +141,8 @@ public class RouteParser {
 
     /**
      * 从Request获取调用Target method所需要的参数
-     * @param request Http request
+     *
+     * @param request       Http request
      * @param requestTarget Request target
      * @return 参数数组
      * @throws UnsupportedTypeException
@@ -169,8 +173,9 @@ public class RouteParser {
 
     /**
      * 将字符串转换为对应类型的值
+     *
      * @param parameter 参数
-     * @param strValue 字符串值
+     * @param strValue  字符串值
      * @return 对应类型的值
      * @throws UnsupportedTypeException
      */
