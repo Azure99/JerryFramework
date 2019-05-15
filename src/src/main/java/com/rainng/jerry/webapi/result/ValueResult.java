@@ -5,6 +5,7 @@ import com.rainng.jerry.mouse.http.HttpResponse;
 import com.rainng.jerry.mouse.http.constant.HttpContentType;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 public class ValueResult extends BaseResult {
     private Object value;
@@ -22,7 +23,7 @@ public class ValueResult extends BaseResult {
 
         try {
             response.setContentType(HttpContentType.TEXT_PLAIN);
-            byte[] data = value.toString().getBytes("UTF-8");
+            byte[] data = value.toString().getBytes(StandardCharsets.UTF_8);
             response.getBody().write(data);
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();

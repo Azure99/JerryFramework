@@ -6,6 +6,7 @@ import com.rainng.jerry.mouse.http.HttpResponse;
 import com.rainng.jerry.mouse.http.constant.HttpContentType;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 public class JsonResult extends BaseResult {
     private String jsonString;
@@ -23,7 +24,7 @@ public class JsonResult extends BaseResult {
 
         try {
             response.setContentType(HttpContentType.JSON);
-            byte[] data = jsonString.getBytes("UTF-8");
+            byte[] data = jsonString.getBytes(StandardCharsets.UTF_8);
             response.getBody().write(data);
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();

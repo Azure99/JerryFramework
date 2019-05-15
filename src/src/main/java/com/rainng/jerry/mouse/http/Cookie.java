@@ -134,7 +134,7 @@ public class Cookie {
             builder.append("; Expires=" + HttpDateHelper.getDateString(expires));
         }
         if (maxAge != Integer.MIN_VALUE) {
-            builder.append("; Max-Age=" + Integer.toString(maxAge));
+            builder.append("; Max-Age=" + maxAge);
         }
         if (domain != null) {
             builder.append("; Domain=" + domain);
