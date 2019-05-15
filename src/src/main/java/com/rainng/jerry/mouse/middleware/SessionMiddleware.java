@@ -5,9 +5,7 @@ import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.map.HttpCookieMap;
 import com.rainng.jerry.mouse.http.map.HttpSessionMap;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class SessionMiddleware extends BaseMiddleware {
     private static final String SESSION_KEY = "_jerrysession";
@@ -20,6 +18,7 @@ public class SessionMiddleware extends BaseMiddleware {
 
     public SessionMiddleware(int maxSessionAge) {
         setMaxSessionAge(maxSessionAge);
+        startSessionLifeMonitor();
     }
 
     public long getMaxSessionAge() {
@@ -86,5 +85,26 @@ public class SessionMiddleware extends BaseMiddleware {
         }
 
         return sessionId;
+    }
+
+    private void startSessionLifeMonitor() {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                long currentTime = System.currentTimeMillis();
+
+                List<Integer> expiredSessionKeys = new ArrayList<>();
+                for (Integer key : sessionMap.keySet()) {
+                    HttpSessionMap session = sessionMap.get(key);
+                    if (session.getLastRequestTime() + maxSessionAge < currentTime) {
+                        expiredSessionKeys.add(key);
+                    }
+                }
+
+                for (Integer key : expiredSessionKeys) {
+                    sessionMap.remove(key);
+                }
+            }
+        }, 0, 60000);
     }
 }
