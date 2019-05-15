@@ -1,4 +1,4 @@
-package com.rainng.jerry.webapi;
+package com.rainng.jerry.webapi.mapping;
 
 import com.rainng.jerry.mouse.http.constant.RequestMethod;
 
