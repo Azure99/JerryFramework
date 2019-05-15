@@ -58,6 +58,10 @@ public class JerryBuilder {
         return this;
     }
 
+    public JerryBuilder useWebApi(Class<? extends Controller> controller) {
+        return useWebApi(new Class[]{controller});
+    }
+
     public JerryBuilder useWebApi(Class<? extends Controller>[] controllers) {
         useWebApi = true;
         this.controllers = controllers;
