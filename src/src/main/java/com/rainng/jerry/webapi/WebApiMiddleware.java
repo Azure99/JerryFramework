@@ -88,7 +88,17 @@ public class WebApiMiddleware extends BaseMiddleware {
         Method method = requestTarget.getMethod();
         method.setAccessible(true);
 
-        IResult result = (IResult) method.invoke(controller, argValues);
+        IResult result = controller.beforeExecute(context, method, argValues);
+
+        if (result == null) {
+            result = (IResult) method.invoke(controller, argValues);
+        }
+
+        IResult tempResult = controller.afterExecute(context, method, argValues, result);
+        if (tempResult != null) {
+            result = tempResult;
+        }
+
         result.executeResult(new ActionContext(context));
 
         next(context);
