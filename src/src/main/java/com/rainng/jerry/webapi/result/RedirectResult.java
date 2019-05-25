@@ -19,4 +19,14 @@ public class RedirectResult extends BaseResult {
         response.setStatusCode(HttpStatusCode.HTTP_FOUND);
         response.getHeaders().set(HttpHeaderKey.LOCATION, url);
     }
+
+    @Override
+    public Object getResultObject() {
+        return url;
+    }
+
+    @Override
+    public String getResultString() {
+        return url;
+    }
 }

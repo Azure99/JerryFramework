@@ -29,4 +29,14 @@ public class ValueResult extends BaseResult {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public Object getResultObject() {
+        return value;
+    }
+
+    @Override
+    public String getResultString() {
+        return value.toString();
+    }
 }

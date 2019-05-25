@@ -9,9 +9,11 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 public class JsonResult extends BaseResult {
+    private Object object;
     private String jsonString;
 
     public JsonResult(Object object) {
+        this.object = object;
         this.jsonString = JSON.toJSONString(object);
     }
 
@@ -29,5 +31,15 @@ public class JsonResult extends BaseResult {
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public Object getResultObject() {
+        return object;
+    }
+
+    @Override
+    public String getResultString() {
+        return jsonString;
     }
 }

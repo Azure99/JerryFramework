@@ -11,4 +11,14 @@ public class BaseResult implements IResult {
             response.setStatusCode(HttpStatusCode.HTTP_OK);
         }
     }
+
+    @Override
+    public Object getResultObject() {
+        return new Object();
+    }
+
+    @Override
+    public String getResultString() {
+        return getResultObject().toString();
+    }
 }

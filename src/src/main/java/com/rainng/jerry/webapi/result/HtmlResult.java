@@ -29,4 +29,14 @@ public class HtmlResult extends BaseResult {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public Object getResultObject() {
+        return html;
+    }
+
+    @Override
+    public String getResultString() {
+        return html;
+    }
 }
