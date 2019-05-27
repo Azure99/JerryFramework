@@ -1,5 +1,6 @@
 package com.rainng.jerry.webapi;
 
+import com.alibaba.fastjson.JSONObject;
 import com.rainng.jerry.mouse.http.Cookie;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpRequest;
@@ -106,6 +107,25 @@ public class Controller {
 
     protected JsonResult json(Object object) {
         return new JsonResult(object);
+    }
+
+    protected JsonResult json(String format, Object... args) {
+        return json(jsono(format, args));
+    }
+
+    protected JSONObject jsono(String format, Object... args) {
+        JSONObject jsonObject = new JSONObject();
+        String[] names = format.split("\\|");
+
+        for (int i = 0; i < names.length; i++) {
+            if (i < args.length) {
+                jsonObject.put(names[i], args[i]);
+            } else {
+                jsonObject.put(names[i], null);
+            }
+        }
+
+        return jsonObject;
     }
 
     protected IResult beforeExecute(HttpContext context, Method method, Object[] argValues) {
