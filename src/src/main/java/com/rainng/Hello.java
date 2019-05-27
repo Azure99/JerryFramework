@@ -42,7 +42,11 @@ class ApiController extends Controller {
     }
 
     public IResult json() {
-        return json(new Student("张三", 123));
+        return json(new Student("张三", 2));
+    }
+
+    public IResult json2() {
+        return json("name|id|info", "张三", 2, jsono("class|grade", "三班", "二年级"));
     }
 
     public IResult session() {

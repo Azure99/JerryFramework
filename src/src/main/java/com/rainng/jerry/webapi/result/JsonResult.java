@@ -1,6 +1,7 @@
 package com.rainng.jerry.webapi.result;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpResponse;
 import com.rainng.jerry.mouse.http.constant.HttpContentType;
@@ -14,7 +15,8 @@ public class JsonResult extends BaseResult {
 
     public JsonResult(Object object) {
         this.object = object;
-        this.jsonString = JSON.toJSONString(object);
+        int feature = SerializerFeature.WriteMapNullValue.getMask() | SerializerFeature.QuoteFieldNames.getMask();
+        this.jsonString = JSON.toJSONString(object, feature);
     }
 
     @Override
