@@ -74,7 +74,9 @@ public class HttpRequestIniter {
             }
 
             String[] header = line.split(":\\s");
-            headers.set(header[0], header[1]);
+            String key = convertHeaderKey(header[0]);
+            String value = header[1];
+            headers.set(key, value);
         }
 
         request.setMethod(parseRequestMethod(method));
@@ -115,6 +117,20 @@ public class HttpRequestIniter {
         }
 
         request.setForm(parseQueryArgs(new String(bodyData)));
+    }
+
+    private static String convertHeaderKey(String key) {
+        String[] split = key.split("-");
+        
+        for(int i = 0; i<split.length; i++) {
+            if(Character.isLowerCase(split[i].charAt(0))) {
+                char[] chars = split[i].toCharArray();
+                chars[0] -= 32;
+                split[i] = String.valueOf(chars);
+            }
+        }
+
+        return String.join("-", split);
     }
 
     private static RequestMethod parseRequestMethod(String method) {
