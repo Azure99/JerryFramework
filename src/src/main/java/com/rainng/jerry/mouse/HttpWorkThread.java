@@ -10,6 +10,7 @@ import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 
 public class HttpWorkThread extends Thread {
     private Socket socket;
@@ -35,19 +36,23 @@ public class HttpWorkThread extends Thread {
 
         HttpContext httpContext = new HttpContext();
 
-        HttpRequestIniter.init(httpContext, inputStream);
-        HttpCookieIniter.init(httpContext);
-        HttpResponseIniter.init(httpContext);
+        try {
+            HttpRequestIniter.init(httpContext, inputStream);
+            HttpCookieIniter.init(httpContext);
+            HttpResponseIniter.init(httpContext);
 
-        httpServer.getMiddlewareEntry().onExecute(httpContext);
-        afterExecute(httpContext);
+            httpServer.getMiddlewareEntry().onExecute(httpContext);
+            afterExecute(httpContext);
 
-        writeResponse(httpContext, outputStream);
+            writeResponse(httpContext, outputStream);
+        } catch (NoSuchElementException ex) {
 
-        tryClose(httpContext.getRequest().getBody());
-        tryClose(httpContext.getResponse().getBody());
-        tryClose(inputStream);
-        tryClose(outputStream);
+        } finally {
+            tryClose(httpContext.getRequest().getBody());
+            tryClose(httpContext.getResponse().getBody());
+            tryClose(inputStream);
+            tryClose(outputStream);
+        }
     }
 
     private void afterExecute(HttpContext context) {
