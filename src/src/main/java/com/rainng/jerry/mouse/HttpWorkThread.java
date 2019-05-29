@@ -113,7 +113,7 @@ public class HttpWorkThread extends Thread {
         try {
             closeable.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+
         }
     }
 }
