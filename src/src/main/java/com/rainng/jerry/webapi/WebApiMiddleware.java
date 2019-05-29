@@ -3,6 +3,7 @@ package com.rainng.jerry.webapi;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.HttpResponse;
+import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import com.rainng.jerry.mouse.http.constant.HttpStatusCode;
 import com.rainng.jerry.mouse.http.constant.RequestMethod;
 import com.rainng.jerry.mouse.middleware.BaseMiddleware;
@@ -14,7 +15,6 @@ import com.rainng.jerry.webapi.result.IResult;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,11 +50,7 @@ public class WebApiMiddleware extends BaseMiddleware {
             routePath = controllerRoutePath + routePath;
         }
 
-        Parameter[] parameters = method.getParameters();
-        String[] parameterNames = new String[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
-            parameterNames[i] = parameters[i].getName().toLowerCase();
-        }
+        String[] parameterNames = parser.getParameterNames(method);
         Arrays.sort(parameterNames);
 
         RequestMethod requestMethod = parser.getSupportedRequestMethod(method);
@@ -69,6 +65,10 @@ public class WebApiMiddleware extends BaseMiddleware {
     public void onExecute(HttpContext context) throws Exception {
         HttpRequest request = context.getRequest();
         HttpResponse response = context.getResponse();
+
+        if (request.getContentType().equals(HttpContentType.JSON)) {
+            request.getForm().set("__json__", request.getBodyString());
+        }
 
         RequestKey requestKey = parser.getRequestKey(request);
         if (!requestMap.containsKey(requestKey)) {

@@ -18,6 +18,7 @@ public class HttpRequest {
     private HttpHeaderMap headers;
     private InputStream body;
     private HttpQueryMap form;
+    private String bodyString;
 
     public HttpRequest() {
         method = RequestMethod.GET;
@@ -28,6 +29,7 @@ public class HttpRequest {
         version = "HTTP/1.1";
         headers = new HttpHeaderMap();
         form = new HttpQueryMap();
+        bodyString = "";
     }
 
     public HttpContext getHttpContext() {
@@ -133,5 +135,12 @@ public class HttpRequest {
 
     public void setForm(HttpQueryMap form) {
         this.form = form;
+    }
+    public String getBodyString() {
+        return bodyString;
+    }
+
+    public void setBodyString(String bodyString) {
+        this.bodyString = bodyString;
     }
 }

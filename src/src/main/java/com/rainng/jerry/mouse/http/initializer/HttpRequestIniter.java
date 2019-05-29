@@ -112,6 +112,15 @@ public class HttpRequestIniter {
     private static void initHttpRequestBody(HttpRequest request, byte[] bodyData) {
         request.setBody(new ByteArrayInputStream(bodyData));
 
+        switch (request.getContentType()) {
+            case HttpContentType.TEXT_PLAIN:
+            case HttpContentType.FORM_URLENCODED:
+            case HttpContentType.JSON:
+            case HttpContentType.TEXT_HTML:
+                request.setBodyString(new String(bodyData));
+                break;
+        }
+
         if (!request.getContentType().equals(HttpContentType.FORM_URLENCODED)) {
             return;
         }
@@ -121,7 +130,7 @@ public class HttpRequestIniter {
 
     private static String convertHeaderKey(String key) {
         String[] split = key.split("-");
-        
+
         for(int i = 0; i<split.length; i++) {
             if(Character.isLowerCase(split[i].charAt(0))) {
                 char[] chars = split[i].toCharArray();

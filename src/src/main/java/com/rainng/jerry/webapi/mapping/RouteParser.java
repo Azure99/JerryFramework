@@ -1,5 +1,7 @@
 package com.rainng.jerry.webapi.mapping;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.constant.RequestMethod;
 import com.rainng.jerry.webapi.Controller;
@@ -150,7 +152,8 @@ public class RouteParser {
     public Object[] getArgValues(HttpRequest request, RequestTarget requestTarget) throws UnsupportedTypeException {
         Method method = requestTarget.getMethod();
         Parameter[] parameters = method.getParameters();
-        int argsLen = method.getParameters().length;
+        String[] parameterNames = getParameterNames(method);
+        int argsLen = parameterNames.length;
         Object[] argValues = new Object[argsLen];
 
         Map<String, String> argsMap = new HashMap<>();
@@ -164,11 +167,25 @@ public class RouteParser {
         }
 
         for (int i = 0; i < argsLen; i++) {
-            String value = argsMap.get(parameters[i].getName().toLowerCase());
+            String value = argsMap.get(parameterNames[i].toLowerCase());
             argValues[i] = getParameterValue(parameters[i], value);
         }
 
         return argValues;
+    }
+
+    public String[] getParameterNames(Method method) {
+        Parameter[] parameters = method.getParameters();
+        String[] parameterNames = new String[parameters.length];
+        for (int i = 0; i < parameters.length; i++) {
+            if(parameters[i].getType().isAssignableFrom(JSONObject.class)) {
+                parameterNames[i] = "__json__";
+                continue;
+            }
+            parameterNames[i] = parameters[i].getName().toLowerCase();
+        }
+
+        return parameterNames;
     }
 
     /**
@@ -205,8 +222,10 @@ public class RouteParser {
             return Boolean.valueOf(strValue);
         } else if (type.equals(Short.class)) {
             return Short.valueOf(strValue);
+        } else if (type.equals(JSONObject.class)) {
+            return JSON.parse(strValue);
         } else {
-            return null;
+            return strValue;
         }
     }
 }
