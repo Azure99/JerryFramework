@@ -148,6 +148,8 @@ public class HttpRequestIniter {
                 return RequestMethod.GET;
             case "POST":
                 return RequestMethod.POST;
+            case "OPTIONS":
+                return RequestMethod.OPTIONS;
             default:
                 return RequestMethod.GET;
         }
