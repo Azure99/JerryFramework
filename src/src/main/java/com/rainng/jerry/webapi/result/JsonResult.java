@@ -14,9 +14,7 @@ public class JsonResult extends BaseResult {
     private String jsonString;
 
     public JsonResult(Object object) {
-        this.object = object;
-        int feature = SerializerFeature.WriteMapNullValue.getMask() | SerializerFeature.QuoteFieldNames.getMask();
-        this.jsonString = JSON.toJSONString(object, feature);
+        this.jsonString = JSON.toJSONString(object);
     }
 
     @Override
