@@ -12,6 +12,7 @@ import com.rainng.jerry.webapi.mapping.RequestTarget;
 import com.rainng.jerry.webapi.mapping.RouteParser;
 import com.rainng.jerry.webapi.result.ActionContext;
 import com.rainng.jerry.webapi.result.IResult;
+import com.rainng.jerry.webapi.result.JsonResult;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -36,9 +37,10 @@ public class WebApiMiddleware extends BaseMiddleware {
     private void addController(Class<? extends Controller> controller) {
         String routePath = parser.getControllerChainRoutePath(controller);
 
-        Method[] methods = controller.getMethods();
+        Method[] methods = controller.getDeclaredMethods();
         for (Method method : methods) {
-            if (IResult.class.isAssignableFrom(method.getReturnType())) {
+            // public
+            if (((method.getModifiers() & 1) == 1)) {
                 addMethod(controller, routePath, method);
             }
         }
@@ -91,7 +93,11 @@ public class WebApiMiddleware extends BaseMiddleware {
         IResult result = controller.beforeExecute(context, method, argValues);
 
         if (result == null) {
-            result = (IResult) method.invoke(controller, argValues);
+            if(IResult.class.isAssignableFrom(method.getReturnType())) {
+                result = (IResult) method.invoke(controller, argValues);
+            }else {
+                result = new JsonResult(method.invoke(controller, argValues));
+            }
         }
 
         IResult tempResult = controller.afterExecute(context, method, argValues, result);
