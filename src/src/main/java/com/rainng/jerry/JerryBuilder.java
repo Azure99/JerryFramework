@@ -26,6 +26,44 @@ public class JerryBuilder {
         this.port = port;
     }
 
+    public static JerryBuilder createStaticWeb(int port) {
+        return createStaticWeb().setPort(port);
+    }
+
+    public static JerryBuilder createStaticWeb(int port, String rootDirectory) {
+        return createStaticWeb(rootDirectory).setPort(port);
+    }
+
+    public static JerryBuilder createStaticWeb(String rootDirectory) {
+        return createStaticWeb().setRootDirectory(rootDirectory);
+    }
+
+    public static JerryBuilder createStaticWeb() {
+        return new JerryBuilder()
+                .useError()
+                .useStaticWeb();
+    }
+
+    public static JerryBuilder createWebApi(int port, Class<? extends Controller> controller) {
+        return createWebApi(controller).setPort(port);
+    }
+
+    public static JerryBuilder createWebApi(int port, Class<? extends Controller>[] controllers) {
+        return createWebApi(controllers).setPort(port);
+    }
+
+    public static JerryBuilder createWebApi(Class<? extends Controller> controller) {
+        return createWebApi(new Class[]{controller});
+    }
+
+    public static JerryBuilder createWebApi(Class<? extends Controller>[] controllers) {
+        return new JerryBuilder()
+                .useError()
+                .useSession()
+                .useStaticWeb()
+                .useWebApi(controllers);
+    }
+
     public JerryBuilder useError() {
         useError = true;
         return this;
@@ -115,43 +153,5 @@ public class JerryBuilder {
 
     public void start() {
         this.build().start();
-    }
-
-    public static JerryBuilder createStaticWeb(int port) {
-        return createStaticWeb().setPort(port);
-    }
-
-    public static JerryBuilder createStaticWeb(int port, String rootDirectory) {
-        return createStaticWeb(rootDirectory).setPort(port);
-    }
-
-    public static JerryBuilder createStaticWeb(String rootDirectory) {
-        return createStaticWeb().setRootDirectory(rootDirectory);
-    }
-
-    public static JerryBuilder createStaticWeb() {
-        return new JerryBuilder()
-                .useError()
-                .useStaticWeb();
-    }
-
-    public static JerryBuilder createWebApi(int port, Class<? extends Controller> controller) {
-        return createWebApi(controller).setPort(port);
-    }
-
-    public static JerryBuilder createWebApi(int port, Class<? extends Controller>[] controllers) {
-        return createWebApi(controllers).setPort(port);
-    }
-
-    public static JerryBuilder createWebApi(Class<? extends Controller> controller) {
-        return createWebApi(new Class[]{controller});
-    }
-
-    public static JerryBuilder createWebApi(Class<? extends Controller>[] controllers) {
-        return new JerryBuilder()
-                .useError()
-                .useSession()
-                .useStaticWeb()
-                .useWebApi(controllers);
     }
 }
