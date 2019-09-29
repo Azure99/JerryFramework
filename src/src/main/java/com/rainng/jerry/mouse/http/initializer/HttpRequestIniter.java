@@ -131,8 +131,8 @@ public class HttpRequestIniter {
     private static String convertHeaderKey(String key) {
         String[] split = key.split("-");
 
-        for(int i = 0; i<split.length; i++) {
-            if(Character.isLowerCase(split[i].charAt(0))) {
+        for (int i = 0; i < split.length; i++) {
+            if (Character.isLowerCase(split[i].charAt(0))) {
                 char[] chars = split[i].toCharArray();
                 chars[0] -= 32;
                 split[i] = String.valueOf(chars);

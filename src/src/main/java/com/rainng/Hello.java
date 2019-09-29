@@ -2,6 +2,8 @@ package com.rainng;
 
 import com.rainng.jerry.JerryBuilder;
 import com.rainng.jerry.webapi.Controller;
+import com.rainng.jerry.webapi.annotation.Get;
+import com.rainng.jerry.webapi.annotation.Post;
 import com.rainng.jerry.webapi.annotation.Route;
 import com.rainng.jerry.webapi.result.IResult;
 
@@ -14,65 +16,82 @@ public class Hello {
     }
 }
 
+// http://localhost:9615/api
 class ApiController extends Controller {
-    public IResult value() {
-        return value("Hello JerryFramework");
+    public String hello() {
+        return "Hello world";
     }
 
-    @Route("/r1")
-    public IResult route1() {
-        return value("Route example 1");
+    public Double add(Integer a, Double b) {
+        return a + b;
     }
 
-    @Route("r2")
-    public IResult route2() {
-        return value("Route example 2");
-    }
-
-    public IResult add(Double a, Integer b) {
-        return value(a + b);
-    }
-
-    public IResult redirect() {
-        return redirect("http://www.rainng.com");
-    }
-
-    public IResult html() {
-        return html("<h1>hello</h1>");
-    }
-
-    public IResult json() {
-        return json(new Student("张三", 2));
+    public Student json() {
+        return new Student(1, "Azure99");
     }
 
     public IResult json2() {
-        return json("name|id|info", "张三", 2, jsono("class|grade", "三班", "二年级"));
+        return json("id|name", 1, "Azure99");
     }
 
-    public IResult session() {
-        if (!containsSession("hello")) {
-            System.out.println("Create session");
-            setSession("hello", new Date().toString());
-        }
+    public IResult json3() {
+        return json("id|name|info", 1, "Azure99", jsono(
+                "birthday|friends",
+                new Date(), new String[]{"A", "B", "C", "D"}));
+    }
 
-        return value(getSession("hello"));
+    public IResult redirect() {
+        return redirect("https://www.baidu.com");
+    }
+
+    @Route("route")
+    public String route() {
+        return "/api/route";
+    }
+
+    @Route("/route2")
+    public String route2() {
+        return "/route2";
+    }
+
+    @Get
+    public String get() {
+        return "Http GET only";
+    }
+
+    @Post
+    public String post(String arg) {
+        return "Http POST only";
+    }
+
+    public IResult html() {
+        return html("<h1>Html</h1>");
+    }
+
+    public Object session() {
+        Object session = getSession("time");
+        if (session == null) {
+            session = new Date().toString();
+            setSession("time", session);
+        }
+        return session;
     }
 }
 
 class Student {
+    private Integer id;
     private String name;
-    private int id;
 
-    public Student(String name, int id) {
-        this.name = name;
+    public Student(Integer id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getId() {
-        return id;
     }
 }

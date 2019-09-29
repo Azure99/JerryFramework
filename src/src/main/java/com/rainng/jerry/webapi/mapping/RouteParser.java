@@ -18,20 +18,19 @@ import java.util.List;
 import java.util.Map;
 
 public class RouteParser {
+    private static final String CONTROLLER_SUFFIX = "controller";
     private static RouteParser instance;
-
-    public static RouteParser getInstance() {
-        return instance;
-    }
 
     static {
         instance = new RouteParser();
     }
 
-    private static final String CONTROLLER_SUFFIX = "controller";
-
     private RouteParser() {
 
+    }
+
+    public static RouteParser getInstance() {
+        return instance;
     }
 
     /**
@@ -178,7 +177,7 @@ public class RouteParser {
         Parameter[] parameters = method.getParameters();
         String[] parameterNames = new String[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            if(parameters[i].getType().isAssignableFrom(JSONObject.class)) {
+            if (parameters[i].getType().isAssignableFrom(JSONObject.class)) {
                 parameterNames[i] = "__json__";
                 continue;
             }

@@ -136,6 +136,7 @@ public class HttpRequest {
     public void setForm(HttpQueryMap form) {
         this.form = form;
     }
+
     public String getBodyString() {
         return bodyString;
     }

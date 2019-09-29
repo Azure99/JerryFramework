@@ -93,9 +93,9 @@ public class WebApiMiddleware extends BaseMiddleware {
         IResult result = controller.beforeExecute(context, method, argValues);
 
         if (result == null) {
-            if(IResult.class.isAssignableFrom(method.getReturnType())) {
+            if (IResult.class.isAssignableFrom(method.getReturnType())) {
                 result = (IResult) method.invoke(controller, argValues);
-            }else {
+            } else {
                 result = new JsonResult(method.invoke(controller, argValues));
             }
         }
