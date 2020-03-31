@@ -9,6 +9,9 @@ public class RequestKey {
     private RequestMethod requestMethod;
     private String[] parameters;
 
+    private int hashCode = 0;
+    private boolean hashCodeCached = false;
+
     public RequestKey(String path, RequestMethod requestMethod, String[] parameters) {
         this.path = path.toLowerCase();
         this.requestMethod = requestMethod;
@@ -42,7 +45,7 @@ public class RequestKey {
             return true;
         }
 
-        if (obj == null || !(obj instanceof RequestKey)) {
+        if (!(obj instanceof RequestKey)) {
             return false;
         }
 
@@ -68,12 +71,17 @@ public class RequestKey {
 
     @Override
     public int hashCode() {
-        int hashCode = 0;
-
-        hashCode += path.hashCode();
-        for (String parameter : parameters) {
-            hashCode += parameter.hashCode();
+        if (hashCodeCached) {
+            return hashCode;
         }
+
+        return cacheHashCode();
+    }
+
+    private synchronized int cacheHashCode() {
+        hashCode = Arrays.hashCode(parameters);
+        hashCode = hashCode * 31 + path.hashCode();
+        hashCodeCached = true;
 
         return hashCode;
     }
