@@ -12,23 +12,37 @@ import java.util.Date;
 
 public class Hello {
     public static void main(String[] args) throws IOException {
-        JerryBuilder.createWebApi(ApiController.class).start();
+        JerryBuilder.createWebApi(DemoController.class).start();
     }
 }
 
-// http://localhost:9615/api
-class ApiController extends Controller {
-    public String hello() {
-        return "Hello world";
+// Auto mapping: http://localhost:9615/demo
+class DemoController extends Controller {
+    public IResult hello(Integer a, Integer b) {
+        putModel("key", "Jerry MVC with thymeleaf");
+        putModel("sum", a + b);
+
+        return view("index.html");
+    }
+
+    public Student json() {
+        return new Student(1, "Azure99");
+    }
+
+    @Route("route")
+    public String route() {
+        return "/demo/route";
+    }
+
+    @Route("/route2")
+    public String route2() {
+        return "/route2";
     }
 
     public Double add(Integer a, Double b) {
         return a + b;
     }
 
-    public Student json() {
-        return new Student(1, "Azure99");
-    }
 
     public IResult json2() {
         return json("id|name", 1, "Azure99");
@@ -42,16 +56,6 @@ class ApiController extends Controller {
 
     public IResult redirect() {
         return redirect("https://www.baidu.com");
-    }
-
-    @Route("route")
-    public String route() {
-        return "/api/route";
-    }
-
-    @Route("/route2")
-    public String route2() {
-        return "/route2";
     }
 
     @Get

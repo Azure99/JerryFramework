@@ -86,6 +86,7 @@ public class WebApiMiddleware extends BaseMiddleware {
         controllerConstructor.setAccessible(true);
         Controller controller = (Controller) controllerConstructor.newInstance();
         controller.setHttpContext(context);
+        controller.setActionContext(new ActionContext(context));
 
         Method method = requestTarget.getMethod();
         method.setAccessible(true);
@@ -105,7 +106,7 @@ public class WebApiMiddleware extends BaseMiddleware {
             result = tempResult;
         }
 
-        result.executeResult(new ActionContext(context));
+        result.executeResult(controller.getActionContext());
 
         next(context);
     }

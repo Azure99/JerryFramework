@@ -11,13 +11,12 @@ import com.rainng.jerry.webapi.annotation.Route;
 import com.rainng.jerry.webapi.result.*;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 @Route("/")
 public class Controller {
     private HttpContext httpContext;
-
-    public Controller() {
-    }
+    private ActionContext actionContext;
 
     public HttpContext getHttpContext() {
         return httpContext;
@@ -113,6 +112,10 @@ public class Controller {
         return json(jsono(format, args));
     }
 
+    protected ViewResult view(String view) {
+        return new ViewResult(view);
+    }
+
     protected JSONObject jsono(String format, Object... args) {
         JSONObject jsonObject = new JSONObject();
         String[] names = format.split("\\|");
@@ -126,6 +129,22 @@ public class Controller {
         }
 
         return jsonObject;
+    }
+
+    public ActionContext getActionContext() {
+        return actionContext;
+    }
+
+    public void setActionContext(ActionContext actionContext) {
+        this.actionContext = actionContext;
+    }
+
+    public Map<String, Object> getModelMap() {
+        return actionContext.getModelMap();
+    }
+
+    protected Object putModel(String key, Object model) {
+        return actionContext.getModelMap().put(key, model);
     }
 
     protected IResult beforeExecute(HttpContext context, Method method, Object[] argValues) {
