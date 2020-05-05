@@ -25,8 +25,22 @@ class DemoController extends Controller {
         return view("index.html");
     }
 
+    public Double add(Integer a, Double b) {
+        return a + b;
+    }
+
     public Student json() {
         return new Student(1, "Azure99");
+    }
+
+    public IResult json2() {
+        return json("id|name", 1, "Azure99");
+    }
+
+    public IResult json3() {
+        return json("id|name|info", 1, "Azure99", jsono(
+                "birthday|friends",
+                new Date(), new String[]{"A", "B", "C", "D"}));
     }
 
     @Route("route")
@@ -37,21 +51,6 @@ class DemoController extends Controller {
     @Route("/route2")
     public String route2() {
         return "/route2";
-    }
-
-    public Double add(Integer a, Double b) {
-        return a + b;
-    }
-
-
-    public IResult json2() {
-        return json("id|name", 1, "Azure99");
-    }
-
-    public IResult json3() {
-        return json("id|name|info", 1, "Azure99", jsono(
-                "birthday|friends",
-                new Date(), new String[]{"A", "B", "C", "D"}));
     }
 
     public IResult redirect() {
