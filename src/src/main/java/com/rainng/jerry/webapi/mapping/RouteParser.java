@@ -5,10 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.constant.RequestMethod;
 import com.rainng.jerry.webapi.Controller;
-import com.rainng.jerry.webapi.annotation.Get;
-import com.rainng.jerry.webapi.annotation.Post;
+import com.rainng.jerry.webapi.annotation.HttpGet;
+import com.rainng.jerry.webapi.annotation.HttpPatch;
+import com.rainng.jerry.webapi.annotation.HttpPost;
 import com.rainng.jerry.webapi.annotation.Route;
-import com.rainng.jerry.webapi.exception.UnsupportedTypeException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -40,16 +40,34 @@ public class RouteParser {
      * @return 受支持的Http request method (GET / POST)
      */
     public RequestMethod getSupportedRequestMethod(Method method) {
-        RequestMethod requestMethod = RequestMethod.ANY;
+        boolean getExist = method.getAnnotation(HttpGet.class) != null;
+        boolean postExist = method.getAnnotation(HttpPost.class) != null;
+        boolean patchExist = method.getAnnotation(HttpPatch.class) != null;
+        boolean putExist = method.getAnnotation(HttpPatch.class) != null;
+        boolean deleteExist = method.getAnnotation(HttpPatch.class) != null;
 
-        boolean getExist = method.getAnnotation(Get.class) != null;
-        boolean postExist = method.getAnnotation(Post.class) != null;
-
-        if ((getExist && postExist) || (!getExist && !postExist)) {
+        if (getExist && postExist && patchExist && putExist && deleteExist) {
             return RequestMethod.ANY;
         }
 
-        return getExist ? RequestMethod.GET : RequestMethod.POST;
+        if (!(getExist || postExist || patchExist || putExist || deleteExist)) {
+            return RequestMethod.ANY;
+        }
+
+        if (getExist) {
+            return RequestMethod.GET;
+        }
+        if (postExist) {
+            return RequestMethod.POST;
+        }
+        if (patchExist) {
+            return RequestMethod.PATCH;
+        }
+        if (putExist) {
+            return RequestMethod.PUT;
+        }
+
+        return RequestMethod.DELETE;
     }
 
     /**

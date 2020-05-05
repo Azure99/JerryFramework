@@ -2,12 +2,9 @@ package com.rainng;
 
 import com.rainng.jerry.JerryBuilder;
 import com.rainng.jerry.webapi.Controller;
-import com.rainng.jerry.webapi.annotation.Get;
-import com.rainng.jerry.webapi.annotation.Post;
-import com.rainng.jerry.webapi.annotation.Route;
+import com.rainng.jerry.webapi.annotation.*;
 import com.rainng.jerry.webapi.result.IResult;
 
-import java.io.IOException;
 import java.util.Date;
 
 public class Hello {
@@ -57,12 +54,12 @@ class DemoController extends Controller {
         return redirect("https://www.baidu.com");
     }
 
-    @Get
+    @HttpGet
     public String get() {
         return "Http GET only";
     }
 
-    @Post
+    @HttpPost
     public String post(String arg) {
         return "Http POST only";
     }

@@ -149,6 +149,14 @@ public class HttpRequestIniter {
                 return RequestMethod.GET;
             case "POST":
                 return RequestMethod.POST;
+            case "PUT":
+                return RequestMethod.PUT;
+            case "DELETE":
+                return RequestMethod.DELETE;
+            case "PATCH":
+                return RequestMethod.PATCH;
+            case "HEAD":
+                return RequestMethod.HEAD;
             case "OPTIONS":
                 return RequestMethod.OPTIONS;
             default:
