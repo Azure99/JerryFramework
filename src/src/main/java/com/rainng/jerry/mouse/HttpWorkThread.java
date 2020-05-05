@@ -10,7 +10,6 @@ import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.NoSuchElementException;
 
 public class HttpWorkThread extends Thread {
     private Socket socket;
@@ -42,11 +41,11 @@ public class HttpWorkThread extends Thread {
             HttpResponseIniter.init(httpContext);
 
             httpServer.getMiddlewareEntry().onExecute(httpContext);
+
             afterExecute(httpContext);
-
             writeResponse(httpContext, outputStream);
-        } catch (NoSuchElementException ex) {
-
+        } catch (Exception ex) {
+            ex.printStackTrace();
         } finally {
             tryClose(httpContext.getRequest().getBody());
             tryClose(httpContext.getResponse().getBody());
@@ -72,12 +71,12 @@ public class HttpWorkThread extends Thread {
 
         StringBuilder head = new StringBuilder();
 
-        //构建首行
+        // 构建首行
         head.append("HTTP/1.1 ");
         head.append(HttpStatusCode.toString(response.getStatusCode()));
         head.append("\r\n");
 
-        //写入Headers(Set-Cookie除外)
+        // 写入Headers(Set-Cookie除外)
         HttpHeaderMap headers = response.getHeaders();
         for (String headerKey : headers.keySet()) {
             String headerValue = headers.get(headerKey, "");
@@ -91,20 +90,20 @@ public class HttpWorkThread extends Thread {
             head.append("\r\n");
         }
 
-        //写入Set-Cookie Headers
+        // 写入Set-Cookie Headers
         String setCookieHeaderString = context.getCookies().toSetCookieHeaderString();
         head.append(setCookieHeaderString);
         if (setCookieHeaderString.length() > 0) {
             head.append("\r\n");
         }
 
-        //空行 标识HTTP头结束
+        // 空行 标识HTTP头结束
         head.append("\r\n");
 
-        //写入HTTP响应头
+        //写入Response Header
         outputStream.write(head.toString().getBytes());
 
-        //写入HTTP响应体
+        // 写Rresponse Body
         byte[] bodyData = ((ByteArrayOutputStream) response.getBody()).toByteArray();
         outputStream.write(bodyData);
     }
