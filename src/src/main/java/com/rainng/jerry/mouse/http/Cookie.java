@@ -5,24 +5,21 @@ import com.rainng.jerry.mouse.util.HttpDateHelper;
 import java.util.Date;
 
 public class Cookie {
-    //Cookie名称
     private String name;
-    //Cookie值
     private String value;
-    //Cookie过期时间
     private Date expires;
-    //Cookie存活时间
     private int maxAge = Integer.MIN_VALUE;
-    //Cookie作用域名
     private String domain;
-    //Cookie作用路径
     private String path = "/";
-    //是否安全
     private boolean secure;
 
-    //此Cookie是否来自HttpRequest
+    /**
+     * 此Cookie是否来自HttpRequest
+     */
     private boolean fromRequest = false;
-    //来自HttpRequest的Cookie是否被修改
+    /**
+     * 来自HttpRequest的Cookie是否被修改
+     */
     private boolean changed = false;
 
     /**
@@ -107,9 +104,7 @@ public class Cookie {
     }
 
     /**
-     * 是否来自于
-     *
-     * @return
+     * 是否来自于Request
      */
     public boolean isFromRequest() {
         return fromRequest;
@@ -118,8 +113,6 @@ public class Cookie {
     /**
      * 自此Cookie创建后是否进行过修改,
      * 注意: 如果Cookie来自HttpRequest且进行过任何修改 则会写入HttpResponse的Set-Cookie头中
-     *
-     * @return
      */
     public boolean isChanged() {
         return changed;
@@ -128,21 +121,21 @@ public class Cookie {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(name + "=" + value);
+        builder.append(name).append("=").append(value);
 
         if (expires != null) {
-            builder.append("; Expires=" + HttpDateHelper.getDateString(expires));
+            builder.append("; Expires=").append(HttpDateHelper.getDateString(expires));
         }
         if (maxAge != Integer.MIN_VALUE) {
-            builder.append("; Max-Age=" + maxAge);
+            builder.append("; Max-Age=").append(maxAge);
         }
         if (domain != null) {
-            builder.append("; Domain=" + domain);
+            builder.append("; Domain=").append(domain);
         }
         if (path != null) {
-            builder.append("; Path=" + path);
+            builder.append("; Path=").append(path);
         }
-        if (secure != false) {
+        if (secure) {
             builder.append("; Secure");
         }
 

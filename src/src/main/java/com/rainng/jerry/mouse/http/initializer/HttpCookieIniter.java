@@ -22,11 +22,4 @@ public class HttpCookieIniter {
             cookieMap.put(kv[0], new Cookie(kv[0], kv[1], true));
         }
     }
-
-    private static HttpCookieMap parse(String cookiesStr) {
-        HttpCookieMap cookieMap = new HttpCookieMap();
-
-
-        return cookieMap;
-    }
 }

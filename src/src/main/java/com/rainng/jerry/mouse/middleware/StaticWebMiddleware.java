@@ -43,7 +43,7 @@ public class StaticWebMiddleware extends BaseMiddleware {
 
         } else {
             response.setStatusCode(HttpStatusCode.HTTP_OK);
-            response.setContentType(HttpContentType.fileToContentType(file));
+            response.setContentType(HttpContentType.getContentTypeByFileName(file));
             byte[] content = Files.readAllBytes(file.toPath());
 
             response.getBody().write(content);

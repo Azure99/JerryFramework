@@ -19,12 +19,12 @@ public class HttpContentType {
         initMimeTypeMap();
     }
 
-    public static String fileToContentType(File file) {
+    public static String getContentTypeByFileName(File file) {
         String fileType = PathHelper.getExtension(file.getName());
-        return fileTypeToContentType(fileType);
+        return getContentTypeByExtension(fileType);
     }
 
-    public static String fileTypeToContentType(String fileType) {
+    public static String getContentTypeByExtension(String fileType) {
         String contentType = mimeTypeMap.get(fileType);
         if (contentType == null) {
             contentType = "application/octet-stream";

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Date;
 
 public class Hello {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         JerryBuilder.createWebApi(DemoController.class).start();
     }
 }

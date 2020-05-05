@@ -87,7 +87,7 @@ public class RouteParser {
     public String getRoutePath(Class<? extends Controller> controller) {
         Route controllerRoute = controller.getAnnotation(Route.class);
 
-        if (controllerRoute == null || controllerRoute.value().equals("")) {
+        if (controllerRoute == null || "".equals(controllerRoute.value())) {
             String controllerPath = controller.getSimpleName().toLowerCase();
 
             int lastPos = controllerPath.lastIndexOf(CONTROLLER_SUFFIX);
@@ -111,7 +111,7 @@ public class RouteParser {
     public String getRoutePath(Method method) {
         Route methodRoute = method.getAnnotation(Route.class);
 
-        if (methodRoute == null || methodRoute.value().equals("")) {
+        if (methodRoute == null || "".equals(methodRoute.value())) {
             return method.getName().toLowerCase();
         }
 
@@ -126,13 +126,9 @@ public class RouteParser {
      */
     public RequestKey getRequestKey(HttpRequest request) {
         List<String> argList = new ArrayList<>();
-        for (String arg : request.getQueryArgs().keySet()) {
-            argList.add(arg);
-        }
+        argList.addAll(request.getQueryArgs().keySet());
 
-        for (String arg : request.getForm().keySet()) {
-            argList.add(arg);
-        }
+        argList.addAll(request.getForm().keySet());
 
         String[] args = new String[argList.size()];
         argList.toArray(args);
@@ -146,9 +142,8 @@ public class RouteParser {
      * @param request       Http request
      * @param requestTarget Request target
      * @return 参数数组
-     * @throws UnsupportedTypeException
      */
-    public Object[] getArgValues(HttpRequest request, RequestTarget requestTarget) throws UnsupportedTypeException {
+    public Object[] getArgValues(HttpRequest request, RequestTarget requestTarget) {
         Method method = requestTarget.getMethod();
         Parameter[] parameters = method.getParameters();
         String[] parameterNames = getParameterNames(method);
@@ -193,9 +188,8 @@ public class RouteParser {
      * @param parameter 参数
      * @param strValue  字符串值
      * @return 对应类型的值
-     * @throws UnsupportedTypeException
      */
-    public Object getParameterValue(Parameter parameter, String strValue) throws UnsupportedTypeException {
+    public Object getParameterValue(Parameter parameter, String strValue) {
         if (strValue == null) {
             return null;
         }
@@ -216,7 +210,7 @@ public class RouteParser {
         } else if (type.equals(Byte.class)) {
             return Byte.valueOf(strValue);
         } else if (type.equals(Character.class)) {
-            return Character.valueOf(strValue.charAt(0));
+            return strValue.charAt(0);
         } else if (type.equals(Boolean.class)) {
             return Boolean.valueOf(strValue);
         } else if (type.equals(Short.class)) {

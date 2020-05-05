@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 
 public class ErrorMiddleware extends BaseMiddleware {
     @Override
-    public void onExecute(HttpContext context) throws Exception {
+    public void onExecute(HttpContext context) {
         try {
             next(context);
 

@@ -5,7 +5,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public class UrlEncoding {
-    public static String Encode(String s) {
+    public static String encode(String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
@@ -15,7 +15,7 @@ public class UrlEncoding {
     }
 
 
-    public static String Decode(String s) {
+    public static String decode(String s) {
         try {
             return URLDecoder.decode(s, "UTF-8");
         } catch (UnsupportedEncodingException ex) {

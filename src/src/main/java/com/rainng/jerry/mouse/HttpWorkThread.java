@@ -80,7 +80,7 @@ public class HttpWorkThread extends Thread {
         HttpHeaderMap headers = response.getHeaders();
         for (String headerKey : headers.keySet()) {
             String headerValue = headers.get(headerKey, "");
-            if (headerValue.equals("")) {
+            if ("".equals(headerValue)) {
                 continue;
             }
 
@@ -100,10 +100,10 @@ public class HttpWorkThread extends Thread {
         // 空行 标识HTTP头结束
         head.append("\r\n");
 
-        //写入Response Header
+        // 写入Response Header
         outputStream.write(head.toString().getBytes());
 
-        // 写Rresponse Body
+        // 写入Response Body
         byte[] bodyData = ((ByteArrayOutputStream) response.getBody()).toByteArray();
         outputStream.write(bodyData);
     }

@@ -53,7 +53,7 @@ public class HttpResponse {
 
     public long getContentLength() {
         String lengthStr = headers.get(HttpHeaderKey.CONTENT_LENGTH, "0");
-        return Integer.valueOf(lengthStr);
+        return Integer.parseInt(lengthStr);
     }
 
     public void setContentLength(long contentLength) {

@@ -6,11 +6,12 @@ import com.rainng.jerry.mouse.http.map.HttpCookieMap;
 import com.rainng.jerry.mouse.http.map.HttpSessionMap;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionMiddleware extends BaseMiddleware {
     private static final String SESSION_KEY = "_jerrysession";
     private long maxSessionAge;
-    private Map<Integer, HttpSessionMap> sessionMap = new HashMap<>();
+    private Map<Integer, HttpSessionMap> sessionMap = new ConcurrentHashMap<>();
 
     public SessionMiddleware() {
         this(3600);
@@ -62,7 +63,7 @@ public class SessionMiddleware extends BaseMiddleware {
         Cookie cookie = cookies.get(SESSION_KEY);
 
         try {
-            int sessionId = Integer.valueOf(cookie.getValue());
+            int sessionId = Integer.parseInt(cookie.getValue());
             if (sessionMap.containsKey(sessionId)) {
                 HttpSessionMap session = sessionMap.get(sessionId);
                 if (session.getLastRequestTime() + maxSessionAge > System.currentTimeMillis()) {

@@ -27,55 +27,55 @@ public class HttpRequestIniter {
     }
 
     private static byte[] readHttpRequestHeadData(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream headOutputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream tempHeadStream = new ByteArrayOutputStream();
 
-        int[] rnrnArray = new int[]{13, 10, 13, 10};
-        int[] rnrnBuffer = new int[4];
-        boolean rnrnFinded = false;
+        int[] endFlagArray = new int[]{13, 10, 13, 10};
+        int[] endFlagBuffer = new int[4];
+        boolean endFlagFound = false;
 
         int b = 0;
-        while (b != -1 && !rnrnFinded) {
+        while (b != -1 && !endFlagFound) {
             b = inputStream.read();
-            headOutputStream.write(b);
+            tempHeadStream.write(b);
 
             for (int i = 0; i < 3; i++) {
-                rnrnBuffer[i] = rnrnBuffer[i + 1];
+                endFlagBuffer[i] = endFlagBuffer[i + 1];
             }
-            rnrnBuffer[3] = b;
+            endFlagBuffer[3] = b;
 
-            rnrnFinded = true;
+            endFlagFound = true;
             for (int i = 0; i < 4; i++) {
-                if (rnrnBuffer[i] != rnrnArray[i]) {
-                    rnrnFinded = false;
+                if (endFlagBuffer[i] != endFlagArray[i]) {
+                    endFlagFound = false;
                     break;
                 }
             }
         }
 
-        byte[] headData = headOutputStream.toByteArray();
-        headOutputStream.close();
+        byte[] headData = tempHeadStream.toByteArray();
+        tempHeadStream.close();
 
         return headData;
     }
 
     private static void initHttpRequestHead(HttpRequest request, byte[] headData) {
-        Scanner sc = new Scanner(new ByteArrayInputStream(headData));
+        Scanner scanner = new Scanner(new ByteArrayInputStream(headData));
 
-        String method = sc.next();
-        String path = sc.next();
-        String version = sc.next();
-        sc.nextLine();
+        String method = scanner.next();
+        String path = scanner.next();
+        String version = scanner.next();
+        scanner.nextLine();
 
         HttpHeaderMap headers = new HttpHeaderMap();
         while (true) {
-            String line = sc.nextLine();
+            String line = scanner.nextLine();
             if (line.length() == 0) {
                 break;
             }
 
-            String[] header = line.split(":\\s");
-            String key = convertHeaderKey(header[0]);
-            String value = header[1];
+            String[] kv = line.split(":\\s");
+            String key = convertHeaderKey(kv[0]);
+            String value = kv[1];
             headers.set(key, value);
         }
 
@@ -93,13 +93,13 @@ public class HttpRequestIniter {
 
         if (contentLength > 0) {
             byte[] buffer = new byte[1024];
-            int readLenth = 0;
+            int readLength = 0;
 
-            while (readLenth < contentLength) {
-                int len = Math.min(buffer.length, contentLength - readLenth);
+            while (readLength < contentLength) {
+                int len = Math.min(buffer.length, contentLength - readLength);
                 inputStream.read(buffer, 0, len);
                 bodyOutputStream.write(buffer, 0, len);
-                readLenth += len;
+                readLength += len;
             }
         }
 
@@ -119,6 +119,7 @@ public class HttpRequestIniter {
             case HttpContentType.TEXT_HTML:
                 request.setBodyString(new String(bodyData));
                 break;
+            default:
         }
 
         if (!request.getContentType().equals(HttpContentType.FORM_URLENCODED)) {
@@ -181,11 +182,11 @@ public class HttpRequestIniter {
             String[] kv = arg.split("=");
 
             if (kv.length == 2) {
-                kv[0] = UrlEncoding.Decode(kv[0]);
-                kv[1] = UrlEncoding.Decode(kv[1]);
+                kv[0] = UrlEncoding.decode(kv[0]);
+                kv[1] = UrlEncoding.decode(kv[1]);
                 queryMap.set(kv[0], kv[1]);
-            } else if (kv.length == 1 && arg.indexOf("=") != -1) {
-                kv[0] = UrlEncoding.Decode(kv[0]);
+            } else if (kv.length == 1 && arg.contains("=")) {
+                kv[0] = UrlEncoding.decode(kv[0]);
                 queryMap.set(kv[0], null);
             }
         }

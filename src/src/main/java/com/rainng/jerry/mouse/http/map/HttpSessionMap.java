@@ -1,6 +1,8 @@
 package com.rainng.jerry.mouse.http.map;
 
-public class HttpSessionMap extends BaseHttpMap<Object> {
+import java.util.concurrent.ConcurrentHashMap;
+
+public class HttpSessionMap extends ConcurrentHashMap<String, Object> {
     private long lastRequestTime = System.currentTimeMillis();
     private int sessionId;
 

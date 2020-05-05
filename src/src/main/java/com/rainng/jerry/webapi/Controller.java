@@ -79,7 +79,7 @@ public class Controller {
     }
 
     protected void setSession(String name, Object value) {
-        getSessions().set(name, value);
+        getSessions().put(name, value);
     }
 
     protected boolean containsSession(String name) {
