@@ -2,12 +2,11 @@ package com.rainng;
 
 import com.rainng.jerry.JerryBuilder;
 import com.rainng.jerry.webapi.Controller;
-import com.rainng.jerry.webapi.ControllerScanner;
-import com.rainng.jerry.webapi.annotation.*;
+import com.rainng.jerry.webapi.annotation.HttpGet;
+import com.rainng.jerry.webapi.annotation.HttpPost;
+import com.rainng.jerry.webapi.annotation.Route;
 import com.rainng.jerry.webapi.result.IResult;
 
-import java.io.File;
-import java.util.Arrays;
 import java.util.Date;
 
 public class Hello {
@@ -18,10 +17,8 @@ public class Hello {
 
 // Auto mapping: http://localhost:9615/demo
 class DemoController extends Controller {
-    public IResult hello(Integer a, Integer b) {
+    public IResult hello() {
         putModel("key", "Jerry MVC with thymeleaf");
-        putModel("sum", a + b);
-
         return view("index.html");
     }
 
