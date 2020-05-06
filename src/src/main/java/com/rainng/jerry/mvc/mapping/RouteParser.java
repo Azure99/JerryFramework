@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RouteParser {
+    private static final String JSON_PLACEHOLDER = "___json___";
     private static final String CONTROLLER_SUFFIX = "controller";
     private static RouteParser instance = new RouteParser();
 
@@ -188,7 +189,7 @@ public class RouteParser {
         String[] parameterNames = new String[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
             if (parameters[i].getType().isAssignableFrom(JSONObject.class)) {
-                parameterNames[i] = "__json__";
+                parameterNames[i] = JSON_PLACEHOLDER;
                 continue;
             }
             parameterNames[i] = parameters[i].getName().toLowerCase();

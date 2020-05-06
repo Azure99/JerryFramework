@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MvcMiddleware extends BaseMiddleware {
+    private static final String JSON_PLACEHOLDER = "___json___";
+
     private RouteParser parser = RouteParser.getInstance();
     private Map<RequestKey, RequestTarget> requestMap = new HashMap<>();
 
@@ -28,6 +30,7 @@ public class MvcMiddleware extends BaseMiddleware {
         initPathMap(ControllerScanner.scan(appClass));
     }
 
+    @SuppressWarnings("unchecked")
     private void initPathMap(Class<?>[] controllers) {
         for (Class<?> controller : controllers) {
             addController((Class<? extends Controller>) controller);
@@ -39,7 +42,7 @@ public class MvcMiddleware extends BaseMiddleware {
 
         Method[] methods = controller.getDeclaredMethods();
         for (Method method : methods) {
-            // public
+            // public only
             if (((method.getModifiers() & 1) == 1)) {
                 addMethod(controller, routePath, method);
             }
@@ -69,7 +72,7 @@ public class MvcMiddleware extends BaseMiddleware {
         HttpResponse response = context.getResponse();
 
         if (request.getContentType().equals(HttpContentType.JSON)) {
-            request.getForm().set("__json__", request.getBodyString());
+            request.getForm().set(JSON_PLACEHOLDER, request.getBodyString());
         }
 
         RequestKey requestKey = parser.getRequestKey(request);
