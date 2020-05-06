@@ -72,15 +72,16 @@ public class RouteParser {
      * @param controller 控制器
      * @return 此控制器及其所有基控制器的路由路径
      */
+    @SuppressWarnings("unchecked")
     public String getControllerChainRoutePath(Class<? extends Controller> controller) {
         String routePath = "";
 
-        Class nowController = controller;
+        Class<?> nowController = controller;
         while (!routePath.startsWith("/") &&
                 nowController != null &&
                 Controller.class.isAssignableFrom(nowController)) {
 
-            String nowPath = getRoutePath(nowController);
+            String nowPath = getRoutePath((Class<? extends Controller>) nowController);
             if (!nowPath.endsWith("/")) {
                 nowPath += '/';
             }
@@ -207,8 +208,6 @@ public class RouteParser {
         if (strValue == null) {
             return null;
         }
-
-        Object value = strValue;
 
         Class<?> type = parameter.getType();
         if (type.equals(String.class)) {
