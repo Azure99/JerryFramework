@@ -1,4 +1,4 @@
-package com.rainng.jerry.webapi.result;
+package com.rainng.jerry.mvc.result;
 
 public interface IResult {
     void executeResult(ActionContext context) throws Exception;

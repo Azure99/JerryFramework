@@ -1,14 +1,14 @@
-package com.rainng.jerry.webapi.mapping;
+package com.rainng.jerry.mvc.mapping;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.constant.RequestMethod;
-import com.rainng.jerry.webapi.Controller;
-import com.rainng.jerry.webapi.annotation.HttpGet;
-import com.rainng.jerry.webapi.annotation.HttpPatch;
-import com.rainng.jerry.webapi.annotation.HttpPost;
-import com.rainng.jerry.webapi.annotation.Route;
+import com.rainng.jerry.mvc.Controller;
+import com.rainng.jerry.mvc.annotation.HttpGet;
+import com.rainng.jerry.mvc.annotation.HttpPatch;
+import com.rainng.jerry.mvc.annotation.HttpPost;
+import com.rainng.jerry.mvc.annotation.Route;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -19,11 +19,7 @@ import java.util.Map;
 
 public class RouteParser {
     private static final String CONTROLLER_SUFFIX = "controller";
-    private static RouteParser instance;
-
-    static {
-        instance = new RouteParser();
-    }
+    private static RouteParser instance = new RouteParser();
 
     private RouteParser() {
 

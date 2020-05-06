@@ -1,4 +1,4 @@
-package com.rainng.jerry.webapi.result;
+package com.rainng.jerry.mvc.result;
 
 import com.rainng.jerry.mouse.http.HttpContext;
 

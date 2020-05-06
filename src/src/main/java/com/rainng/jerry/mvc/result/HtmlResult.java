@@ -1,4 +1,4 @@
-package com.rainng.jerry.webapi.result;
+package com.rainng.jerry.mvc.result;
 
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpResponse;
@@ -7,11 +7,11 @@ import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-public class ValueResult extends BaseResult {
-    private Object value;
+public class HtmlResult extends BaseResult {
+    private String html;
 
-    public ValueResult(Object value) {
-        this.value = value;
+    public HtmlResult(String html) {
+        this.html = html;
     }
 
     @Override
@@ -22,8 +22,8 @@ public class ValueResult extends BaseResult {
         HttpResponse response = httpContext.getResponse();
 
         try {
-            response.setContentType(HttpContentType.TEXT_PLAIN);
-            byte[] data = value.toString().getBytes(StandardCharsets.UTF_8);
+            response.setContentType(HttpContentType.TEXT_HTML);
+            byte[] data = html.getBytes(StandardCharsets.UTF_8);
             response.getBody().write(data);
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
@@ -32,11 +32,11 @@ public class ValueResult extends BaseResult {
 
     @Override
     public Object getResultObject() {
-        return value;
+        return html;
     }
 
     @Override
     public String getResultString() {
-        return value.toString();
+        return html;
     }
 }

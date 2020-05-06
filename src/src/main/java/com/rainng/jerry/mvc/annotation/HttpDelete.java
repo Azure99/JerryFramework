@@ -1,4 +1,4 @@
-package com.rainng.jerry.webapi.annotation;
+package com.rainng.jerry.mvc.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

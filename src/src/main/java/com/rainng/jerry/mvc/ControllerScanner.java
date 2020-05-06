@@ -1,4 +1,4 @@
-package com.rainng.jerry.webapi;
+package com.rainng.jerry.mvc;
 
 import com.rainng.jerry.util.FileClassScanner;
 

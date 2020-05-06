@@ -4,13 +4,13 @@ import com.rainng.jerry.mouse.HttpServer;
 import com.rainng.jerry.mouse.middleware.ErrorMiddleware;
 import com.rainng.jerry.mouse.middleware.SessionMiddleware;
 import com.rainng.jerry.mouse.middleware.StaticWebMiddleware;
-import com.rainng.jerry.webapi.WebApiMiddleware;
+import com.rainng.jerry.mvc.MvcMiddleware;
 
 public class JerryBuilder {
     private boolean useError;
     private boolean useSession;
     private boolean useStaticWeb;
-    private boolean useWebApi;
+    private boolean useMvc;
 
     private int port = 9615;
     private String rootDirectory = "wwwroot";
@@ -43,16 +43,16 @@ public class JerryBuilder {
                 .useStaticWeb();
     }
 
-    public static JerryBuilder createWebApi(int port, Class<?> appClass) {
-        return createWebApi(appClass).setPort(port);
+    public static JerryBuilder createMvc(int port, Class<?> appClass) {
+        return createMvc(appClass).setPort(port);
     }
 
-    public static JerryBuilder createWebApi(Class<?> appClass) {
+    public static JerryBuilder createMvc(Class<?> appClass) {
         return new JerryBuilder()
                 .useError()
                 .useSession()
                 .useStaticWeb()
-                .useWebApi(appClass);
+                .useMvc(appClass);
     }
 
     public JerryBuilder useError() {
@@ -82,13 +82,13 @@ public class JerryBuilder {
         return this;
     }
 
-    public JerryBuilder useWebApi() {
-        useWebApi = true;
+    public JerryBuilder useMvc() {
+        useMvc = true;
         return this;
     }
 
-    public JerryBuilder useWebApi(Class<?> appClass) {
-        useWebApi = true;
+    public JerryBuilder useMvc(Class<?> appClass) {
+        useMvc = true;
         this.appClass = appClass;
         return this;
     }
@@ -127,8 +127,8 @@ public class JerryBuilder {
             if (useStaticWeb) {
                 server.addMiddleware(new StaticWebMiddleware(rootDirectory));
             }
-            if (useWebApi) {
-                server.addMiddleware(new WebApiMiddleware(appClass));
+            if (useMvc) {
+                server.addMiddleware(new MvcMiddleware(appClass));
             }
 
         } catch (Exception ex) {

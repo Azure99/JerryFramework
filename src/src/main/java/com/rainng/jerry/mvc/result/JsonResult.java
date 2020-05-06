@@ -1,5 +1,6 @@
-package com.rainng.jerry.webapi.result;
+package com.rainng.jerry.mvc.result;
 
+import com.alibaba.fastjson.JSON;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpResponse;
 import com.rainng.jerry.mouse.http.constant.HttpContentType;
@@ -7,11 +8,12 @@ import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-public class HtmlResult extends BaseResult {
-    private String html;
+public class JsonResult extends BaseResult {
+    private Object object;
+    private String jsonString;
 
-    public HtmlResult(String html) {
-        this.html = html;
+    public JsonResult(Object object) {
+        this.jsonString = JSON.toJSONString(object);
     }
 
     @Override
@@ -22,8 +24,8 @@ public class HtmlResult extends BaseResult {
         HttpResponse response = httpContext.getResponse();
 
         try {
-            response.setContentType(HttpContentType.TEXT_HTML);
-            byte[] data = html.getBytes(StandardCharsets.UTF_8);
+            response.setContentType(HttpContentType.JSON);
+            byte[] data = jsonString.getBytes(StandardCharsets.UTF_8);
             response.getBody().write(data);
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
@@ -32,11 +34,11 @@ public class HtmlResult extends BaseResult {
 
     @Override
     public Object getResultObject() {
-        return html;
+        return object;
     }
 
     @Override
     public String getResultString() {
-        return html;
+        return jsonString;
     }
 }

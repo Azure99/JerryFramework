@@ -1,4 +1,4 @@
-package com.rainng.jerry.webapi;
+package com.rainng.jerry.mvc;
 
 import com.alibaba.fastjson.JSONObject;
 import com.rainng.jerry.mouse.http.Cookie;
@@ -7,8 +7,8 @@ import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.HttpResponse;
 import com.rainng.jerry.mouse.http.map.HttpCookieMap;
 import com.rainng.jerry.mouse.http.map.HttpSessionMap;
-import com.rainng.jerry.webapi.annotation.Route;
-import com.rainng.jerry.webapi.result.*;
+import com.rainng.jerry.mvc.annotation.Route;
+import com.rainng.jerry.mvc.result.*;
 
 import java.lang.reflect.Method;
 import java.util.Map;

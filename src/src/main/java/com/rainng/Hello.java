@@ -1,17 +1,17 @@
 package com.rainng;
 
 import com.rainng.jerry.JerryBuilder;
-import com.rainng.jerry.webapi.Controller;
-import com.rainng.jerry.webapi.annotation.HttpGet;
-import com.rainng.jerry.webapi.annotation.HttpPost;
-import com.rainng.jerry.webapi.annotation.Route;
-import com.rainng.jerry.webapi.result.IResult;
+import com.rainng.jerry.mvc.Controller;
+import com.rainng.jerry.mvc.annotation.HttpGet;
+import com.rainng.jerry.mvc.annotation.HttpPost;
+import com.rainng.jerry.mvc.annotation.Route;
+import com.rainng.jerry.mvc.result.IResult;
 
 import java.util.Date;
 
 public class Hello {
-    public static void main(String[] args) throws Exception {
-        JerryBuilder.createWebApi(Hello.class).start();
+    public static void main(String[] args) {
+        JerryBuilder.createMvc(Hello.class).start();
     }
 }
 

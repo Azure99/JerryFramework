@@ -1,6 +1,6 @@
-package com.rainng.jerry.webapi.mapping;
+package com.rainng.jerry.mvc.mapping;
 
-import com.rainng.jerry.webapi.Controller;
+import com.rainng.jerry.mvc.Controller;
 
 import java.lang.reflect.Method;
 

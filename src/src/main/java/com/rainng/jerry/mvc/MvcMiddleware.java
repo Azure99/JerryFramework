@@ -1,4 +1,4 @@
-package com.rainng.jerry.webapi;
+package com.rainng.jerry.mvc;
 
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpRequest;
@@ -7,12 +7,12 @@ import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import com.rainng.jerry.mouse.http.constant.HttpStatusCode;
 import com.rainng.jerry.mouse.http.constant.RequestMethod;
 import com.rainng.jerry.mouse.middleware.BaseMiddleware;
-import com.rainng.jerry.webapi.mapping.RequestKey;
-import com.rainng.jerry.webapi.mapping.RequestTarget;
-import com.rainng.jerry.webapi.mapping.RouteParser;
-import com.rainng.jerry.webapi.result.ActionContext;
-import com.rainng.jerry.webapi.result.IResult;
-import com.rainng.jerry.webapi.result.JsonResult;
+import com.rainng.jerry.mvc.mapping.RequestKey;
+import com.rainng.jerry.mvc.mapping.RequestTarget;
+import com.rainng.jerry.mvc.mapping.RouteParser;
+import com.rainng.jerry.mvc.result.ActionContext;
+import com.rainng.jerry.mvc.result.IResult;
+import com.rainng.jerry.mvc.result.JsonResult;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -20,11 +20,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WebApiMiddleware extends BaseMiddleware {
+public class MvcMiddleware extends BaseMiddleware {
     private RouteParser parser = RouteParser.getInstance();
     private Map<RequestKey, RequestTarget> requestMap = new HashMap<>();
 
-    public WebApiMiddleware(Class<?> appClass) {
+    public MvcMiddleware(Class<?> appClass) {
         initPathMap(ControllerScanner.scan(appClass));
     }
 
