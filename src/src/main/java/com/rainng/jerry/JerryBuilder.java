@@ -4,7 +4,6 @@ import com.rainng.jerry.mouse.HttpServer;
 import com.rainng.jerry.mouse.middleware.ErrorMiddleware;
 import com.rainng.jerry.mouse.middleware.SessionMiddleware;
 import com.rainng.jerry.mouse.middleware.StaticWebMiddleware;
-import com.rainng.jerry.webapi.Controller;
 import com.rainng.jerry.webapi.WebApiMiddleware;
 
 public class JerryBuilder {
@@ -16,7 +15,7 @@ public class JerryBuilder {
     private int port = 9615;
     private String rootDirectory = "wwwroot";
     private int maxSessionAge = 3600;
-    private Class<? extends Controller>[] controllers = new Class[0];
+    private Class<?> appClass = JerryBuilder.class;
 
     public JerryBuilder() {
 
@@ -44,24 +43,16 @@ public class JerryBuilder {
                 .useStaticWeb();
     }
 
-    public static JerryBuilder createWebApi(int port, Class<? extends Controller> controller) {
-        return createWebApi(controller).setPort(port);
+    public static JerryBuilder createWebApi(int port, Class<?> appClass) {
+        return createWebApi(appClass).setPort(port);
     }
 
-    public static JerryBuilder createWebApi(int port, Class<? extends Controller>[] controllers) {
-        return createWebApi(controllers).setPort(port);
-    }
-
-    public static JerryBuilder createWebApi(Class<? extends Controller> controller) {
-        return createWebApi(new Class[]{controller});
-    }
-
-    public static JerryBuilder createWebApi(Class<? extends Controller>[] controllers) {
+    public static JerryBuilder createWebApi(Class<?> appClass) {
         return new JerryBuilder()
                 .useError()
                 .useSession()
                 .useStaticWeb()
-                .useWebApi(controllers);
+                .useWebApi(appClass);
     }
 
     public JerryBuilder useError() {
@@ -96,13 +87,9 @@ public class JerryBuilder {
         return this;
     }
 
-    public JerryBuilder useWebApi(Class<? extends Controller> controller) {
-        return useWebApi(new Class[]{controller});
-    }
-
-    public JerryBuilder useWebApi(Class<? extends Controller>[] controllers) {
+    public JerryBuilder useWebApi(Class<?> appClass) {
         useWebApi = true;
-        this.controllers = controllers;
+        this.appClass = appClass;
         return this;
     }
 
@@ -121,8 +108,8 @@ public class JerryBuilder {
         return this;
     }
 
-    public JerryBuilder setControllers(Class<? extends Controller>[] controllers) {
-        this.controllers = controllers;
+    public JerryBuilder setAppClass(Class<?> appClass) {
+        this.appClass = appClass;
         return this;
     }
 
@@ -141,7 +128,7 @@ public class JerryBuilder {
                 server.addMiddleware(new StaticWebMiddleware(rootDirectory));
             }
             if (useWebApi) {
-                server.addMiddleware(new WebApiMiddleware(controllers));
+                server.addMiddleware(new WebApiMiddleware(appClass));
             }
 
         } catch (Exception ex) {

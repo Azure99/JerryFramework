@@ -24,13 +24,13 @@ public class WebApiMiddleware extends BaseMiddleware {
     private RouteParser parser = RouteParser.getInstance();
     private Map<RequestKey, RequestTarget> requestMap = new HashMap<>();
 
-    public WebApiMiddleware(Class<? extends Controller>[] controllers) {
-        initPathMap(controllers);
+    public WebApiMiddleware(Class<?> appClass) {
+        initPathMap(ControllerScanner.scan(appClass));
     }
 
-    private void initPathMap(Class<? extends Controller>[] controllers) {
-        for (Class controller : controllers) {
-            addController(controller);
+    private void initPathMap(Class<?>[] controllers) {
+        for (Class<?> controller : controllers) {
+            addController((Class<? extends Controller>) controller);
         }
     }
 

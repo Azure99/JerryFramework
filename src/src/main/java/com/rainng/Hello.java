@@ -2,14 +2,17 @@ package com.rainng;
 
 import com.rainng.jerry.JerryBuilder;
 import com.rainng.jerry.webapi.Controller;
+import com.rainng.jerry.webapi.ControllerScanner;
 import com.rainng.jerry.webapi.annotation.*;
 import com.rainng.jerry.webapi.result.IResult;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
 
 public class Hello {
-    public static void main(String[] args) {
-        JerryBuilder.createWebApi(DemoController.class).start();
+    public static void main(String[] args) throws Exception {
+        JerryBuilder.createWebApi(Hello.class).start();
     }
 }
 
