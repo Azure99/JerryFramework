@@ -15,44 +15,45 @@ public class JerryBuilder {
     private int port = 9615;
     private String rootDirectory = "wwwroot";
     private int maxSessionAge = 3600;
-    private Class<?> appClass = JerryBuilder.class;
+    private Class<?> appClass;
 
-    public JerryBuilder() {
-
+    public JerryBuilder(Class<?> appClass) {
+        this.appClass = appClass;
     }
 
-    public JerryBuilder(int port) {
+    public JerryBuilder(Class<?> appClass, int port) {
+        this.appClass = appClass;
         this.port = port;
     }
 
-    public static JerryBuilder createStaticWeb(int port) {
-        return createStaticWeb().setPort(port);
+    public static JerryBuilder createStaticWeb(Class<?> appClass, int port) {
+        return createStaticWeb(appClass).setPort(port);
     }
 
-    public static JerryBuilder createStaticWeb(int port, String rootDirectory) {
-        return createStaticWeb(rootDirectory).setPort(port);
+    public static JerryBuilder createStaticWeb(Class<?> appClass, int port, String rootDirectory) {
+        return createStaticWeb(appClass, rootDirectory).setPort(port);
     }
 
-    public static JerryBuilder createStaticWeb(String rootDirectory) {
-        return createStaticWeb().setRootDirectory(rootDirectory);
+    public static JerryBuilder createStaticWeb(Class<?> appClass, String rootDirectory) {
+        return createStaticWeb(appClass).setRootDirectory(rootDirectory);
     }
 
-    public static JerryBuilder createStaticWeb() {
-        return new JerryBuilder()
+    public static JerryBuilder createStaticWeb(Class<?> appClass) {
+        return new JerryBuilder(appClass)
                 .useError()
                 .useStaticWeb();
     }
 
-    public static JerryBuilder createMvc(int port, Class<?> appClass) {
+    public static JerryBuilder createMvc(Class<?> appClass, int port) {
         return createMvc(appClass).setPort(port);
     }
 
     public static JerryBuilder createMvc(Class<?> appClass) {
-        return new JerryBuilder()
+        return new JerryBuilder(appClass)
                 .useError()
                 .useSession()
                 .useStaticWeb()
-                .useMvc(appClass);
+                .useMvc();
     }
 
     public JerryBuilder useError() {
@@ -84,12 +85,6 @@ public class JerryBuilder {
 
     public JerryBuilder useMvc() {
         useMvc = true;
-        return this;
-    }
-
-    public JerryBuilder useMvc(Class<?> appClass) {
-        useMvc = true;
-        this.appClass = appClass;
         return this;
     }
 
