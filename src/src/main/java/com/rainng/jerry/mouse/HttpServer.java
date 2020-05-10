@@ -5,8 +5,7 @@ import com.rainng.jerry.mouse.middleware.BaseMiddleware;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class HttpServer {
     private ServerSocket serverSocket;
@@ -32,16 +31,36 @@ public class HttpServer {
     }
 
     private void startAccept() {
-        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        ExecutorService executorService = createThreadPool();
 
         while (running) {
             try {
                 Socket socket = serverSocket.accept();
-                executorService.submit(new HttpWorkThread(socket, this));
+                try {
+                    executorService.submit(new HttpWorkThread(socket, this));
+                } catch (RejectedExecutionException ex) {
+                    System.err.println(ex.getMessage());
+                    socket.close();
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
+    }
+
+    private ExecutorService createThreadPool() {
+        int processorCount = Runtime.getRuntime().availableProcessors();
+        ExecutorService executorService = new ThreadPoolExecutor(
+                processorCount,
+                processorCount * 4,
+                60,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(2048),
+                Executors.defaultThreadFactory(),
+                new ThreadPoolExecutor.AbortPolicy()
+        );
+
+        return executorService;
     }
 
     public HttpServer addMiddleware(BaseMiddleware middleware) {
