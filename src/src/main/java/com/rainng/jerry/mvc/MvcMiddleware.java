@@ -67,12 +67,12 @@ public class MvcMiddleware extends BaseMiddleware {
             }
         }
 
-        if (!routePath.startsWith("/")) {
-            routePath = controllerRoutePath + routePath;
+        if ("".equals(routePath) && controllerRoutePath.endsWith("/")) {
+            routePath = controllerRoutePath.substring(0, controllerRoutePath.length() - 1);
         }
 
-        if (routePath.endsWith("/")) {
-            routePath = routePath.substring(0, routePath.length() - 1);
+        if (!routePath.startsWith("/")) {
+            routePath = controllerRoutePath + routePath;
         }
 
         String[] parameterNames = parser.getParameterNames(method);
