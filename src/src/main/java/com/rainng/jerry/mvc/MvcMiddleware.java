@@ -7,6 +7,7 @@ import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import com.rainng.jerry.mouse.http.constant.HttpStatusCode;
 import com.rainng.jerry.mouse.http.constant.RequestMethod;
 import com.rainng.jerry.mouse.middleware.BaseMiddleware;
+import com.rainng.jerry.mvc.annotation.HttpMethodMapping;
 import com.rainng.jerry.mvc.mapping.RequestKey;
 import com.rainng.jerry.mvc.mapping.RequestTarget;
 import com.rainng.jerry.mvc.mapping.RouteParser;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 public class MvcMiddleware extends BaseMiddleware {
     private static final String JSON_PLACEHOLDER = "___json___";
+    private static final String[] HTTP_METHODS = new String[]{"get", "post", "delete", "put", "patch"};
 
     private RouteParser parser = RouteParser.getInstance();
     private Map<RequestKey, RequestTarget> requestMap = new HashMap<>();
@@ -44,13 +46,27 @@ public class MvcMiddleware extends BaseMiddleware {
         for (Method method : methods) {
             // public only
             if (((method.getModifiers() & 1) == 1)) {
-                addMethod(controller, routePath, method);
+                boolean enableMethodMapping = controller.getAnnotation(HttpMethodMapping.class) != null;
+                addMethod(controller, routePath, method, enableMethodMapping);
             }
         }
     }
 
-    private void addMethod(Class<? extends Controller> controller, String controllerRoutePath, Method method) {
+    private void addMethod(Class<? extends Controller> controller, String controllerRoutePath
+            , Method method, boolean enableMethodMapping) {
+        RequestMethod requestMethod = parser.getSupportedRequestMethod(method);
         String routePath = parser.getRoutePath(method);
+
+        if (enableMethodMapping) {
+            for (String httpMethod : HTTP_METHODS) {
+                if (routePath.startsWith(httpMethod)) {
+                    routePath = routePath.substring(httpMethod.length());
+                    requestMethod = RequestMethod.parse(httpMethod);
+                    break;
+                }
+            }
+        }
+
         if (!routePath.startsWith("/")) {
             routePath = controllerRoutePath + routePath;
         }
@@ -58,7 +74,6 @@ public class MvcMiddleware extends BaseMiddleware {
         String[] parameterNames = parser.getParameterNames(method);
         Arrays.sort(parameterNames);
 
-        RequestMethod requestMethod = parser.getSupportedRequestMethod(method);
 
         RequestKey requestKey = new RequestKey(routePath, requestMethod, parameterNames);
         RequestTarget requestTarget = new RequestTarget(controller, method);

@@ -3,6 +3,7 @@ package com.rainng;
 import com.rainng.jerry.JerryBuilder;
 import com.rainng.jerry.mvc.Controller;
 import com.rainng.jerry.mvc.annotation.HttpGet;
+import com.rainng.jerry.mvc.annotation.HttpMethodMapping;
 import com.rainng.jerry.mvc.annotation.HttpPost;
 import com.rainng.jerry.mvc.annotation.Route;
 import com.rainng.jerry.mvc.result.IResult;
@@ -75,6 +76,31 @@ class DemoController extends Controller {
             setSession("time", session);
         }
         return session;
+    }
+}
+
+// http://localhost/user
+@HttpMethodMapping
+class UserController extends Controller {
+    public String get() {
+        return "get";
+    }
+
+    public String post(String data) {
+        return "post: " + data;
+    }
+
+    public String delete() {
+        return "delete";
+    }
+
+    public String patch(String data) {
+        return "patch: " + data;
+    }
+
+    // http://localhost/user/list
+    public String[] getList() {
+        return new String[]{"1", "2", "3"};
     }
 }
 

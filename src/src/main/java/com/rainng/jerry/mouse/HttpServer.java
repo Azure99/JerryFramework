@@ -51,11 +51,11 @@ public class HttpServer {
     private ExecutorService createThreadPool() {
         int processorCount = Runtime.getRuntime().availableProcessors();
         ExecutorService executorService = new ThreadPoolExecutor(
-                processorCount,
                 processorCount * 4,
+                Math.max(processorCount * 256, 4096),
                 60,
                 TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(2048),
+                new SynchronousQueue<Runnable>(),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.AbortPolicy()
         );
