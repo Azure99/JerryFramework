@@ -52,6 +52,10 @@ public class Controller {
         return cookie.getValue();
     }
 
+    protected void setCookie(Cookie cookie) {
+        getCookies().set(cookie.getName(), cookie);
+    }
+
     protected void setCookie(String name, Cookie cookie) {
         getCookies().set(name, cookie);
     }
