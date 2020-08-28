@@ -37,7 +37,9 @@ public class HttpWorkThread extends Thread {
         HttpContext httpContext = new HttpContext();
 
         try {
-            HttpRequestIniter.init(httpContext, inputStream);
+            if (!HttpRequestIniter.init(httpContext, inputStream)) {
+                return;
+            }
             HttpCookieIniter.init(httpContext);
             HttpResponseIniter.init(httpContext);
 
@@ -109,7 +111,9 @@ public class HttpWorkThread extends Thread {
 
     private void tryClose(Closeable closeable) {
         try {
-            closeable.close();
+            if (closeable != null) {
+                closeable.close();
+            }
         } catch (Exception ex) {
             Logger.ex("Can not release some resources", ex);
         }

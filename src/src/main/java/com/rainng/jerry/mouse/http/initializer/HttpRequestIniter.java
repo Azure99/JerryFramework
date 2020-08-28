@@ -19,14 +19,17 @@ public class HttpRequestIniter {
 
     }
 
-    public static void init(HttpContext context, InputStream inputStream) throws IOException {
+    public static boolean init(HttpContext context, InputStream inputStream) throws IOException {
         HttpRequest request = context.getRequest();
 
         byte[] headData = readHttpRequestHeadData(inputStream);
-        initHttpRequestHead(request, headData);
+        if (!initHttpRequestHead(request, headData)) {
+            return false;
+        }
 
         byte[] bodyData = readHttpRequestBodyData(inputStream, (int) request.getContentLength());
         initHttpRequestBody(request, bodyData);
+        return true;
     }
 
     private static byte[] readHttpRequestHeadData(InputStream inputStream) throws IOException {
@@ -61,10 +64,13 @@ public class HttpRequestIniter {
         return headData;
     }
 
-    private static void initHttpRequestHead(HttpRequest request, byte[] headData) {
+    private static boolean initHttpRequestHead(HttpRequest request, byte[] headData) {
         Scanner scanner = new Scanner(new ByteArrayInputStream(headData));
 
         String method = scanner.next();
+        if (method.length() <= 1) {
+            return false;
+        }
         String path = scanner.next();
         String version = scanner.next();
         scanner.nextLine();
@@ -89,6 +95,8 @@ public class HttpRequestIniter {
         request.setQueryArgs(parseQueryArgs(request.getQueryString()));
         request.setVersion(version);
         request.setHeaders(headers);
+
+        return true;
     }
 
     private static byte[] readHttpRequestBodyData(InputStream inputStream, int contentLength) throws IOException {
