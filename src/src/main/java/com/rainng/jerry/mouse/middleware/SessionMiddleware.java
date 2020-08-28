@@ -28,7 +28,7 @@ public class SessionMiddleware extends BaseMiddleware {
     }
 
     public void setMaxSessionAge(int maxSessionAge) {
-        this.maxSessionAge = maxSessionAge * 1000;
+        this.maxSessionAge = maxSessionAge * 1000L;
     }
 
     @Override
@@ -96,12 +96,12 @@ public class SessionMiddleware extends BaseMiddleware {
                 long currentTime = System.currentTimeMillis();
 
                 List<Integer> expiredSessionKeys = new ArrayList<>();
-                for (Integer key : sessionMap.keySet()) {
-                    HttpSessionMap session = sessionMap.get(key);
+
+                sessionMap.forEach((key, session) -> {
                     if (session.getLastRequestTime() + maxSessionAge < currentTime) {
                         expiredSessionKeys.add(key);
                     }
-                }
+                });
 
                 for (Integer key : expiredSessionKeys) {
                     sessionMap.remove(key);

@@ -6,7 +6,7 @@ public class PathUtil {
     }
 
     public static String getExtension(String path) {
-        int pos = path.lastIndexOf(".");
+        int pos = path.lastIndexOf('.');
         if (pos != -1) {
             return path.substring(pos + 1);
         }
