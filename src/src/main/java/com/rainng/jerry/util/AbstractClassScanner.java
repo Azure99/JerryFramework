@@ -1,7 +1,7 @@
 package com.rainng.jerry.util;
 
 public abstract class AbstractClassScanner {
-    public abstract Class<?>[] scan(Class<?> root);
+    public abstract Class<?>[] scanClasses(Class<?> root);
 
-    public abstract String[] scanName(Class<?> root);
+    public abstract String[] scanClassNames(Class<?> root);
 }

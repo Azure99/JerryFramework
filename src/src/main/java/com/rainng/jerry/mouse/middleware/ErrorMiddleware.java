@@ -45,7 +45,7 @@ public class ErrorMiddleware extends BaseMiddleware {
 
         if (exception instanceof NotFoundException) {
             statusCode = HttpStatusCode.HTTP_NOT_FOUND;
-            writer.write("404 NotFound");
+            writer.write(HttpStatusCode.toString(HttpStatusCode.HTTP_NOT_FOUND));
         }
 
         response.setStatusCode(statusCode);
@@ -56,7 +56,7 @@ public class ErrorMiddleware extends BaseMiddleware {
         response.setStatusCode(HttpStatusCode.HTTP_INTERNAL_SERVER_ERROR);
 
         PrintWriter writer = new PrintWriter(response.getBody());
-        writer.write("500 Internal server error");
+        writer.write(HttpStatusCode.toString(HttpStatusCode.HTTP_INTERNAL_SERVER_ERROR));
         writer.flush();
     }
 }
