@@ -1,8 +1,10 @@
 package com.rainng.jerry.mouse;
 
 import com.rainng.jerry.mouse.middleware.BaseMiddleware;
+import com.rainng.jerry.util.Logger;
 
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.*;
@@ -22,6 +24,8 @@ public class HttpServer {
     }
 
     public void start() {
+        long uptime = ManagementFactory.getRuntimeMXBean().getUptime();
+        Logger.log("Jerry mouse web server started in " + uptime + "ms");
         running = true;
         startAccept();
     }
@@ -39,11 +43,11 @@ public class HttpServer {
                 try {
                     executorService.submit(new HttpWorkThread(socket, this));
                 } catch (RejectedExecutionException ex) {
-                    System.err.println(ex.getMessage());
+                    Logger.ex("Request rejected: " + socket.getInetAddress().toString(), ex);
                     socket.close();
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Logger.ex("Unknown server error", ex);
             }
         }
     }

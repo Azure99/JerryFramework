@@ -5,6 +5,7 @@ import com.rainng.jerry.mouse.exception.NotFoundException;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpResponse;
 import com.rainng.jerry.mouse.http.constant.HttpStatusCode;
+import com.rainng.jerry.util.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class ErrorMiddleware extends BaseMiddleware {
             next(context);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.ex("Internal server error", ex);
             onException(context, ex);
         }
     }

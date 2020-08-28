@@ -7,6 +7,7 @@ import com.rainng.jerry.mouse.http.initializer.HttpCookieIniter;
 import com.rainng.jerry.mouse.http.initializer.HttpRequestIniter;
 import com.rainng.jerry.mouse.http.initializer.HttpResponseIniter;
 import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
+import com.rainng.jerry.util.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -25,7 +26,7 @@ public class HttpWorkThread extends Thread {
         try {
             onAccept();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.ex("Internal server error", ex);
         }
     }
 
@@ -44,8 +45,6 @@ public class HttpWorkThread extends Thread {
 
             afterExecute(httpContext);
             writeResponse(httpContext, outputStream);
-        } catch (Exception ex) {
-            ex.printStackTrace();
         } finally {
             tryClose(httpContext.getRequest().getBody());
             tryClose(httpContext.getResponse().getBody());
@@ -112,7 +111,7 @@ public class HttpWorkThread extends Thread {
         try {
             closeable.close();
         } catch (Exception ex) {
-
+            Logger.ex("Can not release some resources", ex);
         }
     }
 }

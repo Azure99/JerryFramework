@@ -1,5 +1,7 @@
 package com.rainng.jerry.mouse.util;
 
+import com.rainng.jerry.util.Logger;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -13,7 +15,7 @@ public class UrlEncodeUtil {
         try {
             return URLEncoder.encode(s, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
+            Logger.ex("Unsupported encoding", ex);
             return s;
         }
     }
@@ -23,7 +25,7 @@ public class UrlEncodeUtil {
         try {
             return URLDecoder.decode(s, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
+            Logger.ex("Unsupported encoding", ex);
             return s;
         }
     }

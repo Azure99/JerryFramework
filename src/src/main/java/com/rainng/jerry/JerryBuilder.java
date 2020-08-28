@@ -5,6 +5,7 @@ import com.rainng.jerry.mouse.middleware.ErrorMiddleware;
 import com.rainng.jerry.mouse.middleware.SessionMiddleware;
 import com.rainng.jerry.mouse.middleware.StaticWebMiddleware;
 import com.rainng.jerry.mvc.MvcMiddleware;
+import com.rainng.jerry.util.Logger;
 
 public class JerryBuilder {
     private boolean useError;
@@ -127,7 +128,7 @@ public class JerryBuilder {
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.ex("Error when build middleware pipeline", ex);
         }
 
         return server;

@@ -6,7 +6,10 @@ import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -28,26 +31,15 @@ public class ViewResult extends BaseResult {
 
         variables = context.getModelMap();
 
-        try {
-            response.setContentType(HttpContentType.TEXT_HTML);
-            byte[] data = generateHtml().getBytes(StandardCharsets.UTF_8);
-            response.getBody().write(data);
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-        }
+        response.setContentType(HttpContentType.TEXT_HTML);
+        byte[] data = generateHtml().getBytes(StandardCharsets.UTF_8);
+        response.getBody().write(data);
     }
 
-    private String generateHtml() {
+    private String generateHtml() throws IOException {
         Context templateContext = new Context();
         templateContext.setVariables(variables);
-        try {
-
-            return templateEngine.process(loadTemplate(), templateContext);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        return "";
+        return templateEngine.process(loadTemplate(), templateContext);
     }
 
     private String loadTemplate() throws IOException {

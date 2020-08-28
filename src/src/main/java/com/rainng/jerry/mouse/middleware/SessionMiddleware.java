@@ -4,6 +4,7 @@ import com.rainng.jerry.mouse.http.Cookie;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.map.HttpCookieMap;
 import com.rainng.jerry.mouse.http.map.HttpSessionMap;
+import com.rainng.jerry.util.Logger;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,7 +74,7 @@ public class SessionMiddleware extends BaseMiddleware {
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.ex("Can not get session in http context", ex);
         }
 
         return null;

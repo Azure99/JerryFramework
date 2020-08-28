@@ -14,7 +14,7 @@ public class FileClassScanner extends AbstractClassScanner {
             try {
                 classList.add(classLoader.loadClass(className));
             } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
+                Logger.ex("Class not found", ex);
             }
         }
 
