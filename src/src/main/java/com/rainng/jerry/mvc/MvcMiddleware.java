@@ -12,7 +12,7 @@ import com.rainng.jerry.mvc.mapping.RequestKey;
 import com.rainng.jerry.mvc.mapping.RequestTarget;
 import com.rainng.jerry.mvc.mapping.RouteParser;
 import com.rainng.jerry.mvc.result.ActionContext;
-import com.rainng.jerry.mvc.result.IResult;
+import com.rainng.jerry.mvc.result.Result;
 import com.rainng.jerry.mvc.result.JsonResult;
 
 import java.lang.reflect.Constructor;
@@ -113,17 +113,17 @@ public class MvcMiddleware extends BaseMiddleware {
         Method method = requestTarget.getMethod();
         method.setAccessible(true);
 
-        IResult result = controller.beforeExecute(context, method, argValues);
+        Result result = controller.beforeExecute(context, method, argValues);
 
         if (result == null) {
-            if (IResult.class.isAssignableFrom(method.getReturnType())) {
-                result = (IResult) method.invoke(controller, argValues);
+            if (Result.class.isAssignableFrom(method.getReturnType())) {
+                result = (Result) method.invoke(controller, argValues);
             } else {
                 result = new JsonResult(method.invoke(controller, argValues));
             }
         }
 
-        IResult tempResult = controller.afterExecute(context, method, argValues, result);
+        Result tempResult = controller.afterExecute(context, method, argValues, result);
         if (tempResult != null) {
             result = tempResult;
         }

@@ -1,13 +1,12 @@
 package com.rainng;
 
 import com.rainng.jerry.JerryBuilder;
-import com.rainng.jerry.mouse.http.Cookie;
 import com.rainng.jerry.mvc.Controller;
 import com.rainng.jerry.mvc.annotation.HttpGet;
 import com.rainng.jerry.mvc.annotation.HttpMethodMapping;
 import com.rainng.jerry.mvc.annotation.HttpPost;
 import com.rainng.jerry.mvc.annotation.Route;
-import com.rainng.jerry.mvc.result.IResult;
+import com.rainng.jerry.mvc.result.Result;
 
 import java.util.Date;
 
@@ -22,7 +21,7 @@ public class Hello {
  * http://localhost:9615/demo/hello
  */
 class DemoController extends Controller {
-    public IResult hello() {
+    public Result hello() {
         putModel("key", "Jerry MVC with thymeleaf");
         return view("index.html");
     }
@@ -35,11 +34,11 @@ class DemoController extends Controller {
         return new Student(1, "Azure99");
     }
 
-    public IResult quickJson() {
+    public Result quickJson() {
         return json("id|name", 1, "Azure99");
     }
 
-    public IResult nestJson() {
+    public Result nestJson() {
         return json("id|name|info", 1, "Azure99", jsono(
                 "birthday|friends",
                 new Date(), new String[]{"A", "B", "C", "D"}));
@@ -55,10 +54,6 @@ class DemoController extends Controller {
         return "My path is /route2";
     }
 
-    public IResult redirect() {
-        return redirect("https://www.baidu.com");
-    }
-
     @HttpGet
     public String get() {
         return "Http GET only";
@@ -69,26 +64,20 @@ class DemoController extends Controller {
         return "Http POST only";
     }
 
-    public IResult html() {
+    public Result redirect() {
+        return redirect("https://www.baidu.com");
+    }
+
+    public Result html() {
         return html("<h1>Html</h1>");
     }
 
     public Object cookie() {
-        Cookie cookie = getCookie("foo");
-        if (cookie == null) {
-            cookie = new Cookie("foo", "bar");
-            setCookie(cookie);
-        }
-        return cookie.getValue();
+        return getCookie("foo").getValue();
     }
 
     public Object session() {
-        Object session = getSession("time");
-        if (session == null) {
-            session = new Date().toString();
-            setSession("time", session);
-        }
-        return session;
+        return getSession("datetime");
     }
 }
 

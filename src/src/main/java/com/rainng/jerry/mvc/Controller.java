@@ -151,11 +151,11 @@ public class Controller {
         return actionContext.getModelMap().put(key, model);
     }
 
-    protected IResult beforeExecute(HttpContext context, Method method, Object[] argValues) {
+    protected Result beforeExecute(HttpContext context, Method method, Object[] argValues) {
         return null;
     }
 
-    protected IResult afterExecute(HttpContext context, Method method, Object[] argValues, IResult result) {
+    protected Result afterExecute(HttpContext context, Method method, Object[] argValues, Result result) {
         return null;
     }
 }

@@ -1,6 +1,6 @@
 package com.rainng.jerry.mvc.result;
 
-public interface IResult {
+public interface Result {
     void executeResult(ActionContext context) throws Exception;
 
     Object getResultObject();
