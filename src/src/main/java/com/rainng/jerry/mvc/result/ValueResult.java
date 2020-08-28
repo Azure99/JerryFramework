@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 public class ValueResult extends BaseResult {
-    private Object value;
+    private final Object value;
 
     public ValueResult(Object value) {
         this.value = value;

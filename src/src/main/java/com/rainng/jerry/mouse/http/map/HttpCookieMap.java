@@ -28,7 +28,7 @@ public class HttpCookieMap extends BaseHttpMap<Cookie> {
         if (builder.length() <= 2) {
             return "";
         } else {
-            return builder.toString().substring(0, builder.length() - 2);
+            return builder.substring(0, builder.length() - 2);
         }
     }
 }

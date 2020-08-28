@@ -5,8 +5,8 @@ import com.rainng.jerry.mvc.Controller;
 import java.lang.reflect.Method;
 
 public class RequestTarget {
-    private Class<? extends Controller> controller;
-    private Method method;
+    private final Class<? extends Controller> controller;
+    private final Method method;
 
     public RequestTarget(Class<? extends Controller> controller, Method method) {
         this.controller = controller;

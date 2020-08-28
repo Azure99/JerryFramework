@@ -4,9 +4,9 @@ import com.rainng.jerry.mouse.http.map.HttpCookieMap;
 import com.rainng.jerry.mouse.http.map.HttpSessionMap;
 
 public class HttpContext {
-    private HttpRequest request;
-    private HttpResponse response;
-    private HttpCookieMap cookies;
+    private final HttpRequest request;
+    private final HttpResponse response;
+    private final HttpCookieMap cookies;
     private HttpSessionMap session;
 
     public HttpContext() {

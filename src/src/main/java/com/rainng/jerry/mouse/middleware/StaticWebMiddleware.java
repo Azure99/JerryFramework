@@ -10,8 +10,8 @@ import java.io.File;
 import java.nio.file.Files;
 
 public class StaticWebMiddleware extends BaseMiddleware {
-    private String rootDirectory;
-    private String defaultFile;
+    private final String rootDirectory;
+    private final String defaultFile;
 
     public StaticWebMiddleware() {
         this("wwwroot");

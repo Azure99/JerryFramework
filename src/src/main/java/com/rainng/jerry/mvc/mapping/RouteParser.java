@@ -20,7 +20,7 @@ import java.util.Map;
 public class RouteParser {
     private static final String JSON_PLACEHOLDER = "___json___";
     private static final String CONTROLLER_SUFFIX = "controller";
-    private static RouteParser instance = new RouteParser();
+    private static final RouteParser instance = new RouteParser();
 
     private RouteParser() {
 
@@ -167,14 +167,8 @@ public class RouteParser {
         Object[] argValues = new Object[argsLen];
 
         Map<String, String> argsMap = new HashMap<>();
-        Map<String, String> queryMap = request.getQueryArgs();
-        Map<String, String> formMap = request.getForm();
-        for (String key : queryMap.keySet()) {
-            argsMap.put(key.toLowerCase(), queryMap.get(key));
-        }
-        for (String key : formMap.keySet()) {
-            argsMap.put(key.toLowerCase(), formMap.get(key));
-        }
+        request.getQueryArgs().forEach((key, value) -> argsMap.put(key.toLowerCase(), value));
+        request.getForm().forEach((key, value) -> argsMap.put(key.toLowerCase(), value));
 
         for (int i = 0; i < argsLen; i++) {
             String value = argsMap.get(parameterNames[i].toLowerCase());

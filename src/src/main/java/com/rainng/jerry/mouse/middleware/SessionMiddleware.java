@@ -7,11 +7,12 @@ import com.rainng.jerry.mouse.http.map.HttpSessionMap;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SessionMiddleware extends BaseMiddleware {
     private static final String SESSION_KEY = "_jerrysession";
+    private final Map<Integer, HttpSessionMap> sessionMap = new ConcurrentHashMap<>();
     private long maxSessionAge;
-    private Map<Integer, HttpSessionMap> sessionMap = new ConcurrentHashMap<>();
 
     public SessionMiddleware() {
         this(3600);
@@ -79,7 +80,7 @@ public class SessionMiddleware extends BaseMiddleware {
     }
 
     private int createSessionId() {
-        Random random = new Random();
+        Random random = ThreadLocalRandom.current();
         int sessionId = random.nextInt(Integer.MAX_VALUE);
         while (sessionMap.containsKey(sessionId)) {
             sessionId = random.nextInt(Integer.MAX_VALUE);

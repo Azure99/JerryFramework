@@ -5,9 +5,9 @@ import com.rainng.jerry.mouse.http.constant.RequestMethod;
 import java.util.Arrays;
 
 public class RequestKey {
-    private String path;
-    private RequestMethod requestMethod;
-    private String[] parameters;
+    private final String path;
+    private final RequestMethod requestMethod;
+    private final String[] parameters;
 
     private int hashCode = 0;
     private boolean hashCodeCached = false;

@@ -12,8 +12,8 @@ import java.io.*;
 import java.net.Socket;
 
 public class HttpWorkThread extends Thread {
-    private Socket socket;
-    private HttpServer httpServer;
+    private final Socket socket;
+    private final HttpServer httpServer;
 
     public HttpWorkThread(Socket socket, HttpServer server) {
         this.socket = socket;

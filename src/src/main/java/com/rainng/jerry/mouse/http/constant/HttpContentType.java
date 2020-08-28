@@ -1,27 +1,31 @@
 package com.rainng.jerry.mouse.http.constant;
 
-import com.rainng.jerry.mouse.util.PathHelper;
+import com.rainng.jerry.mouse.util.PathUtil;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HttpContentType {
+
     public static final String OCTET_STREAM = "application/octet-stream";
     public static final String TEXT_PLAIN = "text/plain";
     public static final String TEXT_HTML = "text/html";
     public static final String JSON = "application/json";
     public static final String XML = "text/xml";
     public static final String FORM_URLENCODED = "application/x-www-form-urlencoded";
-
-    private static Map<String, String> mimeTypeMap = new HashMap<>();
+    private static final Map<String, String> mimeTypeMap = new HashMap<>();
 
     static {
         initMimeTypeMap();
     }
 
+    private HttpContentType() {
+
+    }
+
     public static String getContentTypeByFileName(File file) {
-        String fileType = PathHelper.getExtension(file.getName());
+        String fileType = PathUtil.getExtension(file.getName());
         return getContentTypeByExtension(fileType);
     }
 

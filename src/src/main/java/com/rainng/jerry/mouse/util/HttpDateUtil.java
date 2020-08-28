@@ -5,7 +5,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class HttpDateHelper {
+public class HttpDateUtil {
+    private HttpDateUtil() {
+
+    }
 
     public static String getNowDateString() {
         return getDateString(new Date());

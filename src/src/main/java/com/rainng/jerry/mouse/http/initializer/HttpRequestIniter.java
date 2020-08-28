@@ -6,7 +6,7 @@ import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import com.rainng.jerry.mouse.http.constant.RequestMethod;
 import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
 import com.rainng.jerry.mouse.http.map.HttpQueryMap;
-import com.rainng.jerry.mouse.util.UrlEncoding;
+import com.rainng.jerry.mouse.util.UrlEncodeUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,6 +15,9 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class HttpRequestIniter {
+    private HttpRequestIniter() {
+
+    }
 
     public static void init(HttpContext context, InputStream inputStream) throws IOException {
         HttpRequest request = context.getRequest();
@@ -165,7 +168,7 @@ public class HttpRequestIniter {
     }
 
     private static String parseResourcePath(String path) {
-        int pos = path.indexOf("?");
+        int pos = path.indexOf('?');
         if (pos == -1) {
             return path;
         } else {
@@ -174,7 +177,7 @@ public class HttpRequestIniter {
     }
 
     private static String parseQueryString(String path) {
-        int pos = path.indexOf("?");
+        int pos = path.indexOf('?');
         if (pos == -1) {
             return "";
         } else {
@@ -190,11 +193,11 @@ public class HttpRequestIniter {
             String[] kv = arg.split("=");
 
             if (kv.length == 2) {
-                kv[0] = UrlEncoding.decode(kv[0]);
-                kv[1] = UrlEncoding.decode(kv[1]);
+                kv[0] = UrlEncodeUtil.decode(kv[0]);
+                kv[1] = UrlEncodeUtil.decode(kv[1]);
                 queryMap.set(kv[0], kv[1]);
             } else if (kv.length == 1 && arg.contains("=")) {
-                kv[0] = UrlEncoding.decode(kv[0]);
+                kv[0] = UrlEncodeUtil.decode(kv[0]);
                 queryMap.set(kv[0], null);
             }
         }

@@ -8,9 +8,9 @@ import java.net.Socket;
 import java.util.concurrent.*;
 
 public class HttpServer {
-    private ServerSocket serverSocket;
-    private int port;
-    private BaseMiddleware middlewareEntry;
+    private final ServerSocket serverSocket;
+    private final int port;
+    private final BaseMiddleware middlewareEntry;
     private boolean running;
 
     public HttpServer(int port) throws IOException {

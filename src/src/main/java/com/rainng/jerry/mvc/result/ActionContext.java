@@ -6,8 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ActionContext {
+    private final Map<String, Object> modelMap = new LinkedHashMap<>();
     private HttpContext httpContext;
-    private Map<String, Object> modelMap = new LinkedHashMap<>();
 
     public ActionContext(HttpContext httpContext) {
         this.httpContext = httpContext;

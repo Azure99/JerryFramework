@@ -3,8 +3,8 @@ package com.rainng.jerry.mouse.http.map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HttpSessionMap extends ConcurrentHashMap<String, Object> {
+    private final int sessionId;
     private long lastRequestTime = System.currentTimeMillis();
-    private int sessionId;
 
     public HttpSessionMap(int sessionId) {
         this.sessionId = sessionId;

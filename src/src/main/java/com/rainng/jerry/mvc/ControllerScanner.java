@@ -5,6 +5,10 @@ import com.rainng.jerry.util.FileClassScanner;
 import java.util.ArrayList;
 
 public class ControllerScanner {
+    private ControllerScanner() {
+
+    }
+
     public static Class<?>[] scan(Class<?> app) {
         Class<?>[] classes = new FileClassScanner().scan(app);
         ArrayList<Class<?>> controllerList = new ArrayList<>();

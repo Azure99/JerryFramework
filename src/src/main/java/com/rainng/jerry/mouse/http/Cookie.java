@@ -1,11 +1,11 @@
 package com.rainng.jerry.mouse.http;
 
-import com.rainng.jerry.mouse.util.HttpDateHelper;
+import com.rainng.jerry.mouse.util.HttpDateUtil;
 
 import java.util.Date;
 
 public class Cookie {
-    private String name;
+    private final String name;
     private String value;
     private Date expires;
     private int maxAge = Integer.MIN_VALUE;
@@ -124,7 +124,7 @@ public class Cookie {
         builder.append(name).append("=").append(value);
 
         if (expires != null) {
-            builder.append("; Expires=").append(HttpDateHelper.getDateString(expires));
+            builder.append("; Expires=").append(HttpDateUtil.getDateString(expires));
         }
         if (maxAge != Integer.MIN_VALUE) {
             builder.append("; Max-Age=").append(maxAge);

@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 public class HtmlResult extends BaseResult {
-    private String html;
+    private final String html;
 
     public HtmlResult(String html) {
         this.html = html;

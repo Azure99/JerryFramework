@@ -9,8 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 public class JsonResult extends BaseResult {
+    private final String jsonString;
     private Object object;
-    private String jsonString;
 
     public JsonResult(Object object) {
         this.jsonString = JSON.toJSONString(object);

@@ -4,7 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-public class UrlEncoding {
+public class UrlEncodeUtil {
+    private UrlEncodeUtil() {
+
+    }
+
     public static String encode(String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");

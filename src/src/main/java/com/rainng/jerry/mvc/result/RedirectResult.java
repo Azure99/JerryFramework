@@ -5,7 +5,7 @@ import com.rainng.jerry.mouse.http.constant.HttpHeaderKey;
 import com.rainng.jerry.mouse.http.constant.HttpStatusCode;
 
 public class RedirectResult extends BaseResult {
-    private String url;
+    private final String url;
 
     public RedirectResult(String url) {
         this.url = url;

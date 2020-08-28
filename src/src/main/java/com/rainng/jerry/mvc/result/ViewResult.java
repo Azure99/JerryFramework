@@ -11,8 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class ViewResult extends BaseResult {
-    private static TemplateEngine templateEngine = new TemplateEngine();
-    private String viewPath;
+    private static final TemplateEngine templateEngine = new TemplateEngine();
+    private final String viewPath;
     private Map<String, Object> variables;
 
     public ViewResult(String viewPath) {

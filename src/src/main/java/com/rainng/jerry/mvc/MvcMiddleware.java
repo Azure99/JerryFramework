@@ -12,8 +12,8 @@ import com.rainng.jerry.mvc.mapping.RequestKey;
 import com.rainng.jerry.mvc.mapping.RequestTarget;
 import com.rainng.jerry.mvc.mapping.RouteParser;
 import com.rainng.jerry.mvc.result.ActionContext;
-import com.rainng.jerry.mvc.result.Result;
 import com.rainng.jerry.mvc.result.JsonResult;
+import com.rainng.jerry.mvc.result.Result;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -25,8 +25,8 @@ public class MvcMiddleware extends BaseMiddleware {
     private static final String JSON_PLACEHOLDER = "___json___";
     private static final String[] HTTP_METHODS = new String[]{"get", "post", "delete", "put", "patch"};
 
-    private RouteParser parser = RouteParser.getInstance();
-    private Map<RequestKey, RequestTarget> requestMap = new HashMap<>();
+    private final RouteParser parser = RouteParser.getInstance();
+    private final Map<RequestKey, RequestTarget> requestMap = new HashMap<>();
 
     public MvcMiddleware(Class<?> appClass) {
         initPathMap(ControllerScanner.scan(appClass));

@@ -7,6 +7,10 @@ import com.rainng.jerry.mouse.http.constant.HttpHeaderKey;
 import com.rainng.jerry.mouse.http.map.HttpCookieMap;
 
 public class HttpCookieIniter {
+    private HttpCookieIniter() {
+
+    }
+
     public static void init(HttpContext context) {
         HttpRequest request = context.getRequest();
         if (!request.getHeaders().containsKey(HttpHeaderKey.COOKIE)) {
