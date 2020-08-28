@@ -5,13 +5,7 @@ public class HttpHeaderMap extends BaseHttpMap<String> {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-
-        for (String key : keySet()) {
-            builder.append(key);
-            builder.append(": ");
-            builder.append(get(key));
-            builder.append("\r\n");
-        }
+        forEach((key, value) -> builder.append(key).append(": ").append(value).append("\r\n"));
 
         return builder.toString();
     }
