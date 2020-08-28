@@ -11,6 +11,7 @@ public class HttpContentType {
     public static final String TEXT_PLAIN = "text/plain";
     public static final String TEXT_HTML = "text/html";
     public static final String JSON = "application/json";
+    public static final String XML = "text/xml";
     public static final String FORM_URLENCODED = "application/x-www-form-urlencoded";
 
     private static Map<String, String> mimeTypeMap = new HashMap<>();
@@ -27,14 +28,14 @@ public class HttpContentType {
     public static String getContentTypeByExtension(String fileType) {
         String contentType = mimeTypeMap.get(fileType);
         if (contentType == null) {
-            contentType = "application/octet-stream";
+            contentType = OCTET_STREAM;
         }
 
         return contentType;
     }
 
     private static void initMimeTypeMap() {
-        mimeTypeMap.put("load", "text/html");
+        mimeTypeMap.put("load", TEXT_HTML);
         mimeTypeMap.put("123", "application/vnd.lotus-1-2-3");
         mimeTypeMap.put("3ds", "image/x-3ds");
         mimeTypeMap.put("3g2", "video/3gpp");
@@ -69,7 +70,7 @@ public class HttpContentType {
         mimeTypeMap.put("arj", "application/x-arj");
         mimeTypeMap.put("arw", "image/x-sony-arw");
         mimeTypeMap.put("as", "application/x-applix-spreadsheet");
-        mimeTypeMap.put("asc", "text/plain");
+        mimeTypeMap.put("asc", TEXT_PLAIN);
         mimeTypeMap.put("asf", "video/x-ms-asf");
         mimeTypeMap.put("asp", "application/x-asp");
         mimeTypeMap.put("ass", "text/x-ssa");
@@ -86,7 +87,7 @@ public class HttpContentType {
         mimeTypeMap.put("bcpio", "application/x-bcpio");
         mimeTypeMap.put("bdf", "application/x-font-bdf");
         mimeTypeMap.put("bib", "text/x-bibtex");
-        mimeTypeMap.put("bin", "application/octet-stream");
+        mimeTypeMap.put("bin", OCTET_STREAM);
         mimeTypeMap.put("blend", "application/x-blender");
         mimeTypeMap.put("blender", "application/x-blender");
         mimeTypeMap.put("bmp", "image/x-ms-bmp");
@@ -132,7 +133,7 @@ public class HttpContentType {
         mimeTypeMap.put("dcm", "application/dicom");
         mimeTypeMap.put("dcr", "image/x-kodak-dcr");
         mimeTypeMap.put("dds", "image/x-dds");
-        mimeTypeMap.put("deb", "application/octet-stream");
+        mimeTypeMap.put("deb", OCTET_STREAM);
         mimeTypeMap.put("der", "application/x-x509-ca-cert");
         mimeTypeMap.put("desktop", "application/x-desktop");
         mimeTypeMap.put("dia", "application/x-dia-diagram");
@@ -176,7 +177,7 @@ public class HttpContentType {
         mimeTypeMap.put("es", "application/ecmascript");
         mimeTypeMap.put("etheme", "application/x-e-theme");
         mimeTypeMap.put("etx", "text/x-setext");
-        mimeTypeMap.put("exe", "application/octet-stream");
+        mimeTypeMap.put("exe", OCTET_STREAM);
         mimeTypeMap.put("exr", "image/x-exr");
         mimeTypeMap.put("ez", "application/andrew-inset");
         mimeTypeMap.put("f", "text/x-fortran");
@@ -228,8 +229,8 @@ public class HttpContentType {
         mimeTypeMap.put("hpgl", "application/vnd.hp-hpgl");
         mimeTypeMap.put("hpp", "text/x-c++hdr");
         mimeTypeMap.put("hs", "text/x-haskell");
-        mimeTypeMap.put("htm", "text/html");
-        mimeTypeMap.put("html", "text/html");
+        mimeTypeMap.put("htm", TEXT_HTML);
+        mimeTypeMap.put("html", TEXT_HTML);
         mimeTypeMap.put("hwp", "application/x-hwp");
         mimeTypeMap.put("hwt", "application/x-hwt");
         mimeTypeMap.put("hxx", "text/x-c++hdr");
@@ -246,7 +247,7 @@ public class HttpContentType {
         mimeTypeMap.put("imy", "text/x-imelody");
         mimeTypeMap.put("ins", "text/x-tex");
         mimeTypeMap.put("iptables", "text/x-iptables");
-        mimeTypeMap.put("iso", "application/octet-stream");
+        mimeTypeMap.put("iso", OCTET_STREAM);
         mimeTypeMap.put("iso9660", "application/x-cd-image");
         mimeTypeMap.put("it", "audio/x-it");
         mimeTypeMap.put("j2k", "image/jp2");
@@ -264,7 +265,7 @@ public class HttpContentType {
         mimeTypeMap.put("jpr", "application/x-jbuilder-project");
         mimeTypeMap.put("jpx", "image/jp2");
         mimeTypeMap.put("js", "application/javascript");
-        mimeTypeMap.put("json", "application/json");
+        mimeTypeMap.put("json", JSON);
         mimeTypeMap.put("jsonp", "application/jsonp");
         mimeTypeMap.put("k25", "image/x-kodak-k25");
         mimeTypeMap.put("kar", "audio/midi");
@@ -359,7 +360,7 @@ public class HttpContentType {
         mimeTypeMap.put("mrml", "text/x-mrml");
         mimeTypeMap.put("mrw", "image/x-minolta-mrw");
         mimeTypeMap.put("ms", "text/x-troff-ms");
-        mimeTypeMap.put("msi", "application/octet-stream");
+        mimeTypeMap.put("msi", OCTET_STREAM);
         mimeTypeMap.put("msod", "image/x-msod");
         mimeTypeMap.put("msx", "application/x-msx-rom");
         mimeTypeMap.put("mtm", "audio/x-mod");
@@ -620,7 +621,7 @@ public class HttpContentType {
         mimeTypeMap.put("ttc", "application/x-font-ttf");
         mimeTypeMap.put("ttf", "application/x-font-ttf");
         mimeTypeMap.put("ttx", "application/x-font-ttx");
-        mimeTypeMap.put("txt", "text/plain");
+        mimeTypeMap.put("txt", TEXT_PLAIN);
         mimeTypeMap.put("txz", "application/x-xz-compressed-tar");
         mimeTypeMap.put("tzo", "application/x-tzo");
         mimeTypeMap.put("ufraw", "application/x-ufraw");
@@ -705,7 +706,7 @@ public class HttpContentType {
         mimeTypeMap.put("xm", "audio/x-xm");
         mimeTypeMap.put("xmf", "audio/x-xmf");
         mimeTypeMap.put("xmi", "text/x-xmi");
-        mimeTypeMap.put("xml", "text/xml");
+        mimeTypeMap.put("xml", XML);
         mimeTypeMap.put("xpm", "image/x-xpixmap");
         mimeTypeMap.put("xps", "application/vnd.ms-xpsdocument");
         mimeTypeMap.put("xsl", "application/xml");
@@ -721,7 +722,7 @@ public class HttpContentType {
         mimeTypeMap.put("zabw", "application/x-abiword");
         mimeTypeMap.put("zip", "application/zip");
         mimeTypeMap.put("zoo", "application/x-zoo");
-        mimeTypeMap.put("shtml", "text/html");
+        mimeTypeMap.put("shtml", TEXT_HTML);
         mimeTypeMap.put("htc", "text/x-component");
         mimeTypeMap.put("webp", "image/webp");
         mimeTypeMap.put("woff", "font/woff");
@@ -736,10 +737,10 @@ public class HttpContentType {
         mimeTypeMap.put("run", "application/x-makeself");
         mimeTypeMap.put("sea", "application/x-sea");
         mimeTypeMap.put("xpi", "application/x-xpinstall");
-        mimeTypeMap.put("dll", "application/octet-stream");
-        mimeTypeMap.put("dmg", "application/octet-stream");
-        mimeTypeMap.put("img", "application/octet-stream");
-        mimeTypeMap.put("msp", "application/octet-stream");
-        mimeTypeMap.put("msm", "application/octet-stream");
+        mimeTypeMap.put("dll", OCTET_STREAM);
+        mimeTypeMap.put("dmg", OCTET_STREAM);
+        mimeTypeMap.put("img", OCTET_STREAM);
+        mimeTypeMap.put("msp", OCTET_STREAM);
+        mimeTypeMap.put("msm", OCTET_STREAM);
     }
 }
