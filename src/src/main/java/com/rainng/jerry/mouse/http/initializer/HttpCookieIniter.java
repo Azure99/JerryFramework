@@ -23,7 +23,9 @@ public class HttpCookieIniter {
         String[] cookies = cookiesStr.split(";\\s");
         for (String cookie : cookies) {
             String[] kv = cookie.split("=");
-            cookieMap.put(kv[0], new Cookie(kv[0], kv[1], true));
+            if (kv.length == 2) {
+                cookieMap.put(kv[0], new Cookie(kv[0], kv[1], true));
+            }
         }
     }
 }
