@@ -1,20 +1,18 @@
 package com.rainng.jerry.mvc.mapping;
 
-import com.rainng.jerry.mouse.http.constant.RequestMethod;
-
 import java.util.Arrays;
 
 public class RequestKey {
     private final String path;
-    private final RequestMethod requestMethod;
+    private final HttpMethodMask methodMask;
     private final String[] parameters;
 
     private int hashCode = 0;
     private boolean hashCodeCached = false;
 
-    public RequestKey(String path, RequestMethod requestMethod, String[] parameters) {
+    public RequestKey(String path, HttpMethodMask methodMask, String[] parameters) {
         this.path = path.toLowerCase();
-        this.requestMethod = requestMethod;
+        this.methodMask = methodMask;
         this.parameters = parameters;
         sortParameters();
     }
@@ -31,8 +29,8 @@ public class RequestKey {
         return path;
     }
 
-    public RequestMethod getRequestMethod() {
-        return requestMethod;
+    public HttpMethodMask getMethodMask() {
+        return methodMask;
     }
 
     public String[] getParameters() {
@@ -54,7 +52,7 @@ public class RequestKey {
             return false;
         }
 
-        if (requestMethod != other.requestMethod && other.requestMethod != RequestMethod.ANY) {
+        if (!other.methodMask.containsAll(methodMask)) {
             return false;
         }
 

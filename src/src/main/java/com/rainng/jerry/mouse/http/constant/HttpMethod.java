@@ -1,17 +1,16 @@
 package com.rainng.jerry.mouse.http.constant;
 
-public enum RequestMethod {
+public enum HttpMethod {
     GET("GET"),
     POST("POST"),
     PUT("PUT"),
     DELETE("DELETE"),
     PATCH("PATCH"),
     HEAD("HEAD"),
-    OPTIONS("OPTIONS"),
-    ANY("ANY");
+    OPTIONS("OPTIONS");
     private final String value;
 
-    RequestMethod(String value) {
+    HttpMethod(String value) {
         this.value = value;
     }
 

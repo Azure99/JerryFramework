@@ -3,12 +3,9 @@ package com.rainng.jerry.mvc.mapping;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rainng.jerry.mouse.http.HttpRequest;
-import com.rainng.jerry.mouse.http.constant.RequestMethod;
+import com.rainng.jerry.mouse.http.constant.HttpMethod;
 import com.rainng.jerry.mvc.Controller;
-import com.rainng.jerry.mvc.annotation.HttpGet;
-import com.rainng.jerry.mvc.annotation.HttpPatch;
-import com.rainng.jerry.mvc.annotation.HttpPost;
-import com.rainng.jerry.mvc.annotation.Route;
+import com.rainng.jerry.mvc.annotation.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -31,40 +28,44 @@ public class RouteParser {
     }
 
     /**
-     * 获取受支持的Http request method
+     * 获取受支持的Http request method标志
      *
      * @param method 调用的method
-     * @return 受支持的Http request method (GET / POST)
+     * @return 受支持的Http request method标志
      */
-    public RequestMethod getSupportedRequestMethod(Method method) {
+    public HttpMethodMask scanHttpMethodMask(Method method) {
         boolean getExist = method.getAnnotation(HttpGet.class) != null;
         boolean postExist = method.getAnnotation(HttpPost.class) != null;
         boolean patchExist = method.getAnnotation(HttpPatch.class) != null;
-        boolean putExist = method.getAnnotation(HttpPatch.class) != null;
-        boolean deleteExist = method.getAnnotation(HttpPatch.class) != null;
+        boolean putExist = method.getAnnotation(HttpPut.class) != null;
+        boolean deleteExist = method.getAnnotation(HttpDelete.class) != null;
 
         if (getExist && postExist && patchExist && putExist && deleteExist) {
-            return RequestMethod.ANY;
+            return HttpMethodMask.allMethodMask();
         }
 
         if (!(getExist || postExist || patchExist || putExist || deleteExist)) {
-            return RequestMethod.ANY;
+            return HttpMethodMask.allMethodMask();
         }
 
+        HttpMethodMask mask = new HttpMethodMask();
         if (getExist) {
-            return RequestMethod.GET;
+            mask.add(HttpMethod.GET);
         }
         if (postExist) {
-            return RequestMethod.POST;
+            mask.add(HttpMethod.POST);
         }
         if (patchExist) {
-            return RequestMethod.PATCH;
+            mask.add(HttpMethod.PATCH);
         }
         if (putExist) {
-            return RequestMethod.PUT;
+            mask.add(HttpMethod.PUT);
+        }
+        if (deleteExist) {
+            mask.add(HttpMethod.DELETE);
         }
 
-        return RequestMethod.DELETE;
+        return mask;
     }
 
     /**
@@ -149,7 +150,9 @@ public class RouteParser {
         String[] args = new String[argList.size()];
         argList.toArray(args);
 
-        return new RequestKey(request.getResourcePath(), request.getMethod(), args);
+        HttpMethodMask methodMask = new HttpMethodMask().add(request.getMethod());
+
+        return new RequestKey(request.getResourcePath(), methodMask, args);
     }
 
     /**

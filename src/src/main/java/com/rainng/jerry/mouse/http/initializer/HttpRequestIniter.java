@@ -3,12 +3,11 @@ package com.rainng.jerry.mouse.http.initializer;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.constant.HttpContentType;
-import com.rainng.jerry.mouse.http.constant.RequestMethod;
+import com.rainng.jerry.mouse.http.constant.HttpMethod;
 import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
 import com.rainng.jerry.mouse.http.map.HttpQueryMap;
 import com.rainng.jerry.mouse.util.UrlEncodeUtil;
 
-import javax.print.DocFlavor;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -89,7 +88,7 @@ public class HttpRequestIniter {
             headers.set(key, value);
         }
 
-        request.setMethod(RequestMethod.valueOf(method));
+        request.setMethod(HttpMethod.valueOf(method));
         request.setPath(path);
         request.setResourcePath(parseResourcePath(path));
         request.setQueryString(parseQueryString(path));

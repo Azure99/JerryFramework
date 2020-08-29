@@ -5,10 +5,10 @@ import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.HttpResponse;
 import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import com.rainng.jerry.mouse.http.constant.HttpStatusCode;
-import com.rainng.jerry.mouse.http.constant.RequestMethod;
 import com.rainng.jerry.mouse.middleware.BaseMiddleware;
 import com.rainng.jerry.mvc.annotation.HttpMethodMapping;
 import com.rainng.jerry.mvc.mapping.RequestKey;
+import com.rainng.jerry.mvc.mapping.HttpMethodMask;
 import com.rainng.jerry.mvc.mapping.RequestTarget;
 import com.rainng.jerry.mvc.mapping.RouteParser;
 import com.rainng.jerry.mvc.result.ActionContext;
@@ -54,14 +54,14 @@ public class MvcMiddleware extends BaseMiddleware {
 
     private void addMethod(Class<? extends Controller> controller, String controllerRoutePath
             , Method method, boolean enableMethodMapping) {
-        RequestMethod requestMethod = parser.getSupportedRequestMethod(method);
+        HttpMethodMask methodMask = parser.scanHttpMethodMask(method);
         String routePath = parser.getRoutePath(method);
 
         if (enableMethodMapping) {
             for (String httpMethod : HTTP_METHODS) {
                 if (routePath.startsWith(httpMethod)) {
                     routePath = routePath.substring(httpMethod.length());
-                    requestMethod = RequestMethod.valueOf(httpMethod.toUpperCase());
+                    methodMask = HttpMethodMask.fromString(httpMethod);
                     break;
                 }
             }
@@ -79,7 +79,7 @@ public class MvcMiddleware extends BaseMiddleware {
         Arrays.sort(parameterNames);
 
 
-        RequestKey requestKey = new RequestKey(routePath, requestMethod, parameterNames);
+        RequestKey requestKey = new RequestKey(routePath, methodMask, parameterNames);
         RequestTarget requestTarget = new RequestTarget(controller, method);
 
         requestMap.put(requestKey, requestTarget);

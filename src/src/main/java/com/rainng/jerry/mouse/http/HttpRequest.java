@@ -1,7 +1,7 @@
 package com.rainng.jerry.mouse.http;
 
 import com.rainng.jerry.mouse.http.constant.HttpHeaderKey;
-import com.rainng.jerry.mouse.http.constant.RequestMethod;
+import com.rainng.jerry.mouse.http.constant.HttpMethod;
 import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
 import com.rainng.jerry.mouse.http.map.HttpQueryMap;
 
@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 public class HttpRequest {
     private HttpContext httpContext;
-    private RequestMethod method;
+    private HttpMethod method;
     private String path;
     private String resourcePath;
     private String queryString;
@@ -21,7 +21,7 @@ public class HttpRequest {
     private String bodyString;
 
     public HttpRequest() {
-        method = RequestMethod.GET;
+        method = HttpMethod.GET;
         path = "/";
         resourcePath = "/";
         queryString = "";
@@ -40,11 +40,11 @@ public class HttpRequest {
         this.httpContext = httpContext;
     }
 
-    public RequestMethod getMethod() {
+    public HttpMethod getMethod() {
         return method;
     }
 
-    public void setMethod(RequestMethod method) {
+    public void setMethod(HttpMethod method) {
         this.method = method;
     }
 
