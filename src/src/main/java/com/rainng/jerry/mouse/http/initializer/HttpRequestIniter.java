@@ -8,6 +8,7 @@ import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
 import com.rainng.jerry.mouse.http.map.HttpQueryMap;
 import com.rainng.jerry.mouse.util.UrlEncodeUtil;
 
+import javax.print.DocFlavor;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -88,7 +89,7 @@ public class HttpRequestIniter {
             headers.set(key, value);
         }
 
-        request.setMethod(parseRequestMethod(method));
+        request.setMethod(RequestMethod.valueOf(method));
         request.setPath(path);
         request.setResourcePath(parseResourcePath(path));
         request.setQueryString(parseQueryString(path));
@@ -152,27 +153,6 @@ public class HttpRequestIniter {
         }
 
         return String.join("-", split);
-    }
-
-    private static RequestMethod parseRequestMethod(String method) {
-        switch (method) {
-            case "GET":
-                return RequestMethod.GET;
-            case "POST":
-                return RequestMethod.POST;
-            case "PUT":
-                return RequestMethod.PUT;
-            case "DELETE":
-                return RequestMethod.DELETE;
-            case "PATCH":
-                return RequestMethod.PATCH;
-            case "HEAD":
-                return RequestMethod.HEAD;
-            case "OPTIONS":
-                return RequestMethod.OPTIONS;
-            default:
-                return RequestMethod.GET;
-        }
     }
 
     private static String parseResourcePath(String path) {

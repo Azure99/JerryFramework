@@ -61,7 +61,7 @@ public class MvcMiddleware extends BaseMiddleware {
             for (String httpMethod : HTTP_METHODS) {
                 if (routePath.startsWith(httpMethod)) {
                     routePath = routePath.substring(httpMethod.length());
-                    requestMethod = RequestMethod.parse(httpMethod);
+                    requestMethod = RequestMethod.valueOf(httpMethod);
                     break;
                 }
             }

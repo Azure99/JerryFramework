@@ -1,33 +1,26 @@
 package com.rainng.jerry.mouse.http.constant;
 
 public enum RequestMethod {
-    GET,
-    POST,
-    PUT,
-    DELETE,
-    PATCH,
-    HEAD,
-    OPTIONS,
-    ANY;
+    GET("GET"),
+    POST("POST"),
+    PUT("PUT"),
+    DELETE("DELETE"),
+    PATCH("PATCH"),
+    HEAD("HEAD"),
+    OPTIONS("OPTIONS"),
+    ANY("ANY");
+    private final String value;
 
-    public static RequestMethod parse(String name) {
-        switch (name) {
-            case "get":
-                return RequestMethod.GET;
-            case "post":
-                return RequestMethod.POST;
-            case "put":
-                return RequestMethod.PUT;
-            case "delete":
-                return RequestMethod.DELETE;
-            case "patch":
-                return RequestMethod.PATCH;
-            case "head":
-                return RequestMethod.HEAD;
-            case "options":
-                return RequestMethod.OPTIONS;
-            default:
-                return RequestMethod.ANY;
-        }
+    RequestMethod(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 }
