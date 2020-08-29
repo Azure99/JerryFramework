@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MvcMiddleware extends BaseMiddleware {
-    private static final String JSON_PLACEHOLDER = "___json___";
+    private static final String BODY_PLACEHOLDER = "___body___";
     private static final String[] HTTP_METHODS = new String[]{"get", "post", "delete", "put", "patch"};
 
     private final RouteParser parser = RouteParser.getInstance();
@@ -91,7 +91,7 @@ public class MvcMiddleware extends BaseMiddleware {
         HttpResponse response = context.getResponse();
 
         if (request.getContentType().equals(HttpContentType.JSON)) {
-            request.getForm().set(JSON_PLACEHOLDER, request.getBodyString());
+            request.getForm().set(BODY_PLACEHOLDER, request.getBodyString());
         }
 
         RequestKey requestKey = parser.getRequestKey(request);

@@ -1,7 +1,6 @@
 package com.rainng.jerry.mvc.mapping;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.constant.HttpMethod;
 import com.rainng.jerry.mvc.Controller;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RouteParser {
-    private static final String JSON_PLACEHOLDER = "___json___";
+    private static final String BODY_PLACEHOLDER = "___body___";
     private static final String CONTROLLER_SUFFIX = "controller";
     private static final RouteParser instance = new RouteParser();
 
@@ -185,8 +184,8 @@ public class RouteParser {
         Parameter[] parameters = method.getParameters();
         String[] parameterNames = new String[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            if (parameters[i].getType().isAssignableFrom(JSONObject.class)) {
-                parameterNames[i] = JSON_PLACEHOLDER;
+            if (parameters[i].getAnnotation(RequestBody.class) != null) {
+                parameterNames[i] = BODY_PLACEHOLDER;
                 continue;
             }
             parameterNames[i] = parameters[i].getName().toLowerCase();
@@ -226,10 +225,8 @@ public class RouteParser {
             return Boolean.valueOf(strValue);
         } else if (type.equals(Short.class)) {
             return Short.valueOf(strValue);
-        } else if (type.equals(JSONObject.class)) {
-            return JSON.parse(strValue);
         } else {
-            return strValue;
+            return JSON.parseObject(strValue, type);
         }
     }
 }

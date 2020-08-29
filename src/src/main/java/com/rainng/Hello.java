@@ -28,7 +28,7 @@ class DemoController extends Controller {
     }
 
     public Student json() {
-        return new Student(1, "Azure99");
+        return new Student();
     }
 
     public Result quickJson() {
@@ -39,6 +39,10 @@ class DemoController extends Controller {
         return json("id|name|info", 1, "Azure99", jsono(
                 "birthday|friends",
                 new Date(), new String[]{"A", "B", "C", "D"}));
+    }
+
+    public Result requestBody(String message, @RequestBody Student student) {
+        return json("message|student", message, student);
     }
 
     @Route("route")
@@ -116,19 +120,6 @@ class UserController extends Controller {
 }
 
 class Student {
-    private Integer id;
-    private String name;
-
-    public Student(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
+    public Integer id = 1;
+    public String name = "Azure99";
 }
