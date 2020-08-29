@@ -2,10 +2,7 @@ package com.rainng;
 
 import com.rainng.jerry.JerryBuilder;
 import com.rainng.jerry.mvc.Controller;
-import com.rainng.jerry.mvc.annotation.HttpGet;
-import com.rainng.jerry.mvc.annotation.HttpMethodMapping;
-import com.rainng.jerry.mvc.annotation.HttpPost;
-import com.rainng.jerry.mvc.annotation.Route;
+import com.rainng.jerry.mvc.annotation.*;
 import com.rainng.jerry.mvc.result.Result;
 
 import java.util.Date;
@@ -62,6 +59,12 @@ class DemoController extends Controller {
     @HttpPost
     public String post(String arg) {
         return "Http POST only";
+    }
+
+    @HttpPut
+    @HttpPatch
+    public String putOrPatch(String arg) {
+        return "Http PUT or PATCH";
     }
 
     public Result redirect() {
