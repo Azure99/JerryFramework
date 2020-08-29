@@ -50,7 +50,7 @@ public class HomeController extends Controller {
 
 JerryMVC将**请求参数、表单参数**简化聚合为**参数列表**，根据参数名在调用方法时自动传入。同时，可以使用@RequestBody注解来指定一个参数来源为请求的Body，它支持自动反序列化JSON为参数类型，这点与SpringMVC一致。
 
-另外，代码中还演示了快速构建JSON响应的特性，它含有message和student两个字段
+另外，代码中还演示了快速构建Json响应的特性，它含有message和student两个字段
 
 ```java
 public Result test(String message, @RequestBody Student student) {
@@ -129,71 +129,73 @@ Jerry MVC
  * Auto mapping: /demo/hello、/demo/add ...
  */
 class DemoController extends Controller {
+    // 返回一个视图, 可通过putModel来传递数据
     public Result hello() {
         putModel("key", "Jerry MVC with thymeleaf");
         return view("index.html");
     }
 
+    // 请求参数映射
     public Double add(Integer a, Double b) {
         return a + b;
     }
 
+    // 自动将返回的Student实例序列化为Json
     public Student json() {
         return new Student();
     }
 
+    // 快速构建Json的API, 字段使用|分隔, 后面接n个参数为n字段赋值
     public Result quickJson() {
         return json("id|name", 1, "Azure99");
     }
 
+    // 快速构建复杂Json的API, 使用jsono方法来嵌套一个Json对象
     public Result nestJson() {
         return json("id|name|info", 1, "Azure99", jsono(
                 "birthday|friends",
                 new Date(), new String[]{"A", "B", "C", "D"}));
     }
 
+    // 根据类型自动反序列化Body并映射到student参数
     public Result requestBody(String message, @RequestBody Student student) {
         return json("message|student", message, student);
     }
 
+    // 相对路径的路由指定, 会继承父亲的路径
     @Route("route")
     public String relativeRoute() {
         return "My path is /demo/route";
     }
 
+    // 绝对路径的路由指定, 不会继承父亲的路径
     @Route("/route2")
     public String absoluteRoute() {
         return "My path is /route2";
     }
 
+    // 限定请求方法为GET
     @HttpGet
     public String get() {
         return "Http GET only";
     }
 
-    @HttpPost
-    public String post(String arg) {
-        return "Http POST only";
-    }
-
-    @HttpPut
-    @HttpPatch
-    public String putOrPatch(String arg) {
-        return "Http PUT or PATCH";
-    }
-
+    // 返回302重定向
     public Result redirect() {
         return redirect("https://www.baidu.com");
     }
 
+    // 返回一段Html
     public Result html() {
         return html("<h1>Html</h1>");
     }
 
+    // 使用Cookie, 可通过setCookie设置
     public Object cookie() {
         return getCookie("foo").getValue();
     }
 
+    // 使用Session, 可通过setSession设置
     public Object session() {
         return getSession("datetime");
     }
