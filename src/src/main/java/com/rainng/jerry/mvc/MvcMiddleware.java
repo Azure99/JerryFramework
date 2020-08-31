@@ -20,7 +20,7 @@ public class MvcMiddleware extends BaseMiddleware {
     private final Map<RequestKey, RequestTarget> requestMap;
 
     public MvcMiddleware(Class<?> appClass) {
-        requestMap = RequestMapResolver.resolve(appClass);
+        requestMap = RequestMapResolver.resolveMap(appClass);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class MvcMiddleware extends BaseMiddleware {
             request.getForm().set(BODY_PLACEHOLDER, request.getBodyString());
         }
 
-        RequestKey requestKey = RequestMapResolver.getRequestKey(request);
+        RequestKey requestKey = RequestMapResolver.resolveRequestKey(request);
         if (!requestMap.containsKey(requestKey)) {
             response.setStatusCode(HttpStatusCode.HTTP_NOT_FOUND);
             next(context);

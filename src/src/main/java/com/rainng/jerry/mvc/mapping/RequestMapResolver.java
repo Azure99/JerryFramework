@@ -20,7 +20,7 @@ public class RequestMapResolver {
     }
 
     @SuppressWarnings("unchecked")
-    public static Map<RequestKey, RequestTarget> resolve(Class<?> appClass) {
+    public static Map<RequestKey, RequestTarget> resolveMap(Class<?> appClass) {
         Map<RequestKey, RequestTarget> requestMap = new HashMap<>();
 
         Class<?>[] controllers = ControllerScanner.scan(appClass);
@@ -32,22 +32,23 @@ public class RequestMapResolver {
     }
 
     private static void addController(Map<RequestKey, RequestTarget> requestMap, Class<? extends Controller> controller) {
-        String routePath = RouteResolver.getFullControllerPath(controller);
+        String controllerPath = RouteResolver.resolveFullControllerPath(controller);
 
         Method[] methods = controller.getDeclaredMethods();
         for (Method method : methods) {
             // public only
             if (((method.getModifiers() & 1) == 1)) {
                 boolean enableMethodMapping = controller.getAnnotation(HttpMethodMapping.class) != null;
-                addMethod(requestMap, controller, routePath, method, enableMethodMapping);
+                addMethod(requestMap, controller, controllerPath, method, enableMethodMapping);
             }
         }
     }
 
-    private static void addMethod(Map<RequestKey, RequestTarget> requestMap, Class<? extends Controller> controller, String controllerRoutePath
-            , Method method, boolean enableMethodMapping) {
+    private static void addMethod(Map<RequestKey, RequestTarget> requestMap, Class<? extends Controller> controller,
+                                  String controllerPath, Method method, boolean enableMethodMapping) {
+
         HttpMethodMask methodMask = scanHttpMethodMask(method);
-        String routePath = RouteResolver.getMethodPath(method);
+        String routePath = RouteResolver.resolveMethodPath(method);
 
         if (enableMethodMapping) {
             for (String httpMethod : HTTP_METHODS) {
@@ -59,12 +60,12 @@ public class RequestMapResolver {
             }
         }
 
-        if ("".equals(routePath) && controllerRoutePath.endsWith("/")) {
-            routePath = controllerRoutePath.substring(0, controllerRoutePath.length() - 1);
+        if ("".equals(routePath) && controllerPath.endsWith("/")) {
+            routePath = controllerPath.substring(0, controllerPath.length() - 1);
         }
 
         if (!routePath.startsWith("/")) {
-            routePath = controllerRoutePath + routePath;
+            routePath = controllerPath + routePath;
         }
 
         String[] parameterNames = getParameterNames(method);
@@ -83,12 +84,6 @@ public class RequestMapResolver {
         requestMap.put(requestKey, requestTarget);
     }
 
-    /**
-     * 获取受支持的Http request method标志
-     *
-     * @param method 调用的method
-     * @return 受支持的Http request method标志
-     */
     public static HttpMethodMask scanHttpMethodMask(Method method) {
         boolean getExist = method.getAnnotation(HttpGet.class) != null;
         boolean postExist = method.getAnnotation(HttpPost.class) != null;
@@ -124,33 +119,18 @@ public class RequestMapResolver {
         return mask;
     }
 
-    /**
-     * 从Request中解析Request Key
-     *
-     * @param request Http request
-     * @return Request Key
-     */
-    public static RequestKey getRequestKey(HttpRequest request) {
+    public static RequestKey resolveRequestKey(HttpRequest request) {
         List<String> argList = new ArrayList<>();
         argList.addAll(request.getQueryArgs().keySet());
-
         argList.addAll(request.getForm().keySet());
 
         String[] args = new String[argList.size()];
         argList.toArray(args);
 
         HttpMethodMask methodMask = new HttpMethodMask().add(request.getMethod());
-
         return new RequestKey(request.getResourcePath(), methodMask, args);
     }
 
-    /**
-     * 从Request获取调用Target method所需要的参数
-     *
-     * @param request       Http request
-     * @param requestTarget Request target
-     * @return 参数数组
-     */
     public static Object[] getArgValues(HttpRequest request, RequestTarget requestTarget) {
         Method method = requestTarget.getMethod();
         Parameter[] parameters = method.getParameters();
@@ -184,13 +164,6 @@ public class RequestMapResolver {
         return parameterNames;
     }
 
-    /**
-     * 将字符串转换为对应类型的值
-     *
-     * @param parameter 参数
-     * @param strValue  字符串值
-     * @return 对应类型的值
-     */
     public static Object getParameterValue(Parameter parameter, String strValue) {
         if (strValue == null) {
             return null;

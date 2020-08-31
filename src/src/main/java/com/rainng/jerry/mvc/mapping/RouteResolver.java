@@ -13,14 +13,14 @@ public class RouteResolver {
     }
 
     @SuppressWarnings("unchecked")
-    public static String getFullControllerPath(Class<? extends Controller> controller) {
+    public static String resolveFullControllerPath(Class<? extends Controller> controller) {
         String routePath = "";
 
         Class<?> nowController = controller;
         while (!routePath.startsWith("/") && nowController != null &&
                 Controller.class.isAssignableFrom(nowController)) {
 
-            String nowPath = getControllerPath((Class<? extends Controller>) nowController);
+            String nowPath = resolveControllerPath((Class<? extends Controller>) nowController);
             if (!nowPath.endsWith("/")) {
                 nowPath += '/';
             }
@@ -32,7 +32,7 @@ public class RouteResolver {
         return routePath;
     }
 
-    public static String getControllerPath(Class<? extends Controller> controller) {
+    public static String resolveControllerPath(Class<? extends Controller> controller) {
         Route controllerRoute = controller.getAnnotation(Route.class);
 
         if (controllerRoute == null || "".equals(controllerRoute.value())) {
@@ -49,7 +49,7 @@ public class RouteResolver {
         return controllerRoute.value().toLowerCase();
     }
 
-    public static String getMethodPath(Method method) {
+    public static String resolveMethodPath(Method method) {
         Route methodRoute = method.getAnnotation(Route.class);
 
         if (methodRoute == null || "".equals(methodRoute.value())) {
