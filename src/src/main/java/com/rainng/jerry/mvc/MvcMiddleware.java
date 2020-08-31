@@ -7,8 +7,8 @@ import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import com.rainng.jerry.mouse.http.constant.HttpStatusCode;
 import com.rainng.jerry.mouse.middleware.BaseMiddleware;
 import com.rainng.jerry.mvc.annotation.HttpMethodMapping;
-import com.rainng.jerry.mvc.mapping.RequestKey;
 import com.rainng.jerry.mvc.mapping.HttpMethodMask;
+import com.rainng.jerry.mvc.mapping.RequestKey;
 import com.rainng.jerry.mvc.mapping.RequestTarget;
 import com.rainng.jerry.mvc.mapping.RouteParser;
 import com.rainng.jerry.mvc.result.ActionContext;
@@ -25,7 +25,6 @@ public class MvcMiddleware extends BaseMiddleware {
     private static final String BODY_PLACEHOLDER = "___body___";
     private static final String[] HTTP_METHODS = new String[]{"get", "post", "delete", "put", "patch"};
 
-    private final RouteParser parser = RouteParser.getInstance();
     private final Map<RequestKey, RequestTarget> requestMap = new HashMap<>();
 
     public MvcMiddleware(Class<?> appClass) {
@@ -40,7 +39,7 @@ public class MvcMiddleware extends BaseMiddleware {
     }
 
     private void addController(Class<? extends Controller> controller) {
-        String routePath = parser.getControllerChainRoutePath(controller);
+        String routePath = RouteParser.getControllerChainRoutePath(controller);
 
         Method[] methods = controller.getDeclaredMethods();
         for (Method method : methods) {
@@ -54,8 +53,8 @@ public class MvcMiddleware extends BaseMiddleware {
 
     private void addMethod(Class<? extends Controller> controller, String controllerRoutePath
             , Method method, boolean enableMethodMapping) {
-        HttpMethodMask methodMask = parser.scanHttpMethodMask(method);
-        String routePath = parser.getRoutePath(method);
+        HttpMethodMask methodMask = RouteParser.scanHttpMethodMask(method);
+        String routePath = RouteParser.getRoutePath(method);
 
         if (enableMethodMapping) {
             for (String httpMethod : HTTP_METHODS) {
@@ -75,7 +74,7 @@ public class MvcMiddleware extends BaseMiddleware {
             routePath = controllerRoutePath + routePath;
         }
 
-        String[] parameterNames = parser.getParameterNames(method);
+        String[] parameterNames = RouteParser.getParameterNames(method);
         Arrays.sort(parameterNames);
 
 
@@ -94,7 +93,7 @@ public class MvcMiddleware extends BaseMiddleware {
             request.getForm().set(BODY_PLACEHOLDER, request.getBodyString());
         }
 
-        RequestKey requestKey = parser.getRequestKey(request);
+        RequestKey requestKey = RouteParser.getRequestKey(request);
         if (!requestMap.containsKey(requestKey)) {
             response.setStatusCode(HttpStatusCode.HTTP_NOT_FOUND);
             next(context);
@@ -102,7 +101,7 @@ public class MvcMiddleware extends BaseMiddleware {
         }
 
         RequestTarget requestTarget = requestMap.get(requestKey);
-        Object[] argValues = parser.getArgValues(request, requestTarget);
+        Object[] argValues = RouteParser.getArgValues(request, requestTarget);
 
         Constructor<?> controllerConstructor = requestTarget.getController().getDeclaredConstructor();
         controllerConstructor.setAccessible(true);

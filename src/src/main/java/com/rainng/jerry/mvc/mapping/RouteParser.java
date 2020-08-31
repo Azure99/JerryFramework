@@ -16,14 +16,9 @@ import java.util.Map;
 public class RouteParser {
     private static final String BODY_PLACEHOLDER = "___body___";
     private static final String CONTROLLER_SUFFIX = "controller";
-    private static final RouteParser instance = new RouteParser();
 
     private RouteParser() {
 
-    }
-
-    public static RouteParser getInstance() {
-        return instance;
     }
 
     /**
@@ -32,7 +27,7 @@ public class RouteParser {
      * @param method 调用的method
      * @return 受支持的Http request method标志
      */
-    public HttpMethodMask scanHttpMethodMask(Method method) {
+    public static HttpMethodMask scanHttpMethodMask(Method method) {
         boolean getExist = method.getAnnotation(HttpGet.class) != null;
         boolean postExist = method.getAnnotation(HttpPost.class) != null;
         boolean patchExist = method.getAnnotation(HttpPatch.class) != null;
@@ -74,7 +69,7 @@ public class RouteParser {
      * @return 此控制器及其所有基控制器的路由路径
      */
     @SuppressWarnings("unchecked")
-    public String getControllerChainRoutePath(Class<? extends Controller> controller) {
+    public static String getControllerChainRoutePath(Class<? extends Controller> controller) {
         String routePath = "";
 
         Class<?> nowController = controller;
@@ -100,7 +95,7 @@ public class RouteParser {
      * @param controller 控制器
      * @return 路由路径
      */
-    public String getRoutePath(Class<? extends Controller> controller) {
+    public static String getRoutePath(Class<? extends Controller> controller) {
         Route controllerRoute = controller.getAnnotation(Route.class);
 
         if (controllerRoute == null || "".equals(controllerRoute.value())) {
@@ -112,7 +107,6 @@ public class RouteParser {
             }
 
             return controllerPath;
-
         }
 
         return controllerRoute.value().toLowerCase();
@@ -124,7 +118,7 @@ public class RouteParser {
      * @param method 方法
      * @return 获取此方法的路由路径
      */
-    public String getRoutePath(Method method) {
+    public static String getRoutePath(Method method) {
         Route methodRoute = method.getAnnotation(Route.class);
 
         if (methodRoute == null || "".equals(methodRoute.value())) {
@@ -140,7 +134,7 @@ public class RouteParser {
      * @param request Http request
      * @return Request Key
      */
-    public RequestKey getRequestKey(HttpRequest request) {
+    public static RequestKey getRequestKey(HttpRequest request) {
         List<String> argList = new ArrayList<>();
         argList.addAll(request.getQueryArgs().keySet());
 
@@ -161,7 +155,7 @@ public class RouteParser {
      * @param requestTarget Request target
      * @return 参数数组
      */
-    public Object[] getArgValues(HttpRequest request, RequestTarget requestTarget) {
+    public static Object[] getArgValues(HttpRequest request, RequestTarget requestTarget) {
         Method method = requestTarget.getMethod();
         Parameter[] parameters = method.getParameters();
         String[] parameterNames = getParameterNames(method);
@@ -180,7 +174,7 @@ public class RouteParser {
         return argValues;
     }
 
-    public String[] getParameterNames(Method method) {
+    public static String[] getParameterNames(Method method) {
         Parameter[] parameters = method.getParameters();
         String[] parameterNames = new String[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
@@ -201,7 +195,7 @@ public class RouteParser {
      * @param strValue  字符串值
      * @return 对应类型的值
      */
-    public Object getParameterValue(Parameter parameter, String strValue) {
+    public static Object getParameterValue(Parameter parameter, String strValue) {
         if (strValue == null) {
             return null;
         }
