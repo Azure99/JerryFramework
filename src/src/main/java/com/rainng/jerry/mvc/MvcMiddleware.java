@@ -32,7 +32,7 @@ public class MvcMiddleware extends BaseMiddleware {
             request.getForm().set(BODY_PLACEHOLDER, request.getBodyString());
         }
 
-        RequestKey requestKey = RouteParser.getRequestKey(request);
+        RequestKey requestKey = RequestMapResolver.getRequestKey(request);
         if (!requestMap.containsKey(requestKey)) {
             response.setStatusCode(HttpStatusCode.HTTP_NOT_FOUND);
             next(context);
@@ -40,7 +40,7 @@ public class MvcMiddleware extends BaseMiddleware {
         }
 
         RequestTarget requestTarget = requestMap.get(requestKey);
-        Object[] argValues = RouteParser.getArgValues(request, requestTarget);
+        Object[] argValues = RequestMapResolver.getArgValues(request, requestTarget);
 
         Constructor<?> controllerConstructor = requestTarget.getController().getDeclaredConstructor();
         controllerConstructor.setAccessible(true);

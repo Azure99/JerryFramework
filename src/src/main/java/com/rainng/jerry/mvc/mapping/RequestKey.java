@@ -56,10 +56,8 @@ public class RequestKey {
             return false;
         }
 
-        String[] otherParameters = other.parameters;
-
         for (int i = 0; i < parameters.length; i++) {
-            if (!parameters[i].equals(otherParameters[i])) {
+            if (!parameters[i].equals(other.parameters[i])) {
                 return false;
             }
         }
