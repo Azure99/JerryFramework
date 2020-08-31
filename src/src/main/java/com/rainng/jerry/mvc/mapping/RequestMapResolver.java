@@ -68,7 +68,7 @@ public class RequestMapResolver {
             routePath = controllerPath + routePath;
         }
 
-        String[] parameterNames = getParameterNames(method);
+        String[] parameterNames = getParameterNamesForKey(method);
         Arrays.sort(parameterNames);
 
         RequestKey requestKey = new RequestKey(routePath, methodMask, parameterNames);
@@ -123,7 +123,6 @@ public class RequestMapResolver {
         List<String> argList = new ArrayList<>();
         argList.addAll(request.getQueryArgs().keySet());
         argList.addAll(request.getForm().keySet());
-        argList.add(REQUEST_BODY);
 
         String[] args = new String[argList.size()];
         argList.toArray(args);
@@ -135,7 +134,7 @@ public class RequestMapResolver {
     public static Object[] getArgValues(HttpRequest request, RequestTarget requestTarget) {
         Method method = requestTarget.getMethod();
         Parameter[] parameters = method.getParameters();
-        String[] parameterNames = getParameterNames(method);
+        String[] parameterNames = getParameterNamesForCall(method);
         int argsLen = parameterNames.length;
         Object[] argValues = new Object[argsLen];
 
@@ -155,7 +154,21 @@ public class RequestMapResolver {
         return argValues;
     }
 
-    public static String[] getParameterNames(Method method) {
+    public static String[] getParameterNamesForKey(Method method) {
+        Parameter[] parameters = method.getParameters();
+
+        List<String> parameterNames = new ArrayList<>(parameters.length);
+        for (Parameter parameter : parameters) {
+            if (parameter.getAnnotation(RequestBody.class) != null) {
+                continue;
+            }
+            parameterNames.add(parameter.getName().toLowerCase());
+        }
+
+        return parameterNames.toArray(new String[0]);
+    }
+
+    public static String[] getParameterNamesForCall(Method method) {
         Parameter[] parameters = method.getParameters();
         String[] parameterNames = new String[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
