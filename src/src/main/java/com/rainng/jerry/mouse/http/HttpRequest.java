@@ -96,6 +96,14 @@ public class HttpRequest {
         headers.set(HttpHeaderKey.HOST, host);
     }
 
+    public String getConnection() {
+        return headers.get(HttpHeaderKey.CONNECTION);
+    }
+
+    public void setConnection(String connection) {
+        headers.set(HttpHeaderKey.CONNECTION, connection);
+    }
+
     public String getContentType() {
         return headers.get(HttpHeaderKey.CONTENT_TYPE, "");
     }

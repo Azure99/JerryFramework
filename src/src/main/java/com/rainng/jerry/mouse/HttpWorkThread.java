@@ -13,6 +13,8 @@ import java.io.*;
 import java.net.Socket;
 
 public class HttpWorkThread extends Thread {
+    private static final String KEEP_ALIVE = "keep-alive";
+
     private final Socket socket;
     private final HttpServer httpServer;
 
@@ -48,7 +50,9 @@ public class HttpWorkThread extends Thread {
             afterExecute(httpContext);
             writeResponse(httpContext, outputStream);
 
-            onAccept();
+            if (KEEP_ALIVE.equals(httpContext.getRequest().getConnection())) {
+                onAccept();
+            }
         } finally {
             tryClose(httpContext.getRequest().getBody());
             tryClose(httpContext.getResponse().getBody());
@@ -66,6 +70,10 @@ public class HttpWorkThread extends Thread {
         if (response.getContentType().startsWith("text/")) {
             String contentType = response.getContentType() + "; charset=utf-8";
             response.setContentType(contentType);
+        }
+
+        if (KEEP_ALIVE.equals(context.getRequest().getConnection())) {
+            response.setConnection(KEEP_ALIVE);
         }
     }
 

@@ -51,6 +51,14 @@ public class HttpResponse {
         this.body = body;
     }
 
+    public String getConnection() {
+        return headers.get(HttpHeaderKey.CONNECTION);
+    }
+
+    public void setConnection(String connection) {
+        headers.set(HttpHeaderKey.CONNECTION, connection);
+    }
+
     public long getContentLength() {
         String lengthStr = headers.get(HttpHeaderKey.CONTENT_LENGTH, "0");
         return Integer.parseInt(lengthStr);
