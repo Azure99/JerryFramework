@@ -1,5 +1,6 @@
-package com.rainng.jerry.mvc;
+package com.rainng.jerry.mvc.mapping;
 
+import com.rainng.jerry.mvc.Controller;
 import com.rainng.jerry.util.FileClassScanner;
 
 import java.util.ArrayList;
