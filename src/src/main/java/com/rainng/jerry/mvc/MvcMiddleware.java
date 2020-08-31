@@ -16,7 +16,6 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 public class MvcMiddleware extends BaseMiddleware {
-    private static final String BODY_PLACEHOLDER = "___body___";
     private final Map<RequestKey, RequestTarget> requestMap;
 
     public MvcMiddleware(Class<?> appClass) {
@@ -27,10 +26,6 @@ public class MvcMiddleware extends BaseMiddleware {
     public void onExecute(HttpContext context) throws Exception {
         HttpRequest request = context.getRequest();
         HttpResponse response = context.getResponse();
-
-        if (request.getContentType().equals(HttpContentType.JSON)) {
-            request.getForm().set(BODY_PLACEHOLDER, request.getBodyString());
-        }
 
         RequestKey requestKey = RequestMapResolver.resolveRequestKey(request);
         if (!requestMap.containsKey(requestKey)) {

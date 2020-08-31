@@ -54,7 +54,6 @@ public class HttpWorkThread extends Thread {
                 onAccept();
             }
         } finally {
-            tryClose(httpContext.getRequest().getBody());
             tryClose(httpContext.getResponse().getBody());
             tryClose(inputStream);
             tryClose(outputStream);

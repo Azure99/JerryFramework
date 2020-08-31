@@ -16,8 +16,8 @@ public class HttpRequest {
     private HttpQueryMap queryArgs;
     private String version;
     private HttpHeaderMap headers;
-    private InputStream body;
     private HttpQueryMap form;
+    private byte[] body;
     private String bodyString;
 
     public HttpRequest() {
@@ -29,7 +29,6 @@ public class HttpRequest {
         version = "HTTP/1.1";
         headers = new HttpHeaderMap();
         form = new HttpQueryMap();
-        bodyString = "";
     }
 
     public HttpContext getHttpContext() {
@@ -121,11 +120,11 @@ public class HttpRequest {
         headers.set(HttpHeaderKey.CONTENT_LENGTH, Long.toString(contentLength));
     }
 
-    public InputStream getBody() {
+    public byte[] getBody() {
         return body;
     }
 
-    public void setBody(InputStream body) {
+    public void setBody(byte[] body) {
         this.body = body;
     }
 
@@ -146,10 +145,9 @@ public class HttpRequest {
     }
 
     public String getBodyString() {
+        if (bodyString == null) {
+            bodyString = new String(body);
+        }
         return bodyString;
-    }
-
-    public void setBodyString(String bodyString) {
-        this.bodyString = bodyString;
     }
 }

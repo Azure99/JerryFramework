@@ -121,23 +121,11 @@ public class HttpRequestIniter {
     }
 
     private static void initHttpRequestBody(HttpRequest request, byte[] bodyData) {
-        request.setBody(new ByteArrayInputStream(bodyData));
+        request.setBody(bodyData);
 
-        switch (request.getContentType()) {
-            case HttpContentType.TEXT_PLAIN:
-            case HttpContentType.FORM_URLENCODED:
-            case HttpContentType.JSON:
-            case HttpContentType.TEXT_HTML:
-                request.setBodyString(new String(bodyData));
-                break;
-            default:
+        if (HttpContentType.FORM_URLENCODED.equals(request.getContentType())) {
+            request.setForm(parseQueryArgs(request.getBodyString()));
         }
-
-        if (!request.getContentType().equals(HttpContentType.FORM_URLENCODED)) {
-            return;
-        }
-
-        request.setForm(parseQueryArgs(new String(bodyData)));
     }
 
     private static String convertHeaderKey(String key) {

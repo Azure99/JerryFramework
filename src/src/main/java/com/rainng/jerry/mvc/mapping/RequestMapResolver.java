@@ -12,7 +12,7 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class RequestMapResolver {
-    private static final String BODY_PLACEHOLDER = "___body___";
+    private static final String REQUEST_BODY = "___body___";
     private static final String[] HTTP_METHODS = new String[]{"get", "post", "delete", "put", "patch"};
 
     private RequestMapResolver() {
@@ -123,6 +123,7 @@ public class RequestMapResolver {
         List<String> argList = new ArrayList<>();
         argList.addAll(request.getQueryArgs().keySet());
         argList.addAll(request.getForm().keySet());
+        argList.add(REQUEST_BODY);
 
         String[] args = new String[argList.size()];
         argList.toArray(args);
@@ -143,8 +144,12 @@ public class RequestMapResolver {
         request.getForm().forEach((key, value) -> argsMap.put(key.toLowerCase(), value));
 
         for (int i = 0; i < argsLen; i++) {
-            String value = argsMap.get(parameterNames[i].toLowerCase());
-            argValues[i] = getParameterValue(parameters[i], value);
+            if (REQUEST_BODY.equals(parameterNames[i])) {
+                argValues[i] = parseBodyValue(parameters[i], request);
+            } else {
+                String strValue = argsMap.get(parameterNames[i].toLowerCase());
+                argValues[i] = parseParameterValue(parameters[i], strValue);
+            }
         }
 
         return argValues;
@@ -155,7 +160,7 @@ public class RequestMapResolver {
         String[] parameterNames = new String[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
             if (parameters[i].getAnnotation(RequestBody.class) != null) {
-                parameterNames[i] = BODY_PLACEHOLDER;
+                parameterNames[i] = REQUEST_BODY;
                 continue;
             }
             parameterNames[i] = parameters[i].getName().toLowerCase();
@@ -164,7 +169,7 @@ public class RequestMapResolver {
         return parameterNames;
     }
 
-    public static Object getParameterValue(Parameter parameter, String strValue) {
+    public static Object parseParameterValue(Parameter parameter, String strValue) {
         if (strValue == null) {
             return null;
         }
@@ -189,7 +194,15 @@ public class RequestMapResolver {
         } else if (type.equals(Short.class)) {
             return Short.valueOf(strValue);
         } else {
-            return JSON.parseObject(strValue, type);
+            return strValue;
         }
+    }
+
+    public static Object parseBodyValue(Parameter parameter, HttpRequest request) {
+        if (parameter.getType().equals(byte[].class)) {
+            return request.getBody();
+        }
+
+        return JSON.parseObject(request.getBodyString(), parameter.getType());
     }
 }
