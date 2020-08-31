@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class HttpRequestIniter {
+    private static final int[] END_FLAG = new int[]{13, 10, 13, 10};
+
     private HttpRequestIniter() {
 
     }
@@ -35,7 +37,6 @@ public class HttpRequestIniter {
     private static byte[] readHttpRequestHeadData(InputStream inputStream) throws IOException {
         ByteArrayOutputStream tempHeadStream = new ByteArrayOutputStream();
 
-        int[] endFlagArray = new int[]{13, 10, 13, 10};
         int[] endFlagBuffer = new int[4];
         boolean endFlagFound = false;
 
@@ -44,14 +45,12 @@ public class HttpRequestIniter {
             b = inputStream.read();
             tempHeadStream.write(b);
 
-            for (int i = 0; i < 3; i++) {
-                endFlagBuffer[i] = endFlagBuffer[i + 1];
-            }
+            System.arraycopy(endFlagBuffer, 1, endFlagBuffer, 0, 3);
             endFlagBuffer[3] = b;
 
             endFlagFound = true;
             for (int i = 0; i < 4; i++) {
-                if (endFlagBuffer[i] != endFlagArray[i]) {
+                if (endFlagBuffer[i] != END_FLAG[i]) {
                     endFlagFound = false;
                     break;
                 }

@@ -81,6 +81,7 @@ public class HttpHeaderKey {
     public static final String X_DNS_PREFETCH_CONTROL = "X-DNS-Prefetch-Control";
     public static final String X_FRAME_OPTIONS = "X-Frame-Options";
     public static final String X_XSS_PROTECTION = "X-XSS-Protection";
+
     private HttpHeaderKey() {
 
     }
