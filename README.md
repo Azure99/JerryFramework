@@ -122,8 +122,6 @@ public class HomeController extends Controller {
 
 ### 简化开发
 
-Jerry MVC
-
 ```java
 /**
  * Auto mapping: /demo/hello、/demo/add ...

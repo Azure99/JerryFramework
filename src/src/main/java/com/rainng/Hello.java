@@ -19,7 +19,7 @@ public class Hello {
  */
 class DemoController extends Controller {
     public Result hello() {
-        putModel("key", "Jerry MVC with thymeleaf");
+        putModel("key", "Jerry MVC with Thymeleaf");
         return view("index.html");
     }
 
