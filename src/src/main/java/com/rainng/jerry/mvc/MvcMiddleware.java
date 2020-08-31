@@ -14,6 +14,7 @@ import com.rainng.jerry.mvc.mapping.RouteParser;
 import com.rainng.jerry.mvc.result.ActionContext;
 import com.rainng.jerry.mvc.result.JsonResult;
 import com.rainng.jerry.mvc.result.Result;
+import com.rainng.jerry.util.Logger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -80,6 +81,13 @@ public class MvcMiddleware extends BaseMiddleware {
 
         RequestKey requestKey = new RequestKey(routePath, methodMask, parameterNames);
         RequestTarget requestTarget = new RequestTarget(controller, method);
+
+        if (requestMap.containsKey(requestKey)) {
+            RequestTarget existTarget = requestMap.get(requestKey);
+            String existInfo = existTarget.getController().getName() + "#" + existTarget.getMethod().getName();
+            String newInfo = requestTarget.getController().getName() + "#" + requestTarget.getMethod().getName();
+            Logger.warn("Duplicate request key between: " + existInfo + " and " + newInfo);
+        }
 
         requestMap.put(requestKey, requestTarget);
     }
