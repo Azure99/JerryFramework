@@ -14,8 +14,12 @@ public class ControllerScanner {
         Class<?>[] classes = new FileClassScanner().scanClasses(app);
         ArrayList<Class<?>> controllerList = new ArrayList<>();
         for (Class<?> clazz : classes) {
-            if (Controller.class.equals(clazz.getSuperclass())) {
-                controllerList.add(clazz);
+            Class<?> nowClazz = clazz;
+            while (nowClazz != null) {
+                if (Controller.class.equals(nowClazz.getSuperclass())) {
+                    controllerList.add(clazz);
+                }
+                nowClazz = nowClazz.getSuperclass();
             }
         }
 
