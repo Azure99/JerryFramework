@@ -23,8 +23,8 @@ public class FileClassScanner extends AbstractClassScanner {
 
     @Override
     public String[] scanClassNames(Class<?> root) {
-        String basePath = root.getResource("/").toString().substring(6);
-        String packagePath = root.getResource("").toString().substring(6);
+        String basePath = root.getResource("/").getPath();
+        String packagePath = root.getResource("").getPath();
         ArrayList<String> paths = findAllFiles(new ArrayList<>(), new File(packagePath));
 
         ArrayList<String> classNameList = new ArrayList<>();
