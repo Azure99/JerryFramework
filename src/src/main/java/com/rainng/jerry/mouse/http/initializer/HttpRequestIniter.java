@@ -83,7 +83,7 @@ public class HttpRequestIniter {
 
             String[] kv = line.split(":\\s");
             String key = convertHeaderKey(kv[0]);
-            String value = kv[1];
+            String value = kv.length == 2 ? kv[1] : "";
             headers.set(key, value);
         }
 
