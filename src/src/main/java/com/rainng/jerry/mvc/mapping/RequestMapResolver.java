@@ -1,6 +1,7 @@
 package com.rainng.jerry.mvc.mapping;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rainng.jerry.mouse.http.HttpRequest;
 import com.rainng.jerry.mouse.http.constant.HttpMethod;
 import com.rainng.jerry.mvc.Controller;
@@ -12,6 +13,8 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class RequestMapResolver {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     private static final String REQUEST_BODY = "___body___";
     private static final String[] HTTP_METHODS = new String[]{"get", "post", "delete", "put", "patch"};
 
@@ -216,6 +219,10 @@ public class RequestMapResolver {
             return request.getBody();
         }
 
-        return JSON.parseObject(request.getBodyString(), parameter.getType());
+        try {
+            return objectMapper.readValue(request.getBodyString(), parameter.getType());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

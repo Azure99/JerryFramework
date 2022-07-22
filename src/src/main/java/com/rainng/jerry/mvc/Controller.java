@@ -1,6 +1,5 @@
 package com.rainng.jerry.mvc;
 
-import com.alibaba.fastjson.JSONObject;
 import com.rainng.jerry.mouse.http.Cookie;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpRequest;
@@ -11,6 +10,7 @@ import com.rainng.jerry.mvc.annotation.Route;
 import com.rainng.jerry.mvc.result.*;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 @Route("/")
@@ -120,19 +120,19 @@ public class Controller {
         return new ViewResult(view);
     }
 
-    protected JSONObject jsono(String format, Object... args) {
-        JSONObject jsonObject = new JSONObject();
-        String[] names = format.split("\\|");
+    protected Map<String, Object> jsono(String format, Object... args) {
+        Map<String, Object> objectMap = new HashMap<>();
 
+        String[] names = format.split("\\|");
         for (int i = 0; i < names.length; i++) {
             if (i < args.length) {
-                jsonObject.put(names[i], args[i]);
+                objectMap.put(names[i], args[i]);
             } else {
-                jsonObject.put(names[i], null);
+                objectMap.put(names[i], null);
             }
         }
 
-        return jsonObject;
+        return objectMap;
     }
 
     public ActionContext getActionContext() {

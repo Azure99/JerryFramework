@@ -1,6 +1,7 @@
 package com.rainng.jerry.mvc.result;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rainng.jerry.mouse.http.HttpContext;
 import com.rainng.jerry.mouse.http.HttpResponse;
 import com.rainng.jerry.mouse.http.constant.HttpContentType;
@@ -8,11 +9,18 @@ import com.rainng.jerry.mouse.http.constant.HttpContentType;
 import java.nio.charset.StandardCharsets;
 
 public class JsonResult extends BaseResult {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     private final String jsonString;
-    private Object object;
+    private final Object object;
 
     public JsonResult(Object object) {
-        this.jsonString = JSON.toJSONString(object);
+        this.object = object;
+        try {
+            this.jsonString = objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
