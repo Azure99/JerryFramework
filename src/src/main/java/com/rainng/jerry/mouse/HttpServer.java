@@ -2,69 +2,32 @@ package com.rainng.jerry.mouse;
 
 import com.rainng.jerry.mouse.middleware.BaseMiddleware;
 import com.rainng.jerry.util.Logger;
+import io.undertow.Undertow;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.concurrent.*;
 
 public class HttpServer {
-    private final ServerSocket serverSocket;
     private final int port;
+    private final String host;
     private final BaseMiddleware middlewareEntry;
-    private boolean running;
 
-    public HttpServer(int port) throws IOException {
+    public HttpServer(int port, String host) throws IOException {
         this.port = port;
+        this.host = host;
         middlewareEntry = new BaseMiddleware();
-
-        serverSocket = new ServerSocket(port);
-        running = false;
     }
 
     public void start() {
+        Undertow undertowServer = Undertow.builder()
+                .addHttpListener(port, host)
+                .setHandler(new HttpHandler(this))
+                .build();
+
         long uptime = ManagementFactory.getRuntimeMXBean().getUptime();
-        Logger.log("Jerry mouse web server started in " + uptime + "ms");
-        running = true;
-        startAccept();
-    }
+        Logger.log("Jerry mouse web server initialized in " + uptime + "ms");
 
-    public void stop() {
-        running = false;
-    }
-
-    private void startAccept() {
-        ExecutorService executorService = createThreadPool();
-
-        while (running) {
-            try {
-                Socket socket = serverSocket.accept();
-                try {
-                    executorService.submit(new HttpWorkThread(socket, this));
-                } catch (RejectedExecutionException ex) {
-                    Logger.ex("Request rejected: " + socket.getInetAddress().toString(), ex);
-                    socket.close();
-                }
-            } catch (Exception ex) {
-                Logger.ex("Unknown server error", ex);
-            }
-        }
-    }
-
-    private ExecutorService createThreadPool() {
-        int processorCount = Runtime.getRuntime().availableProcessors();
-        ExecutorService executorService = new ThreadPoolExecutor(
-                processorCount * 2,
-                processorCount * 512,
-                60,
-                TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(1024),
-                Executors.defaultThreadFactory(),
-                new ThreadPoolExecutor.AbortPolicy()
-        );
-
-        return executorService;
+        undertowServer.start();
     }
 
     public HttpServer addMiddleware(BaseMiddleware middleware) {

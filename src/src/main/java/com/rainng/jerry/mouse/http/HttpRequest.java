@@ -5,13 +5,10 @@ import com.rainng.jerry.mouse.http.constant.HttpMethod;
 import com.rainng.jerry.mouse.http.map.HttpHeaderMap;
 import com.rainng.jerry.mouse.http.map.HttpQueryMap;
 
-import java.io.InputStream;
-
 public class HttpRequest {
     private HttpContext httpContext;
     private HttpMethod method;
     private String path;
-    private String resourcePath;
     private String queryString;
     private HttpQueryMap queryArgs;
     private String version;
@@ -23,7 +20,6 @@ public class HttpRequest {
     public HttpRequest() {
         method = HttpMethod.GET;
         path = "/";
-        resourcePath = "/";
         queryString = "";
         queryArgs = new HttpQueryMap();
         version = "HTTP/1.1";
@@ -126,14 +122,6 @@ public class HttpRequest {
 
     public void setBody(byte[] body) {
         this.body = body;
-    }
-
-    public String getResourcePath() {
-        return resourcePath;
-    }
-
-    public void setResourcePath(String resourcePath) {
-        this.resourcePath = resourcePath;
     }
 
     public HttpQueryMap getForm() {

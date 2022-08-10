@@ -131,7 +131,7 @@ public class RequestMapResolver {
         argList.toArray(args);
 
         HttpMethodMask methodMask = new HttpMethodMask().add(request.getMethod());
-        return new RequestKey(request.getResourcePath(), methodMask, args);
+        return new RequestKey(request.getPath(), methodMask, args);
     }
 
     public static Object[] getArgValues(HttpRequest request, RequestTarget requestTarget) {

@@ -15,10 +15,15 @@ public class Hello {
 
 /**
  * Auto mapping: [ControllerName(without postfix)]/[MethodName]
- * http://localhost:9615/demo/hello
+ * http://localhost:9615/demo/mvc
  */
 class DemoController extends Controller {
-    public Result hello() {
+    @Route("/")
+    public String home() {
+        return "hello world";
+    }
+
+    public Result mvc() {
         putModel("key", "Jerry MVC with Thymeleaf");
         return view("index.html");
     }

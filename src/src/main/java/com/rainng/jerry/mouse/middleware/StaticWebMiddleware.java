@@ -31,7 +31,7 @@ public class StaticWebMiddleware extends BaseMiddleware {
         HttpRequest request = context.getRequest();
         HttpResponse response = context.getResponse();
 
-        String resourcePath = rootDirectory + request.getResourcePath();
+        String resourcePath = rootDirectory + request.getPath();
         if (resourcePath.endsWith("/")) {
             resourcePath += defaultFile;
         }

@@ -14,6 +14,7 @@ public class JerryBuilder {
     private boolean useMvc;
 
     private int port = 9615;
+    private String host = "localhost";
     private String rootDirectory = "wwwroot";
     private int maxSessionAge = 3600;
     private Class<?> appClass;
@@ -22,9 +23,10 @@ public class JerryBuilder {
         this.appClass = appClass;
     }
 
-    public JerryBuilder(Class<?> appClass, int port) {
+    public JerryBuilder(Class<?> appClass, int port, String host) {
         this.appClass = appClass;
         this.port = port;
+        this.host = host;
     }
 
     public static JerryBuilder createStaticWeb(Class<?> appClass, int port) {
@@ -52,8 +54,6 @@ public class JerryBuilder {
     public static JerryBuilder createMvc(Class<?> appClass) {
         return new JerryBuilder(appClass)
                 .useError()
-                .useSession()
-                .useStaticWeb()
                 .useMvc();
     }
 
@@ -94,6 +94,11 @@ public class JerryBuilder {
         return this;
     }
 
+    public JerryBuilder setHost(String host) {
+        this.host = host;
+        return this;
+    }
+
     public JerryBuilder setRootDirectory(String rootDirectory) {
         this.rootDirectory = rootDirectory;
         return this;
@@ -112,7 +117,7 @@ public class JerryBuilder {
     public HttpServer build() {
         HttpServer server = null;
         try {
-            server = new HttpServer(port);
+            server = new HttpServer(port, host);
 
             if (useError) {
                 server.addMiddleware(new ErrorMiddleware());
